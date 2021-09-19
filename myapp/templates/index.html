@@ -1,0 +1,100 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+<div class="home-container">
+
+	<h1 class="mb-4">My App Home</h1>
+
+	<div class="container">
+		<div class="row justify-content-around">
+			<div class="card col-md-5">
+				<a href="{% url 'representadas' %}">	
+				  <div class="card-body">
+				    Representadas
+				  </div>
+				</a>
+			</div>
+			<div class="card col-md-5">
+			  	<a href="{% url 'produtos' %}">	
+				  <div class="card-body">
+				    Produtos
+				  </div>
+				</a>
+			</div>
+			<div class="card col-md-5">
+				<a href="{% url 'pedidos' %}">	
+				  <div class="card-body">
+				    Pedidos
+				  </div>
+				</a>
+			</div>
+			<div class="card col-md-5">
+			  	<a href="{% url 'produtos' %}">	
+				  <div class="card-body">
+				    Transportadoras
+				  </div>
+				</a>
+			</div>
+			<div class="card col-md-5">
+				<a href="{% url 'assistencias' %}">	
+				  <div class="card-body">
+				    Assistências
+				  </div>
+				</a>
+			</div>
+			<div class="card col-md-5">
+	 	 		<a href="{% url 'produtos' %}">	
+				  <div class="card-body">
+				    Clientes
+				  </div>
+				</a>
+			</div>
+			<div class="card col-md-5">
+				<a href="{% url 'representadas' %}">	
+				  <div class="card-body">
+				    Vendedores
+				  </div>
+				</a>
+			</div>
+			<div class="card col-md-5">
+	 	 		<a href="{% url 'produtos' %}">	
+				  <div class="card-body">
+				    Usuários
+				  </div>
+				</a>
+			</div>
+			<div class="card col-md-5">
+				<a href="{% url 'representadas' %}">	
+				  <div class="card-body">
+				    Acabamentos
+				  </div>
+				</a>
+			</div>
+			<div class="card col-md-5">
+			  	<a href="{% url 'produtos' %}">	
+				  <div class="card-body">
+				    Tecidos
+				  </div>
+				</a>
+			</div>
+			<div class="card col-md-5">
+				<a href="{% url 'representadas' %}">	
+				  <div class="card-body">
+				    Formas de Pagamento
+				  </div>
+				</a>
+			</div>
+			<div class="card col-md-5">
+	 	 		<a href="{% url 'produtos' %}">	
+				  <div class="card-body">
+				    Relatórios
+				  </div>
+				</a>
+			</div>
+		</div>
+	</div>
+
+
+</div>
+
+{% endblock %}

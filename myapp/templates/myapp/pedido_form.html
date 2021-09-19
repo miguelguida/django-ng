@@ -1,0 +1,269 @@
+{% extends "base_generic.html" %}
+{% load widget_tweaks %}
+{% block content %}
+    
+    <div class="form-container">
+        <h1 class="mb-5">Criar Pedido</h1>
+
+        <form action="" method="post">
+            {% csrf_token %}
+           
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label>data</label>
+                    {{ form.data|add_class:'form-control' }}
+                </div>
+                <div class="form-group col-md-4">
+                    <label>ordemCompra</label>
+                    {{ form.ordemCompra|add_class:'form-control' }}
+                </div>
+                <div class="form-group col-md-4">
+                    <label>status</label>
+                    {{ form.status|add_class:'form-control' }}
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label>Cód. Cliente</label>
+                    {{ form.codCliente|add_class:'form-control' }}
+                </div>
+                <div class="form-group col-md-6">
+                    <label>Cliente</label>
+                    {{ form.cliente|add_class:'form-control' }}
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label>Cód. Representada</label>
+                    {{ form.codRepresentada|add_class:'form-control' }}
+                </div>
+                <div class="form-group col-md-6">
+                   <label>Representada</label>
+                    {{ form.representada|add_class:'form-control' }}
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label>Cód. Vendedor</label>
+                    {{ form.codVendedor|add_class:'form-control' }}
+                </div>
+                <div class="form-group col-md-6">
+                   <label>Vendedor</label>
+                    {{ form.vendedor|add_class:'form-control' }}
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label>Cód. Tansportadora</label>
+                    {{ form.codTransportadora|add_class:'form-control' }}
+                </div>
+                <div class="form-group col-md-8">
+                    <label>Transportadora</label>
+                    {{ form.transportadora|add_class:'form-control' }}
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label>Tipo Frete</label>
+                    {{ form.tipoFrete|add_class:'form-control' }}
+                </div>
+                <div class="form-group col-md-4">
+                    <label>Forma Pagamento</label>
+                    {{ form.formaPagamento|add_class:'form-control' }}
+                </div>
+                <div class="form-group col-md-4">
+                    <label>Tipo Cobrança</label>
+                    {{ form.tipoCobranca|add_class:'form-control' }}
+                </div>
+            </div>
+
+            <div id="formset-container">
+                <h3>Item Pedido</h3>
+                {{ formset.management_form }}
+                {% for form in formset %}
+                    <div id="formset-{{ forloop.counter0 }}">
+                        <div class="form-row">
+                            <div class="form-group col-md-4">
+                                <label>Produto</label>
+                                {{ form.produto|add_class:'form-control' }}
+                            </div>
+                            <div class="form-group col-md-2">
+                                <label>Referencia</label>
+                                {{ form.referencia|add_class:'form-control' }}
+                            </div>
+                    
+                            <div class="form-group col-md-4">
+                                <label>Acabamento</label>
+                                {{ form.acabamento|add_class:'form-control' }}
+                            </div>
+                            <div class="form-group col-md-2">
+                                <label>Quantidade</label>
+                                {{ form.quantidade|add_class:'form-control' }}
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-4">
+                                <label>valorUnitario</label>
+                                {{ form.valorUnitario|add_class:'form-control' }}
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label>valorParcial</label>
+                                {{ form.valorParcial|add_class:'form-control' }}
+                            </div>
+                        </div>
+                    </div>                
+                {% endfor %}
+            </div>
+                
+            <script type="text/html" id="formset-template">
+                <div id="formset-__prefix__">
+                    {% for form in formset %}
+                    <div id="formset-{{ forloop.counter0 }}">
+                        <div class="form-row">
+                            <div class="form-group col-md-4">
+                                <label>Produto</label>
+                                {{ form.produto|add_class:'form-control' }}
+                            </div>
+                            <div class="form-group col-md-2">
+                                <label>Referencia</label>
+                                {{ form.referencia|add_class:'form-control' }}
+                            </div>
+                    
+                            <div class="form-group col-md-4">
+                                <label>Acabamento</label>
+                                {{ form.acabamento|add_class:'form-control' }}
+                            </div>
+                            <div class="form-group col-md-2">
+                                <label>Quantidade</label>
+                                {{ form.quantidade|add_class:'form-control' }}
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-4">
+                                <label>valorUnitario</label>
+                                {{ form.valorUnitario|add_class:'form-control' }}
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label>valorParcial</label>
+                                {{ form.valorParcial|add_class:'form-control' }}
+                            </div>
+                        </div>
+                    </div>                
+                {% endfor %}
+                </div>
+            </script>
+                
+            <a href="#" id="add-item-button" class="btn btn-info add-item">Add formset</a>
+            
+            <div class="form-row">
+                <div class="form-group col-md-2">
+                    <label>Valor Bruto</label>
+                    {{ form.valorBruto|add_class:'form-control' }}
+                </div>
+                <div class="form-group col-md-2">
+                   <label>Desconto 1</label>
+                    {{ form.desconto1|add_class:'form-control' }}
+                </div>
+                <div class="form-group col-md-2">
+                    <label>Desconto 2</label>
+                     {{ form.desconto2|add_class:'form-control' }}
+                 </div>
+            
+                <div class="form-group col-md-2">
+                    <label>Desconto 3</label>
+                    {{ form.desconto3|add_class:'form-control' }}
+                </div>
+                <div class="form-group col-md-2">
+                   <label>Desconto 4</label>
+                    {{ form.desconto4|add_class:'form-control' }}
+                </div>
+                <div class="form-group col-md-2">
+                    <label>desconto5</label>
+                    {{ form.desconto5|add_class:'form-control' }}
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-2">
+                    <label>ipi</label>
+                    {{ form.ipi|add_class:'form-control' }}
+                </div>
+                <div class="form-group col-md-2">
+                    <label>valorIpi</label>
+                    {{ form.valorIpi|add_class:'form-control' }}
+                </div>
+                <div class="form-group col-md-2">
+                    <label>valorTotal</label>
+                    {{ form.valorTotal|add_class:'form-control' }}
+                </div>
+                <div class="form-group col-md-2">
+                    <label>porcentagemComissao</label>
+                    {{ form.porcentagemComissao|add_class:'form-control' }}
+                </div>
+                <div class="form-group col-md-2">
+                    <label>valorComissao</label>
+                    {{ form.valorComissao|add_class:'form-control' }}
+                </div>
+                
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label>observacoes</label>
+                    {{ form.observacoes|add_class:'form-control' }}
+                </div>
+            </div>
+            
+            
+            <input class="btn btn-primary submit-btn" type="submit" value="Submit" />
+            <a href="{% url 'pedidos' %}"><input class="btn btn-secondary submit-btn" type="button" value="Cancel" /></a>
+            
+        </form>
+    </div>
+<script>
+    // var cep = document.getElementById("id_cep")
+    // cep.onblur = function(){
+    //     console.log("poaspoaspoaspoaspoaspo")
+    //     var url = "https://viacep.com.br/ws/"+cep.value+"/json/";
+                
+    //     // Faz a pesquisa do CEP, tratando o retorno com try/catch para que
+    //     // caso ocorra algum erro (o cep pode não existir, por exemplo) a
+    //     // usabilidade não seja afetada, assim o usuário pode continuar//
+    //     // preenchendo os campos normalmente
+    //     fetch(url, {
+    //         method: 'get'
+    //     })
+    //     .then(response => response.json())
+    //     .then(data => {
+    //         console.log(data)
+    //         document.getElementById("id_estado").value = data.uf
+    //         document.getElementById("id_endereco").value = data.logradouro
+    //         document.getElementById("id_cidade").value = data.localidade
+    //         document.getElementById("id_bairro").value = data.bairro
+
+    //     }).catch(function(err) {
+    //         // Error :(
+    //     });
+    // };
+
+    $(function() {
+        $('.add-item').on('click', function(ev) {
+            console.log("DJONODCN");
+            ev.preventDefault();
+            var count = $('#formset-container').children().length;
+            console.log(count);
+            var tmplMarkup = $('#formset-template').html();
+            var compiledTmpl = tmplMarkup.replace(/__prefix__/g, count);
+            $('div#formset-container').append(compiledTmpl);
+
+            // update form count
+            $('#id_itempedido_set-TOTAL_FORMS').attr('value', count+1);
+
+            // some animate to scroll to view our new form
+            $('html, body').animate({
+                scrollTop: $("#add-item-button").position().top-200
+            }, 800);
+        });
+    });
+
+
+</script>
+{% endblock %}

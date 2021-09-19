@@ -1,0 +1,14 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+
+<h1>Deletar Produto</h1>
+
+<p>Você tem certeza que quer deletar este cadastro? {{ produto }}?</p>
+
+<form action="" method="POST">
+  {% csrf_token %}
+  <input type="submit" action="" value="Yes, delete." />
+</form>
+
+{% endblock %}

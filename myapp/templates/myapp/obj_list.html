@@ -1,0 +1,32 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <div class="obj-list-container">
+    <h1>{{ obj_title }}Representada List</h1>
+    
+    <div class="table-responsive obj-list-table-container">
+      <a href="{% url 'representada-create' %}"> Criar Novo</a>
+      
+      {% if representada_list %}
+      <table class="table obj-list-table" style="width:100%">
+
+        {% for representada in representada_list %}
+       
+        <tr>
+          <td><a class="obj-link" href="{{ representada.get_absolute_url }}">{{ representada.nome }}</a></td>
+          <td><a href="{% url 'representada-update' representada.pk %}"> Editar</a></td>
+          <td>LastUpdate</td>
+          <td>Delete</td>
+
+        </tr>
+        {% endfor %}
+
+      </table>
+
+      {% else %}
+        <p>There are no books in the library.</p>
+      {% endif %}
+    </div>
+  </div>       
+{% endblock %}
+

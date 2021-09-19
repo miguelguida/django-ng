@@ -1,0 +1,60 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <div class="obj-list-container">
+    <h1>Produtos</h1>
+
+    {% if not is_mobile %}
+    <div class="table-responsive obj-list-table-container">
+      
+      <table class="table obj-list-table" style="width:100%">
+        <tr>
+          <th>Nome</th>
+          <th>Valor</th>
+          <th>Representada</th>
+          <th>Atualizado em</th>
+        </tr>
+        {% for produto in produto_list %}
+
+        <tr>
+          <td><a class="obj-link" href="{{ produto.get_absolute_url }}">{{ produto.nome }}</a></td>
+          <!-- <td><a href="{% url 'produto-detail' produto.pk %}"> Detalhes</a></td>/ -->
+          <td>{{ produto.valor }}</td>
+          <td>{{ produto.representada }}</td>
+          <td>{{ produto.lastUpdate }}</td>
+          <td>
+              <a class="btn btn-secondary" href="{% url 'produto-update' produto.pk %}"> Editar</a>
+              <a class="btn btn-danger" href="{% url 'produto-delete' produto.pk %}"> Delete</a>
+          </td>
+
+        </tr>
+        {% empty %}
+        <p>Sem cadastros.</p>
+      {% endfor %}
+      </table>
+    </div>
+    <div class="obj-list-new-container">
+      <a class="create-new-link btn btn-primary" href="{% url 'produto-create' %}"> Criar Novo</a>
+    </div>
+
+    {% else %}
+    <div class="card-deck">
+      <a class="create-new-link-sm btn btn-primary" href="{% url 'produto-create' %}"> Criar Novo</a>
+      {% for object in object_list %}
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title"> {{ object }} </h5>
+          <p class="card-text">{{ object.get_text }} </p>
+          <a class="btn btn-secondary" href="{{ object.get_edit_url }}"> Editar</a>
+          <a class="btn btn-danger" href="{{ object.get_delete_url }}"> Delete</a>
+        </div>
+        <div class="card-footer">
+          <small class="text-muted">Atualizado em: {{ object.lastUpdate }}</small>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>       
+{% endblock %}
+

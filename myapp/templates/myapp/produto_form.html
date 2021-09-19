@@ -1,0 +1,83 @@
+{% extends "base_generic.html" %}
+{% load widget_tweaks %}
+{% block content %}
+    
+    <div class="form-container">
+        <h1 class="mb-5">Criar Produto</h1>
+
+        <form action="" method="post">
+            {% csrf_token %}
+
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label>Nome</label>
+                    {{ form.nome|add_class:'form-control' }}
+                </div>
+                <div class="form-group col-md-6">
+                    <label>Valor</label>
+                    {{ form.valor|add_class:'form-control' }}
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Referencia</label>
+                {{ form.referencia|add_class:'form-control' }}
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label>Código Representada</label>
+                    {{ form.codRepresentada|add_class:'form-control' }}
+                </div>
+                <div class="form-group col-md-6">
+                    <label>Representada</label>
+                    {{ form.representada|add_class:'form-control' }}
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Observacoes</label>
+                {{ form.observacoes|add_class:'form-control' }}
+            </div>
+
+            <!-- <div class="input-group">
+                <label>observacoes</label>
+                <div class="input-group-append">
+                    <div class="input-group-text"> <span class="fas fa-user"></span> </div>
+                </div>
+                
+                {{ form.observacoes|add_class:'form-control' }}
+            </div>   -->
+          
+            
+            <input class="btn btn-primary submit-btn" type="submit" value="Submit" />
+            <a href="{% url 'produtos' %}"><input class="btn btn-secondary submit-btn" type="button" value="Cancel" /></a>
+            
+        </form>
+    </div>
+<script>
+    var cep = document.getElementById("id_cep")
+    cep.onblur = function(){
+        console.log("poaspoaspoaspoaspoaspo")
+        var url = "https://viacep.com.br/ws/"+cep.value+"/json/";
+                
+        // Faz a pesquisa do CEP, tratando o retorno com try/catch para que
+        // caso ocorra algum erro (o cep pode não existir, por exemplo) a
+        // usabilidade não seja afetada, assim o usuário pode continuar//
+        // preenchendo os campos normalmente
+        fetch(url, {
+            method: 'get'
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data)
+            document.getElementById("id_estado").value = data.uf
+            document.getElementById("id_cidade").value = data.localidade
+            document.getElementById("id_endereco").value = data.logradouro
+            document.getElementById("id_bairro").value = data.bairro
+
+        }).catch(function(err) {
+            // Error :(
+        });
+    };
+
+
+</script>
+{% endblock %}
