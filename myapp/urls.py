@@ -31,7 +31,7 @@ urlpatterns += [
 ]
 
 urlpatterns += [
-    path('assistencia/assistencias/', views.AssistenciaListView.as_view(), name='assistencias'),
+    path('assistencias/', views.AssistenciaListView.as_view(), name='assistencias'),
     path('assistencia/<int:pk>', views.AssistenciaDetailView.as_view(), name='assistencia-detail'),
     path('assistencia/create/', views.AssistenciaCreate.as_view(), name='assistencia-create'),
     path('assistencia/<int:pk>/update/', views.AssistenciaUpdate.as_view(), name='assistencia-update'),

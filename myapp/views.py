@@ -5,7 +5,7 @@ from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from django.urls import reverse_lazy
 from extra_views import CreateWithInlinesView, UpdateWithInlinesView, InlineFormSetFactory
-
+from django.contrib import messages
 
 import datetime
 
@@ -146,6 +146,85 @@ class PedidoUpdate( UpdateView):
     fields = '__all__'
     # permission_required = 'catalog.can_mark_returned'
 
+class PedidoCreate( View):
+    form_class = AssistenciaForm
+    inline_formset = ItemPedidoInlineFormset
+    template_name = 'myapp/pedido_form.html'
+
+    def get_success_url(self):
+        return reverse_lazy('pedidos') # kwargs={'pk': self.object.pk}
+
+    def get(self, request, *args, **kwargs):
+        """handle form display"""
+        form = self.form_class()
+        formset = self.inline_formset(instance=Pedido())
+        return render(request,\
+            self.template_name,\
+            {'form': form, 'formset': formset})
+
+    def post(self, request, *args, **kwargs):
+        """handle form submission"""
+        form = self.form_class(request.POST)
+        formset = self.inline_formset(request.POST, instance=Pedido())
+        
+        if form.is_valid():
+            # Save the parent
+            entity = form.save(commit=True)
+            # Save the formset
+            for f in formset:
+                if f.is_valid():
+                    f.clean()
+                    print("CLEAN ",f.cleaned_data)
+                    if len(f.cleaned_data) > 0:
+                        item = f.save(commit=False)
+                        item.assistencia = entity
+                        print("ITEM: ",item)
+                        print("ENTUTY: ",entity)
+                        item.save()
+                print("VALID ",f.is_valid())
+                print("CLEAN ",f.cleaned_data)
+
+        return HttpResponseRedirect(self.get_success_url())
+
+
+class PedidoUpdate( UpdateView):
+    model = Pedido
+    form_class = PedidoForm
+    inline_formset = ItemPedidoInlineFormset
+    template_name = 'myapp/pedido_form.html'
+
+    def get_success_url(self):
+        return reverse_lazy('pedidos') # kwargs={'pk': self.object.pk}
+
+    def get(self, request, *args, **kwargs):
+        self.object = get_object_or_404(Pedido, pk=self.kwargs['pk'])
+        form = self.form_class(instance=self.object)
+        formset = self.inline_formset(instance=self.object)
+        return render(request,\
+            self.template_name,\
+            {'form': form, 'formset': formset})
+
+
+    def post(self, request, *args, **kwargs):
+        """handle form submission"""
+        self.object = get_object_or_404(Pedido, pk=self.kwargs['pk'])
+        form = self.form_class(request.POST,instance=self.object)
+        formset = self.inline_formset(request.POST, instance=self.object)
+                        
+        if form.is_valid():
+            # Save the parent
+            entity = form.save()
+            # Save the formset
+            for f in formset:
+                if f.is_valid():
+                    f.clean()
+                    
+                    if len(f.cleaned_data) > 0:
+                        f.save()
+                
+
+        return HttpResponseRedirect(self.get_success_url())
+
 
 class PedidoDelete( DeleteView):
     model = Pedido
@@ -226,6 +305,9 @@ class AssistenciaCreate( View):
     inline_formset = ItemAssistenciaInlineFormset
     template_name = 'myapp/assistencia_form.html'
 
+    def get_success_url(self):
+        return reverse_lazy('assistencias') # kwargs={'pk': self.object.pk}
+
     def get(self, request, *args, **kwargs):
         """handle form display"""
         form = self.form_class()
@@ -234,31 +316,80 @@ class AssistenciaCreate( View):
             self.template_name,\
             {'form': form, 'formset': formset})
 
-
     def post(self, request, *args, **kwargs):
         """handle form submission"""
         form = self.form_class(request.POST)
         formset = self.inline_formset(request.POST, instance=Assistencia())
-        print("FORM: ",form)
-        print("FORMSET: ",formset)
-        if form.is_valid() and formset.is_valid():
+        
+        if form.is_valid():
             # Save the parent
-            
             entity = form.save(commit=True)
             # Save the formset
-            formset.instance = entity
-            formset.save()
+            for f in formset:
+                if f.is_valid():
+                    f.clean()
+                    print("CLEAN ",f.cleaned_data)
+                    if len(f.cleaned_data) > 0:
+                        item = f.save(commit=False)
+                        item.assistencia = entity
+                        print("ITEM: ",item)
+                        print("ENTUTY: ",entity)
+                        item.save()
+                print("VALID ",f.is_valid())
+                print("CLEAN ",f.cleaned_data)
 
+        return HttpResponseRedirect(self.get_success_url())
+
+
+class AssistenciaUpdate( UpdateView):
+    model = Assistencia
+    form_class = AssistenciaForm
+    inline_formset = ItemAssistenciaInlineFormset
+    template_name = 'myapp/assistencia_form.html'
+
+    def get_success_url(self):
+        return reverse_lazy('assistencias') # kwargs={'pk': self.object.pk}
+
+    def get(self, request, *args, **kwargs):
+        self.object = get_object_or_404(Assistencia, pk=self.kwargs['pk'])
+        form = self.form_class(instance=self.object)
+        formset = self.inline_formset(instance=self.object)
         return render(request,\
             self.template_name,\
             {'form': form, 'formset': formset})
 
 
-class AssistenciaUpdate( UpdateWithInlinesView):
-    model = Assistencia
-    inlines = [ItemAssistenciaInline]
-    fields = '__all__'
-    # permission_required = 'catalog.can_mark_returned'
+    def post(self, request, *args, **kwargs):
+        """handle form submission"""
+        self.object = get_object_or_404(Assistencia, pk=self.kwargs['pk'])
+        form = self.form_class(request.POST,instance=self.object)
+        formset = self.inline_formset(request.POST, instance=self.object)
+                        
+        if form.is_valid():
+            # Save the parent
+            entity = form.save()
+            # Save the formset
+            for f in formset:
+                if f.is_valid():
+                    f.clean()
+                    print("@@@   3423 CLEAN ",f.cleaned_data)
+                    if len(f.cleaned_data) > 0:
+                        # item = f.save(commit=False)
+                        # item.instance = entity
+                        f.save()
+                print("VALID ",f.is_valid())
+                print("CLEAN ",f.cleaned_data)
+
+        return HttpResponseRedirect(self.get_success_url())
+    
+    # def form_valid(self, form):
+    #     print(form.cleaned_data)
+    #     messages.add_message(
+    #         self.request,
+    #         messages.SUCCESS,
+    #         'The publisher was added.'
+    #     )
+    #     return super().form_valid(form)
 
 
 class AssistenciaDelete( DeleteView):
@@ -307,3 +438,24 @@ class AssistenciaDelete( DeleteView):
 #             followup.contact = self.object
 #             followup.save()
 
+# def post(self, request, *args, **kwargs):
+#         """handle form submission"""
+#         self.object = self.get_object()
+#         form_class = self.get_form_class()
+#         form = self.get_form(form_class)
+#         formset = self.inline_formset(request.POST, instance=self.object)
+#         print("@@@@@@@@@@@@@   ",self.kwargs['pk'])
+#         print("FORM: ",form)
+#         print("FORMSET: ",formset)
+#         if form.is_valid() and formset.is_valid():
+#             # Save the parent
+            
+#             return self.form_valid(form, formset)
+#         return self.form_invalid(form, formset)
+
+#     def form_valid(self, form, formset):
+#         self.object = form.save()
+#         formset.instance = self.object
+#         formset.save()
+
+#         return HttpResponseRedirect(self.get_success_url())

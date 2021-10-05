@@ -316,7 +316,9 @@ class ItemAssistencia(models.Model):
 
     def __str__(self):
         """String for representing the Model object (in Admin site etc.)"""
-        return self.produto.nome
+        if self.assistencia is not None and self.produto is not None:
+            return self.referencia+ ' '+self.produto.nome + ' ' + self.assistencia.numeroSolicitacao
+        return self.referencia
 
 # Create your models here.
 class Acabamento(models.Model):

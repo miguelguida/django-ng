@@ -81,7 +81,7 @@
                 <h3>Item Pedido</h3>
                 {{ formset.management_form }}
                 {% for form in formset %}
-                    <div id="formset-{{ forloop.counter0 }}">
+                    <div id="formset-{{ forloop.counter0 }}" class="formset-div">
                         <div class="form-row">
                             <div class="form-group col-md-4">
                                 <label>Produto</label>
@@ -116,41 +116,46 @@
             </div>
                 
             <script type="text/html" id="formset-template">
-                <div id="formset-__prefix__">
-                    {% for form in formset %}
-                    <div id="formset-{{ forloop.counter0 }}">
-                        <div class="form-row">
-                            <div class="form-group col-md-4">
-                                <label>Produto</label>
-                                {{ form.produto|add_class:'form-control' }}
-                            </div>
-                            <div class="form-group col-md-2">
-                                <label>Referencia</label>
-                                {{ form.referencia|add_class:'form-control' }}
-                            </div>
-                    
-                            <div class="form-group col-md-4">
-                                <label>Acabamento</label>
-                                {{ form.acabamento|add_class:'form-control' }}
-                            </div>
-                            <div class="form-group col-md-2">
-                                <label>Quantidade</label>
-                                {{ form.quantidade|add_class:'form-control' }}
-                            </div>
+                
+                {% for form in formset %}
+                {% if forloop.last %}
+                <div id="formset-__prefix__" class="formset-div">
+                    <div hidden>                           
+                        {{ form.id|add_class:'form-control' }}
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label>Produto</label>
+                            {{ form.produto|add_class:'form-control' }}
                         </div>
-                        <div class="form-row">
-                            <div class="form-group col-md-4">
-                                <label>valorUnitario</label>
-                                {{ form.valorUnitario|add_class:'form-control' }}
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label>valorParcial</label>
-                                {{ form.valorParcial|add_class:'form-control' }}
-                            </div>
+                        <div class="form-group col-md-2">
+                            <label>Referencia</label>
+                            {{ form.referencia|add_class:'form-control' }}
                         </div>
-                    </div>                
+                
+                        <div class="form-group col-md-4">
+                            <label>Acabamento</label>
+                            {{ form.acabamento|add_class:'form-control' }}
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label>Quantidade</label>
+                            {{ form.quantidade|add_class:'form-control' }}
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label>valorUnitario</label>
+                            {{ form.valorUnitario|add_class:'form-control' }}
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label>valorParcial</label>
+                            {{ form.valorParcial|add_class:'form-control' }}
+                        </div>
+                    </div>
+                </div>                
+                {% endif %}
                 {% endfor %}
-                </div>
+                
             </script>
                 
             <a href="#" id="add-item-button" class="btn btn-info add-item">Add formset</a>
@@ -248,14 +253,14 @@
         $('.add-item').on('click', function(ev) {
             console.log("DJONODCN");
             ev.preventDefault();
-            var count = $('#formset-container').children().length;
+            var count = $('#formset-container').children(".formset-div").length;
             console.log(count);
             var tmplMarkup = $('#formset-template').html();
-            var compiledTmpl = tmplMarkup.replace(/__prefix__/g, count);
+            var compiledTmpl = tmplMarkup.replace(/__prefix__/g, count).replace(/set-\d+/g,"set-"+count);
             $('div#formset-container').append(compiledTmpl);
 
             // update form count
-            $('#id_itempedido_set-TOTAL_FORMS').attr('value', count+1);
+            $("[id$='TOTAL_FORMS']").attr('value', count+1);
 
             // some animate to scroll to view our new form
             $('html, body').animate({
