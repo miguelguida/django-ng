@@ -131,11 +131,11 @@ USE_TZ = True
 # STATIC_ROOT = BASE_DIR / 'staticfiles'  #. os.path.join(BASE_DIR, 'staticfiles')
 # The URL to use when referring to static files (where they will be served from)
 STATIC_URL = '/static/'
-STATIC_ROOT = '/home/miguelguida/www/staticfiles'
+STATIC_ROOT = '/home/miguelguida/www/static'
 
 MEDIA_URL = 'media/'
 MEDIA_ROOT = '/home/miguelguida/www/media'
 
 STATICFILES_DIRS = [
-    '/home/miguelguida/www/static', 
+    os.path.join(BASE_DIR, "staticfiles"), 
 ]
