@@ -4,7 +4,6 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from django.urls import reverse_lazy
-from extra_views import CreateWithInlinesView, UpdateWithInlinesView, InlineFormSetFactory
 from django.contrib import messages
 
 import datetime
@@ -272,10 +271,6 @@ class ProdutoDelete( DeleteView):
 
 
 # - - - - - Assistencia - - - - -
-
-class ItemAssistenciaInline(InlineFormSetFactory):
-    model = ItemAssistencia
-    fields = '__all__'
 
 
 class AssistenciaListView(generic.ListView):
