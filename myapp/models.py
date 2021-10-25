@@ -263,11 +263,23 @@ class Vendedor(models.Model):
 
     def get_absolute_url(self):
         """Returns the url to access a particular author instance."""
-        return reverse('produto-detail', args=[str(self.id)])
+        return reverse('vendedor-detail', args=[str(self.id)])
 
     def __str__(self):
         """String for representing the Model object (in Admin site etc.)"""
-        return self.nome
+        return '{0}, {1}'.format(self.nome, self.email)
+
+    def get_text(self):
+        return 'CPF: {0}, Telefone: {1}, Celular: {2} '.format(self.cpf, self.telefone, self.celular)
+
+    def get_edit_url(self):
+        return reverse('vendedor-update', args=[str(self.id)])
+
+    def get_createee_url(self):
+        return reverse('vendedor-create')
+
+    def get_delete_url(self):
+        return reverse('vendedor-delete', args=[str(self.id)])
 
 
 # Create your models here.

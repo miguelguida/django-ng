@@ -52,19 +52,19 @@ class RepresentadaDetailView(generic.DetailView):
 class RepresentadaCreate( CreateView):
     model = Representada
     fields = '__all__'
-    # permission_required = 'catalog.can_mark_returned'
+    
 
 
 class RepresentadaUpdate( UpdateView):
     model = Representada
     fields = '__all__'
-    # permission_required = 'catalog.can_mark_returned'
+    
 
 
 class RepresentadaDelete( DeleteView):
     model = Representada
     success_url = reverse_lazy('representadas')
-    # permission_required = 'catalog.can_mark_returned'
+    
 
 
 # - - - - - Pedido - - - - -
@@ -93,7 +93,7 @@ class PedidoDetailView(generic.DetailView):
 # class PedidoCreate( CreateView):
 #     model = Pedido
 #     form = PedidoForm()
-#     # permission_required = 'catalog.can_mark_returned'
+#     
 
 def pedido_create_view(request):
     """View function for renewing a specific BookInstance by librarian."""
@@ -143,7 +143,7 @@ class PedidoCreate(View):
 class PedidoUpdate( UpdateView):
     model = Pedido
     fields = '__all__'
-    # permission_required = 'catalog.can_mark_returned'
+    
 
 class PedidoCreate( View):
     form_class = AssistenciaForm
@@ -228,7 +228,7 @@ class PedidoUpdate( UpdateView):
 class PedidoDelete( DeleteView):
     model = Pedido
     success_url = reverse_lazy('pedidos')
-    # permission_required = 'catalog.can_mark_returned'
+    
 
 # - - - - - Produto - - - - -
 
@@ -255,19 +255,19 @@ class ProdutoDetailView(generic.DetailView):
 class ProdutoCreate( CreateView):
     model = Produto
     fields = '__all__'
-    # permission_required = 'catalog.can_mark_returned'
+    
 
 
 class ProdutoUpdate( UpdateView):
     model = Produto
     fields = '__all__'
-    # permission_required = 'catalog.can_mark_returned'
+    
 
 
 class ProdutoDelete( DeleteView):
     model = Produto
     success_url = reverse_lazy('produtos')
-    # permission_required = 'catalog.can_mark_returned'
+    
 
 
 # - - - - - Assistencia - - - - -
@@ -390,7 +390,7 @@ class AssistenciaUpdate( UpdateView):
 class AssistenciaDelete( DeleteView):
     model = Assistencia
     success_url = reverse_lazy('assistencias')
-    # permission_required = 'catalog.can_mark_returned'
+    
 
 
 
@@ -420,19 +420,19 @@ class ClienteDetailView(generic.DetailView):
 class ClienteCreate( CreateView):
     model = Cliente
     fields = '__all__'
-    # permission_required = 'catalog.can_mark_returned'
+    
 
 
 class ClienteUpdate( UpdateView):
     model = Cliente
     fields = '__all__'
-    # permission_required = 'catalog.can_mark_returned'
+    
 
 
 class ClienteDelete( DeleteView):
     model = Cliente
     success_url = reverse_lazy('clientes')
-    # permission_required = 'catalog.can_mark_returned'
+    
 
 
 # - - - - - Transportadora - - - - -
@@ -461,19 +461,60 @@ class TransportadoraDetailView(generic.DetailView):
 class TransportadoraCreate( CreateView):
     model = Transportadora
     fields = '__all__'
-    # permission_required = 'catalog.can_mark_returned'
+    
 
 
 class TransportadoraUpdate( UpdateView):
     model = Transportadora
     fields = '__all__'
-    # permission_required = 'catalog.can_mark_returned'
+    
 
 
 class TransportadoraDelete( DeleteView):
     model = Transportadora
     success_url = reverse_lazy('transportadoras')
-    # permission_required = 'catalog.can_mark_returned'
+    
+
+
+# - - - - - Vendedor - - - - -
+
+class VendedorListView(generic.ListView):
+    
+    model = Vendedor
+    paginate_by = 10
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user_agent = self.request.META['HTTP_USER_AGENT']
+        keywords = ['Mobile','Opera Mini','Android']
+        if any(word in user_agent for word in keywords):
+            context['is_mobile'] = True
+        else:
+            context['is_mobile'] = False
+        return context
+   
+class VendedorDetailView(generic.DetailView):
+    
+    model = Vendedor
+
+
+# Classes created for the forms challenge
+class VendedorCreate( CreateView):
+    model = Vendedor
+    fields = '__all__'
+    
+
+
+class VendedorUpdate( UpdateView):
+    model = Vendedor
+    fields = '__all__'
+    
+
+
+class VendedorDelete( DeleteView):
+    model = Vendedor
+    success_url = reverse_lazy('vendedores')
+    
 
 
 

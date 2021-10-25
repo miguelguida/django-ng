@@ -53,3 +53,11 @@ urlpatterns += [
     path('transportadora/<int:pk>/update/', views.TransportadoraUpdate.as_view(), name='transportadora-update'),
     path('transportadora/<int:pk>/delete/', views.TransportadoraDelete.as_view(), name='transportadora-delete'),
 ]
+
+urlpatterns += [
+    path('vendedores/', views.VendedorListView.as_view(), name='vendedores'),
+    path('vendedor/<int:pk>', views.VendedorDetailView.as_view(), name='vendedor-detail'),
+    path('vendedor/create/', views.VendedorCreate.as_view(), name='vendedor-create'),
+    path('vendedor/<int:pk>/update/', views.VendedorUpdate.as_view(), name='vendedor-update'),
+    path('vendedor/<int:pk>/delete/', views.VendedorDelete.as_view(), name='vendedor-delete'),
+]
