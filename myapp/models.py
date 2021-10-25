@@ -148,8 +148,6 @@ class ItemPedido(models.Model):
 
 # Create your models here.
 class Cliente(models.Model):
-    nome = models.CharField(max_length=200,
-                            help_text="Nome do produto")
     razaoSocial = models.CharField(max_length=200)
     nomeFantasia = models.CharField(max_length=200)
     diretor = models.CharField(max_length=200)
@@ -193,11 +191,23 @@ class Cliente(models.Model):
 
     def get_absolute_url(self):
         """Returns the url to access a particular author instance."""
-        return reverse('produto-detail', args=[str(self.id)])
+        return reverse('cliente-detail', args=[str(self.id)])
 
     def __str__(self):
         """String for representing the Model object (in Admin site etc.)"""
-        return self.nome
+        return self.razaoSocial
+
+    def get_text(self):
+        return 'Nome Fantasia: {0} \n  '.format(self.nomeFantasia)
+
+    def get_edit_url(self):
+        return reverse('cliente-update', args=[str(self.id)])
+
+    def get_create_url(self):
+        return reverse('cliente-create')
+
+    def get_delete_url(self):
+        return reverse('cliente-delete', args=[str(self.id)])
 
 # Create your models here.
 class Transportadora(models.Model):

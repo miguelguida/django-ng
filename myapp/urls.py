@@ -37,3 +37,11 @@ urlpatterns += [
     path('assistencia/<int:pk>/update/', views.AssistenciaUpdate.as_view(), name='assistencia-update'),
     path('assistencia/<int:pk>/delete/', views.AssistenciaDelete.as_view(), name='assistencia-delete'),
 ]
+
+urlpatterns += [
+    path('clientes/', views.ClienteListView.as_view(), name='clientes'),
+    path('cliente/<int:pk>', views.ClienteDetailView.as_view(), name='cliente-detail'),
+    path('cliente/create/', views.ClienteCreate.as_view(), name='cliente-create'),
+    path('cliente/<int:pk>/update/', views.ClienteUpdate.as_view(), name='cliente-update'),
+    path('cliente/<int:pk>/delete/', views.ClienteDelete.as_view(), name='cliente-delete'),
+]

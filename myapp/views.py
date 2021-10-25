@@ -394,6 +394,47 @@ class AssistenciaDelete( DeleteView):
 
 
 
+# - - - - - Cliente - - - - -
+
+class ClienteListView(generic.ListView):
+    """Generic class-based view for a list of books."""
+    model = Cliente
+    paginate_by = 10
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user_agent = self.request.META['HTTP_USER_AGENT']
+        keywords = ['Mobile','Opera Mini','Android']
+        if any(word in user_agent for word in keywords):
+            context['is_mobile'] = True
+        else:
+            context['is_mobile'] = False
+        return context
+   
+class ClienteDetailView(generic.DetailView):
+    """Generic class-based detail view for a book."""
+    model = Cliente
+
+
+# Classes created for the forms challenge
+class ClienteCreate( CreateView):
+    model = Cliente
+    fields = '__all__'
+    # permission_required = 'catalog.can_mark_returned'
+
+
+class ClienteUpdate( UpdateView):
+    model = Cliente
+    fields = '__all__'
+    # permission_required = 'catalog.can_mark_returned'
+
+
+class ClienteDelete( DeleteView):
+    model = Cliente
+    success_url = reverse_lazy('clientes')
+    # permission_required = 'catalog.can_mark_returned'
+
+
 # class MyView(UpdateView): # FormView, CreateView, etc
 #     def get_context_data(self, **kwargs):
 #         ctx = super(MyView, self).get_context_data(**kwargs)
