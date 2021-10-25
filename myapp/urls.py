@@ -45,3 +45,11 @@ urlpatterns += [
     path('cliente/<int:pk>/update/', views.ClienteUpdate.as_view(), name='cliente-update'),
     path('cliente/<int:pk>/delete/', views.ClienteDelete.as_view(), name='cliente-delete'),
 ]
+
+urlpatterns += [
+    path('transportadoras/', views.TransportadoraListView.as_view(), name='transportadoras'),
+    path('transportadora/<int:pk>', views.TransportadoraDetailView.as_view(), name='transportadora-detail'),
+    path('transportadora/create/', views.TransportadoraCreate.as_view(), name='transportadora-create'),
+    path('transportadora/<int:pk>/update/', views.TransportadoraUpdate.as_view(), name='transportadora-update'),
+    path('transportadora/<int:pk>/delete/', views.TransportadoraDelete.as_view(), name='transportadora-delete'),
+]

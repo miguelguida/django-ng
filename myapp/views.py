@@ -29,7 +29,7 @@ def index(request):
 # - - - - - Representada - - - - -
 
 class RepresentadaListView(generic.ListView):
-    """Generic class-based view for a list of books."""
+    
     model = Representada
     paginate_by = 10
     
@@ -44,7 +44,7 @@ class RepresentadaListView(generic.ListView):
         return context
    
 class RepresentadaDetailView(generic.DetailView):
-    """Generic class-based detail view for a book."""
+    
     model = Representada
 
 
@@ -70,7 +70,7 @@ class RepresentadaDelete( DeleteView):
 # - - - - - Pedido - - - - -
 
 class PedidoListView(generic.ListView):
-    """Generic class-based view for a list of books."""
+    
     model = Pedido
     paginate_by = 10
     
@@ -85,7 +85,7 @@ class PedidoListView(generic.ListView):
         return context
    
 class PedidoDetailView(generic.DetailView):
-    """Generic class-based detail view for a book."""
+    
     model = Pedido
 
 
@@ -233,7 +233,7 @@ class PedidoDelete( DeleteView):
 # - - - - - Produto - - - - -
 
 class ProdutoListView(generic.ListView):
-    """Generic class-based view for a list of books."""
+    
     model = Produto
     paginate_by = 10
     def get_context_data(self, **kwargs):
@@ -247,7 +247,7 @@ class ProdutoListView(generic.ListView):
         return context
 
 class ProdutoDetailView(generic.DetailView):
-    """Generic class-based detail view for a book."""
+    
     model = Produto
 
 
@@ -290,7 +290,7 @@ class AssistenciaListView(generic.ListView):
 
 
 class AssistenciaDetailView(generic.DetailView):
-    """Generic class-based detail view for a book."""
+    
     model = Assistencia
 
 
@@ -397,7 +397,7 @@ class AssistenciaDelete( DeleteView):
 # - - - - - Cliente - - - - -
 
 class ClienteListView(generic.ListView):
-    """Generic class-based view for a list of books."""
+    
     model = Cliente
     paginate_by = 10
     
@@ -412,7 +412,7 @@ class ClienteListView(generic.ListView):
         return context
    
 class ClienteDetailView(generic.DetailView):
-    """Generic class-based detail view for a book."""
+    
     model = Cliente
 
 
@@ -433,6 +433,62 @@ class ClienteDelete( DeleteView):
     model = Cliente
     success_url = reverse_lazy('clientes')
     # permission_required = 'catalog.can_mark_returned'
+
+
+# - - - - - Transportadora - - - - -
+
+class TransportadoraListView(generic.ListView):
+    
+    model = Transportadora
+    paginate_by = 10
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user_agent = self.request.META['HTTP_USER_AGENT']
+        keywords = ['Mobile','Opera Mini','Android']
+        if any(word in user_agent for word in keywords):
+            context['is_mobile'] = True
+        else:
+            context['is_mobile'] = False
+        return context
+   
+class TransportadoraDetailView(generic.DetailView):
+    
+    model = Transportadora
+
+
+# Classes created for the forms challenge
+class TransportadoraCreate( CreateView):
+    model = Transportadora
+    fields = '__all__'
+    # permission_required = 'catalog.can_mark_returned'
+
+
+class TransportadoraUpdate( UpdateView):
+    model = Transportadora
+    fields = '__all__'
+    # permission_required = 'catalog.can_mark_returned'
+
+
+class TransportadoraDelete( DeleteView):
+    model = Transportadora
+    success_url = reverse_lazy('transportadoras')
+    # permission_required = 'catalog.can_mark_returned'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 # class MyView(UpdateView): # FormView, CreateView, etc
