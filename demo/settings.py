@@ -26,7 +26,7 @@ SECRET_KEY = '3prw2koapc%bu#-wf1lymd5=!!e7n5py-^$s(-%r@bpzml8x^3'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['miguelguida.com.br', '127.0.0.1']
+ALLOWED_HOSTS = ['miguelguida.com.br', 'miguelguida.web10f78.kinghost.net']
 
 LOGIN_REDIRECT_URL = '/'
 
@@ -59,7 +59,6 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [os.path.join(BASE_DIR, 'templates'),
-                 # os.path.join(os.path.join(BASE_DIR, 'templates'), 'assistencia')
                 ],
         'APP_DIRS': True,
         'OPTIONS': {
