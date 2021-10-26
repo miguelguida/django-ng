@@ -310,12 +310,19 @@ class Acabamento(models.Model):
     lastUpdate = models.DateTimeField(auto_now=True)
 
     def get_absolute_url(self):
-        
-        return reverse('produto-detail', args=[str(self.id)])
+        return reverse('acabamento-detail', args=[str(self.id)])
 
     def __str__(self):
-        
         return self.acabamento
+
+    def get_text(self):
+        return ''
+
+    def get_edit_url(self):
+        return reverse('acabamento-update', args=[str(self.id)])
+
+    def get_delete_url(self):
+        return reverse('acabamento-delete', args=[str(self.id)])
 
 # Create your models here.
 class Tecido(models.Model):
@@ -323,12 +330,19 @@ class Tecido(models.Model):
     lastUpdate = models.DateTimeField(auto_now=True)
 
     def get_absolute_url(self):
-        
-        return reverse('produto-detail', args=[str(self.id)])
+        return reverse('tecido-detail', args=[str(self.id)])
 
     def __str__(self):
-        
         return self.tecido
+
+    def get_text(self):
+        return ''
+
+    def get_edit_url(self):
+        return reverse('tecido-update', args=[str(self.id)])
+
+    def get_delete_url(self):
+        return reverse('tecido-delete', args=[str(self.id)])
 
 # Create your models here.
 class FormaPagamento(models.Model):
@@ -336,11 +350,18 @@ class FormaPagamento(models.Model):
     lastUpdate = models.DateTimeField(auto_now=True)
 
     def get_absolute_url(self):
-        
-        return reverse('produto-detail', args=[str(self.id)])
+        return reverse('formaDePagamento-detail', args=[str(self.id)])
 
     def __str__(self):
-        
         return self.formaDePagamento
+
+    def get_text(self):
+        return ''
+
+    def get_edit_url(self):
+        return reverse('formaDePagamento-update', args=[str(self.id)])
+
+    def get_delete_url(self):
+        return reverse('formaDePagamento-delete', args=[str(self.id)])
 
         

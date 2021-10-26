@@ -61,3 +61,11 @@ urlpatterns += [
     path('vendedor/<int:pk>/update/', views.VendedorUpdate.as_view(), name='vendedor-update'),
     path('vendedor/<int:pk>/delete/', views.VendedorDelete.as_view(), name='vendedor-delete'),
 ]
+
+urlpatterns += [
+    path('acabamentos/', views.AcabamentoListView.as_view(), name='acabamentos'),
+    path('acabamento/<int:pk>', views.AcabamentoDetailView.as_view(), name='acabamento-detail'),
+    path('acabamento/create/', views.AcabamentoCreate.as_view(), name='acabamento-create'),
+    path('acabamento/<int:pk>/update/', views.AcabamentoUpdate.as_view(), name='acabamento-update'),
+    path('acabamento/<int:pk>/delete/', views.AcabamentoDelete.as_view(), name='acabamento-delete'),
+]

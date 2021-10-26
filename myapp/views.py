@@ -438,9 +438,8 @@ class ClienteDelete( DeleteView):
 # - - - - - Transportadora - - - - -
 
 class TransportadoraListView(generic.ListView):
-    
     model = Transportadora
-    paginate_by = 10
+    paginate_by = 30
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -452,24 +451,17 @@ class TransportadoraListView(generic.ListView):
             context['is_mobile'] = False
         return context
    
-class TransportadoraDetailView(generic.DetailView):
-    
+class TransportadoraDetailView(generic.DetailView):    
     model = Transportadora
 
-
-# Classes created for the forms challenge
 class TransportadoraCreate( CreateView):
     model = Transportadora
     fields = '__all__'
     
-
-
 class TransportadoraUpdate( UpdateView):
     model = Transportadora
     fields = '__all__'
     
-
-
 class TransportadoraDelete( DeleteView):
     model = Transportadora
     success_url = reverse_lazy('transportadoras')
@@ -479,9 +471,8 @@ class TransportadoraDelete( DeleteView):
 # - - - - - Vendedor - - - - -
 
 class VendedorListView(generic.ListView):
-    
     model = Vendedor
-    paginate_by = 10
+    paginate_by = 30
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -496,23 +487,49 @@ class VendedorListView(generic.ListView):
 class VendedorDetailView(generic.DetailView):
     model = Vendedor
 
-
-# Classes created for the forms challenge
 class VendedorCreate( CreateView):
     model = Vendedor
     fields = '__all__'
     
-
-
 class VendedorUpdate( UpdateView):
     model = Vendedor
     fields = '__all__'
     
-
-
 class VendedorDelete( DeleteView):
     model = Vendedor
     success_url = reverse_lazy('vendedores')
+
+
+# - - - - - Acabamento - - - - -
+
+class AcabamentoListView(generic.ListView):
+    model = Acabamento
+    paginate_by = 30
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user_agent = self.request.META['HTTP_USER_AGENT']
+        keywords = ['Mobile','Opera Mini','Android']
+        if any(word in user_agent for word in keywords):
+            context['is_mobile'] = True
+        else:
+            context['is_mobile'] = False
+        return context
+   
+class AcabamentoDetailView(generic.DetailView):
+    model = Acabamento
+
+class AcabamentoCreate( CreateView):
+    model = Acabamento
+    fields = '__all__'
+    
+class AcabamentoUpdate( UpdateView):
+    model = Acabamento
+    fields = '__all__'
+    
+class AcabamentoDelete( DeleteView):
+    model = Acabamento
+    success_url = reverse_lazy('acabamentos')
     
 
 
