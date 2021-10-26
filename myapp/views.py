@@ -72,7 +72,7 @@ class RepresentadaDelete( DeleteView):
 class PedidoListView(generic.ListView):
     
     model = Pedido
-    paginate_by = 10
+    paginate_by = 20
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -95,20 +95,20 @@ class PedidoDetailView(generic.DetailView):
 #     form = PedidoForm()
 #     
 
-def pedido_create_view(request):
-    """View function for renewing a specific BookInstance by librarian."""
+# def pedido_create_view(request):
+#     """View function for renewing a specific BookInstance by librarian."""
 
-    form = PedidoForm(request.POST or None)
+#     form = PedidoForm(request.POST or None)
 
-        # Check if the form is valid:
-    if form.is_valid():
-        form.save()
+#         # Check if the form is valid:
+#     if form.is_valid():
+#         form.save()
 
-    context = {
-        'form': form,
-    }
+#     context = {
+#         'form': form,
+#     }
 
-    return render(request, 'myapp/pedido_form.html', context)
+#     return render(request, 'myapp/pedido_form.html', context)
 
 class PedidoCreate(View):
     form_class = PedidoForm
@@ -146,7 +146,7 @@ class PedidoUpdate( UpdateView):
     
 
 class PedidoCreate( View):
-    form_class = AssistenciaForm
+    form_class = PedidoForm
     inline_formset = ItemPedidoInlineFormset
     template_name = 'myapp/pedido_form.html'
 
@@ -156,7 +156,7 @@ class PedidoCreate( View):
     def get(self, request, *args, **kwargs):
         """handle form display"""
         form = self.form_class()
-        formset = self.inline_formset(instance=Pedido())
+        formset = self.inline_formset(instance=Pedido())     
         return render(request,\
             self.template_name,\
             {'form': form, 'formset': formset})
@@ -494,7 +494,6 @@ class VendedorListView(generic.ListView):
         return context
    
 class VendedorDetailView(generic.DetailView):
-    
     model = Vendedor
 
 
