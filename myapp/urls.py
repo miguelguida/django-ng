@@ -69,3 +69,11 @@ urlpatterns += [
     path('acabamento/<int:pk>/update/', views.AcabamentoUpdate.as_view(), name='acabamento-update'),
     path('acabamento/<int:pk>/delete/', views.AcabamentoDelete.as_view(), name='acabamento-delete'),
 ]
+
+urlpatterns += [
+    path('tecidos/', views.TecidoListView.as_view(), name='tecidos'),
+    path('tecido/<int:pk>', views.TecidoDetailView.as_view(), name='tecido-detail'),
+    path('tecido/create/', views.TecidoCreate.as_view(), name='tecido-create'),
+    path('tecido/<int:pk>/update/', views.TecidoUpdate.as_view(), name='tecido-update'),
+    path('tecido/<int:pk>/delete/', views.TecidoDelete.as_view(), name='tecido-delete'),
+]

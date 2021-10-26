@@ -530,6 +530,38 @@ class AcabamentoUpdate( UpdateView):
 class AcabamentoDelete( DeleteView):
     model = Acabamento
     success_url = reverse_lazy('acabamentos')
+
+
+# - - - - - Tecido - - - - -
+
+class TecidoListView(generic.ListView):
+    model = Tecido
+    paginate_by = 30
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user_agent = self.request.META['HTTP_USER_AGENT']
+        keywords = ['Mobile','Opera Mini','Android']
+        if any(word in user_agent for word in keywords):
+            context['is_mobile'] = True
+        else:
+            context['is_mobile'] = False
+        return context
+   
+class TecidoDetailView(generic.DetailView):
+    model = Tecido
+
+class TecidoCreate( CreateView):
+    model = Tecido
+    fields = '__all__'
+    
+class TecidoUpdate( UpdateView):
+    model = Tecido
+    fields = '__all__'
+    
+class TecidoDelete( DeleteView):
+    model = Tecido
+    success_url = reverse_lazy('tecidos')
     
 
 
