@@ -113,39 +113,39 @@ class PedidoDetailView(generic.DetailView):
 
 #     return render(request, 'myapp/pedido_form.html', context)
 
-class PedidoCreate(View):
-    form_class = PedidoForm
-    inline_formset = ItemPedidoInlineFormset
-    template_name = 'myapp/pedido_form.html'
+# class PedidoCreate(View):
+#     form_class = PedidoForm
+#     inline_formset = ItemPedidoInlineFormset
+#     template_name = 'myapp/pedido_form.html'
 
-    def get(self, request, *args, **kwargs):
-        """handle form display"""
-        form = self.form_class()
-        formset = self.inline_formset(instance=Pedido())
-        return render(request,\
-            self.template_name,\
-            {'form': form, 'formset': formset})
-
-
-    def post(self, request, *args, **kwargs):
-        """handle form submission"""
-        form = self.form_class(request.POST)
-        formset = self.inline_formset(request.POST, instance=Pedido())
-        if form.is_valid() and formset.is_valid():
-            # Save the parent
-            entity = form.save(commit=True)
-            # Save the formset
-            formset.instance = entity
-            formset.save()
-
-        return render(request,\
-            self.template_name,\
-            {'form': form, 'formset': formset})
+#     def get(self, request, *args, **kwargs):
+#         """handle form display"""
+#         form = self.form_class()
+#         formset = self.inline_formset(instance=Pedido())
+#         return render(request,\
+#             self.template_name,\
+#             {'form': form, 'formset': formset})
 
 
-class PedidoUpdate( UpdateView):
-    model = Pedido
-    fields = '__all__'
+#     def post(self, request, *args, **kwargs):
+#         """handle form submission"""
+#         form = self.form_class(request.POST)
+#         formset = self.inline_formset(request.POST, instance=Pedido())
+#         if form.is_valid() and formset.is_valid():
+#             # Save the parent
+#             entity = form.save(commit=True)
+#             # Save the formset
+#             formset.instance = entity
+#             formset.save()
+
+#         return render(request,\
+#             self.template_name,\
+#             {'form': form, 'formset': formset})
+
+
+# class PedidoUpdate( UpdateView):
+#     model = Pedido
+#     fields = '__all__'
     
 
 class PedidoCreate( View):
@@ -179,7 +179,7 @@ class PedidoCreate( View):
                     print("CLEAN ",f.cleaned_data)
                     if len(f.cleaned_data) > 0:
                         item = f.save(commit=False)
-                        item.assistencia = entity
+                        item.pedido = entity
                         print("ITEM: ",item)
                         print("ENTUTY: ",entity)
                         item.save()
@@ -605,11 +605,28 @@ def pedido_pdf_view(request, *args, **kwargs):
     template_path = 'myapp/pedido_pdf.html'
     pk = kwargs.get('pk')
     pedido = get_object_or_404(Pedido, pk=pk)
+    itemsPedido = ItemPedido.objects.filter(pedido=pedido)
 
-    context = {'pedido': pedido}
+    valor_produtos = 0
+    for item in itemsPedido:
+        valor_produtos += item.produto.valor * item.quantidade
+    
+    valor_descontos = valor_produtos * (( pedido.desconto1 + pedido.desconto2 + pedido.desconto3 + pedido.desconto4 + pedido.desconto5)/100)
+    valor_desconto_aplicado = valor_produtos - valor_descontos
+    valor_ipi = valor_desconto_aplicado * (pedido.ipi/100)
+    valor_total_pedido = valor_desconto_aplicado + valor_ipi
+
+    context = {'pedido': pedido, 
+               'itemsPedido': itemsPedido,
+               'valor_produtos': valor_produtos,
+               'valor_descontos': valor_descontos,
+               'valor_desconto_aplicado': valor_desconto_aplicado,
+               'valor_ipi': valor_ipi,
+               'valor_total_pedido': valor_total_pedido,}
     # Create a Django response object, and specify content_type as pdf
+    # response = HttpResponse(content_type='application/pdf')
     response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename="report.pdf"'
+    # response['Content-Disposition'] = 'attachment; filename="pedido_'+pedido.ordemCompra+'.pdf"'
     # find the template and render it.
     template = get_template(template_path)
     html = template.render(context)
