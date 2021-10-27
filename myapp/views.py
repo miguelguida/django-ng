@@ -2,9 +2,12 @@ from django.shortcuts import render
 from django.http import HttpResponse 
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
+from django.template.loader import get_template
 from django.urls import reverse
 from django.urls import reverse_lazy
 from django.contrib import messages
+import os
+from xhtml2pdf import pisa
 
 import datetime
 
@@ -562,12 +565,62 @@ class TecidoUpdate( UpdateView):
 class TecidoDelete( DeleteView):
     model = Tecido
     success_url = reverse_lazy('tecidos')
+
+
+# - - - - - FormaPagamento - - - - -
+
+class FormaPagamentoListView(generic.ListView):
+    model = FormaPagamento
+    paginate_by = 30
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user_agent = self.request.META['HTTP_USER_AGENT']
+        keywords = ['Mobile','Opera Mini','Android']
+        if any(word in user_agent for word in keywords):
+            context['is_mobile'] = True
+        else:
+            context['is_mobile'] = False
+        return context
+   
+class FormaPagamentoDetailView(generic.DetailView):
+    model = FormaPagamento
+
+class FormaPagamentoCreate( CreateView):
+    model = FormaPagamento
+    fields = '__all__'
+    
+class FormaPagamentoUpdate( UpdateView):
+    model = FormaPagamento
+    fields = '__all__'
+    
+class FormaPagamentoDelete( DeleteView):
+    model = FormaPagamento
+    success_url = reverse_lazy('formasPagamento')
     
 
 
 
+def pedido_pdf_view(request, *args, **kwargs):
+    template_path = 'myapp/pedido_pdf.html'
+    pk = kwargs.get('pk')
+    pedido = get_object_or_404(Pedido, pk=pk)
 
+    context = {'pedido': pedido}
+    # Create a Django response object, and specify content_type as pdf
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="report.pdf"'
+    # find the template and render it.
+    template = get_template(template_path)
+    html = template.render(context)
 
+    # create a pdf
+    pisa_status = pisa.CreatePDF(
+       html, dest=response)
+    # if error then show some funy view
+    if pisa_status.err:
+       return HttpResponse('We had some errors <pre>' + html + '</pre>')
+    return response
 
 
 

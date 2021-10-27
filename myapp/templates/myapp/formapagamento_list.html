@@ -2,26 +2,24 @@
 
 {% block content %}
   <div class="obj-list-container">
-    <h1>Pedidos</h1>
+    <h1>Formas de Pagamento</h1>
     
     {% if not is_mobile %}
     <div class="table-responsive obj-list-table-container">
       
       <table class="table obj-list-table" style="width:100%">
         <tr>
-          <th>Ordem Compra</th>
+          <th>Forma de Pagamento</th>
           <th>Atualizado em</th>
         </tr>
         {% for object in object_list %}
         
         <tr>
-          <td><a class="obj-link" href="{{ object.get_absolute_url }}">{{ object.ordemCompra }}</a></td>
-          
+          <td><a class="obj-link" href="{{ object.get_absolute_url }}">{{ object.formaDePagamento }}</a></td>          
           <td>{{ object.lastUpdate }}</td>
           <td>
               <a class="btn btn-secondary" href="{{ object.get_edit_url }}"> Editar</a>
               <a class="btn btn-danger" href="{{ object.get_delete_url }}"> Delete</a>
-              <a class="btn btn-warning" href="{% url 'pedido-pdf' object.pk %}"> PDF</a>
           </td>
         </tr>
 
@@ -33,13 +31,13 @@
     </div>
 
     <div class="obj-list-new-container">
-      <a class="create-new-link btn btn-primary" href="{% url 'pedido-create' %}"> Criar Novo</a>
+      <a class="create-new-link btn btn-primary" href="{% url 'formaPagamento-create' %}"> Criar Novo</a>
     </div>
     <p>{{ object.get_text }} </p>
     {% else %}
     
     <div class="card-deck">
-      <a class="create-new-link-sm btn btn-primary" href="{% url 'pedido-create' %}"> Criar Novo</a>
+      <a class="create-new-link-sm btn btn-primary" href="{% url 'formaPagamento-create' %}"> Criar Novo</a>
       {% for object in object_list %}
       <div class="card">
         <div class="card-body">
@@ -55,28 +53,6 @@
       {% endfor %}
     </div>
     {% endif %}
-    <!-- <div class="card-deck">
-      <div class="card">
-      <img class="card-img-top" src="..." alt="Card image cap">
-      <div class="card-body">
-      <h5 class="card-title">Card title</h5>
-      <p class="card-text">This card has supporting text below as a natural lead-in to additional content.</p>
-      </div>
-      <div class="card-footer">
-      <small class="text-muted">Last updated 3 mins ago</small>
-      </div>
-      </div>
-      <div class="card">
-      <img class="card-img-top" src="..." alt="Card image cap">
-      <div class="card-body">
-      <h5 class="card-title">Card title</h5>
-      <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.</p>
-      </div>
-      <div class="card-footer">
-      <small class="text-muted">Last updated 3 mins ago</small>
-      </div>
-      </div>
-    </div> -->
   </div>       
 {% endblock %}
 

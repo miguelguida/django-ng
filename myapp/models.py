@@ -91,17 +91,17 @@ class Pedido(models.Model):
     
     #Valor do Pedido
     valorBruto = models.DecimalField(max_digits=10, decimal_places=2)
-    desconto1 = models.DecimalField(max_digits=10, decimal_places=2)
-    desconto2 = models.DecimalField(max_digits=10, decimal_places=2)
-    desconto3 = models.DecimalField(max_digits=10, decimal_places=2)
-    desconto4 = models.DecimalField(max_digits=10, decimal_places=2)
-    desconto5 = models.DecimalField(max_digits=10, decimal_places=2)
+    desconto1 = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    desconto2 = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    desconto3 = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    desconto4 = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    desconto5 = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     ipi = models.DecimalField(max_digits=10, decimal_places=2)
     valorIpi = models.DecimalField(max_digits=10, decimal_places=2)
     valorTotal = models.DecimalField(max_digits=10, decimal_places=2)
     porcentagemComissao = models.DecimalField(max_digits=10, decimal_places=2)
     valorComissao = models.DecimalField(max_digits=10, decimal_places=2)
-    observacoes = models.TextField(max_length=600)
+    observacoes = models.TextField(max_length=600, default='')
 
 
     def get_absolute_url(self):
@@ -350,7 +350,7 @@ class FormaPagamento(models.Model):
     lastUpdate = models.DateTimeField(auto_now=True)
 
     def get_absolute_url(self):
-        return reverse('formaDePagamento-detail', args=[str(self.id)])
+        return reverse('formaPagamento-detail', args=[str(self.id)])
 
     def __str__(self):
         return self.formaDePagamento
@@ -359,9 +359,9 @@ class FormaPagamento(models.Model):
         return ''
 
     def get_edit_url(self):
-        return reverse('formaDePagamento-update', args=[str(self.id)])
+        return reverse('formaPagamento-update', args=[str(self.id)])
 
     def get_delete_url(self):
-        return reverse('formaDePagamento-delete', args=[str(self.id)])
+        return reverse('formaPagamento-delete', args=[str(self.id)])
 
         

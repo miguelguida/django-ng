@@ -16,6 +16,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
   <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="{% static 'plugins/fontawesome-free/css/all.min.css' %}">
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="{% static 'dist/css/adminlte.min.css' %}">
   <!-- Google Font: Source Sans Pro -->
@@ -27,6 +28,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <link rel="stylesheet" href="{% static 'css/home_styles.css' %}">
   <!-- jQuery -->
   <script src="{% static 'plugins/jquery/jquery.min.js' %}"></script>
+  <script src="{% static 'plugins/jquery-ui-1.13.0/jquery-ui.min.js' %}"></script>
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -172,7 +174,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             </a>
           </li>
           <li class="nav-item">
-            <a href="{% url 'representadas' %}" class="nav-link">
+            <a href="{% url 'formasPagamento' %}" class="nav-link">
               <i class="nav-icon fas fa-th"></i>
               <p> Formas de Pagamento </p>
             </a>

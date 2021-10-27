@@ -19,6 +19,7 @@ urlpatterns += [
     path('pedido/create/', views.PedidoCreate.as_view(), name='pedido-create'),
     path('pedido/<int:pk>/update/', views.PedidoUpdate.as_view(), name='pedido-update'),
     path('pedido/<int:pk>/delete/', views.PedidoDelete.as_view(), name='pedido-delete'),
+    path('pedido/<int:pk>/pdf/', views.pedido_pdf_view, name='pedido-pdf'),
 ]
 
 
@@ -76,4 +77,12 @@ urlpatterns += [
     path('tecido/create/', views.TecidoCreate.as_view(), name='tecido-create'),
     path('tecido/<int:pk>/update/', views.TecidoUpdate.as_view(), name='tecido-update'),
     path('tecido/<int:pk>/delete/', views.TecidoDelete.as_view(), name='tecido-delete'),
+]
+
+urlpatterns += [
+    path('formasPagamento/', views.FormaPagamentoListView.as_view(), name='formasPagamento'),
+    path('formaPagamento/<int:pk>', views.FormaPagamentoDetailView.as_view(), name='formaPagamento-detail'),
+    path('formaPagamento/create/', views.FormaPagamentoCreate.as_view(), name='formaPagamento-create'),
+    path('formaPagamento/<int:pk>/update/', views.FormaPagamentoUpdate.as_view(), name='formaPagamento-update'),
+    path('formaPagamento/<int:pk>/delete/', views.FormaPagamentoDelete.as_view(), name='formaPagamento-delete'),
 ]
