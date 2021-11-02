@@ -129,6 +129,9 @@ class ItemPedido(models.Model):
     valorParcial = models.DecimalField(max_digits=10, decimal_places=2)
     lastUpdate = models.DateTimeField(auto_now=True)
 
+    def __str__(self):
+        return self.produto.nome +" "+ self.pedido.ordemCompra +" "+self.referencia
+
 # Create your models here.
 class Cliente(models.Model):
     razaoSocial = models.CharField(max_length=200)
