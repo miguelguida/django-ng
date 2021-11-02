@@ -1,105 +1,74 @@
 {% extends "base_generic.html" %}
 {% load widget_tweaks %}
 {% block content %}
-    <!-- 
-    nome = models.CharField(max_length=200,
-                            help_text="Nome do produto")
-    valor = models.CharField(max_length=200)    
-    referencia = models.CharField(max_length=200)
-    codRepresentada = models.CharField(max_length=200)
-    representada = models.ForeignKey('Representada', on_delete=models.SET_NULL, null=True)
-    observacoes = models.CharField(max_length=200) -->
+    
     <div class="form-container">
-        <h1 class="mb-5">Criar Assistencia</h1>
+        <h1 class="mb-5">Criar Transportadora</h1>
 
         <form action="" method="post">
             {% csrf_token %}
-            <table>
-                {{ form.as_table }}
-            </table>
-            
-
-            <!-- <div class="form-row">
+           
+            <div class="form-row">
                 <div class="form-group col-md-6">
                     <label>Nome</label>
                     {{ form.nome|add_class:'form-control' }}
                 </div>
                 <div class="form-group col-md-6">
-                    <label>Contato</label>
+                    <label>contato</label>
                     {{ form.contato|add_class:'form-control' }}
                 </div>
             </div>
             <div class="form-row">
-                <div class="form-group col-md-6">
-                    <label>Cnpj</label>
+                <div class="form-group col-md-3">
+                    <label>cnpj</label>
                     {{ form.cnpj|add_class:'form-control' }}
                 </div>
-                <div class="form-group col-md-6">
-                    <label>Inscrição Estadual</label>
+                <div class="form-group col-md-3">
+                    <label>inscEstadual</label>
                     {{ form.inscEstadual|add_class:'form-control' }}
                 </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group col-md-6">
-                    <label>Inscrição Municipal</label>
-                    {{ form.inscMunicipal|add_class:'form-control' }}
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group col-md-4">
-                    <label>CEP</label>
-                    {{ form.cep|add_class:'form-control' }}
-                </div>
-                
-            </div>
-            <div class="form-row">
-                <div class="form-group col-md-4">
-                    <label>Estado</label>
+                <div class="form-group col-md-3">
+                    <label>estado</label>
                     {{ form.estado|add_class:'form-control' }}
                 </div>
-                <div class="form-group col-md-8">
-                    <label>Cidade</label>
+                <div class="form-group col-md-3">
+                    <label>cidade</label>
                     {{ form.cidade|add_class:'form-control' }}
                 </div>
             </div>
             <div class="form-row">
-                <div class="form-group col-md-6">
-                    <label>Endereço</label>
-                    {{ form.endereco|add_class:'form-control' }}
+                <div class="form-group col-md-3">
+                    <label>cep</label>
+                    {{ form.cep|add_class:'form-control' }}
                 </div>
-                <div class="form-group col-md-6">
-                    <label>Bairro</label>
+                <div class="form-group col-md-3">
+                    <label>bairro</label>
                     {{ form.bairro|add_class:'form-control' }}
                 </div>
-            </div>
-            <div class="form-group">
-                <label>Telefone</label>
-                {{ form.telefone|add_class:'form-control' }}
+                <div class="form-group col-md-3">
+                    <label>endereco</label>
+                    {{ form.endereco|add_class:'form-control' }}
+                </div>
+                <div class="form-group col-md-3">
+                    <label>telefone</label>
+                    {{ form.telefone|add_class:'form-control' }}
+                </div>
             </div>
             <div class="form-row">
-                <div class="form-group col-md-6">
-                    <label>Celular</label>
+                <div class="form-group col-md-3">
+                    <label>celular</label>
                     {{ form.celular|add_class:'form-control' }}
                 </div>
-                <div class="form-group col-md-6">
-                    <label>Email</label>
+                <div class="form-group col-md-3">
+                    <label>email</label>
                     {{ form.email|add_class:'form-control' }}
                 </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group col-md-6">
-                    <label>Linha</label>
-                    {{ form.linha|add_class:'form-control' }}
-                </div>
-                <div class="form-group col-md-6">
-                    <label>Comissao</label>
-                    {{ form.comissao|add_class:'form-control' }}
+                <div class="form-group col-md-3">
+                    <label>observacoes</label>
+                    {{ form.observacoes|add_class:'form-control' }}
                 </div>
             </div>
-            <div class="form-group">
-                <label>Ipi</label>
-                {{ form.ipi|add_class:'form-control' }}
-            </div> -->
+            
 
             <!-- <div class="input-group">
                 <label>observacoes</label>
@@ -112,7 +81,7 @@
           
             
             <input class="btn btn-primary submit-btn" type="submit" value="Submit" />
-            <a href="{% url 'assistencias' %}"><input class="btn btn-secondary submit-btn" type="button" value="Cancel" /></a>
+            <a href="{% url 'transportadoras' %}"><input class="btn btn-secondary submit-btn" type="button" value="Cancel" /></a>
             
         </form>
     </div>
@@ -141,6 +110,7 @@
             // Error :(
         });
     };
+    
 
 
 </script>

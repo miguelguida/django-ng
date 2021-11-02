@@ -22,6 +22,10 @@
 	border-radius: 5px;
 }
 
+.obj-list-table-container > p{
+	margin: 10px;
+}
+
 .obj-list-new-container{
 	width: 90%;
 	margin: auto;		

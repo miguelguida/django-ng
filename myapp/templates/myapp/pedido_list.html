@@ -21,6 +21,7 @@
           <td>
               <a class="btn btn-secondary" href="{{ object.get_edit_url }}"> Editar</a>
               <a class="btn btn-danger" href="{{ object.get_delete_url }}"> Delete</a>
+              <a class="btn btn-warning" href="{% url 'pedido-pdf' object.pk %}"> PDF</a>
           </td>
         </tr>
 

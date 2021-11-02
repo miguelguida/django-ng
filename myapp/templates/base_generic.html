@@ -16,6 +16,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
   <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="{% static 'plugins/fontawesome-free/css/all.min.css' %}">
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="{% static 'dist/css/adminlte.min.css' %}">
   <!-- Google Font: Source Sans Pro -->
@@ -27,6 +28,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <link rel="stylesheet" href="{% static 'css/home_styles.css' %}">
   <!-- jQuery -->
   <script src="{% static 'plugins/jquery/jquery.min.js' %}"></script>
+  <script src="{% static 'plugins/jquery-ui-1.13.0/jquery-ui.min.js' %}"></script>
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -40,6 +42,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
       </li>
       <li class="nav-item d-none d-sm-inline-block">
         <a href="{% url 'index' %}" class="nav-link">Home</a>
+      </li>
+      <li class="nav-item d-none d-sm-inline-block">
+        <a href="{% url 'admin:index' %}" class="nav-link">Área Administrativa</a>
       </li>
       <!-- <li class="nav-item d-none d-sm-inline-block">
         <a href="#" class="nav-link">Contact</a>
@@ -66,7 +71,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="{% url 'login' %}" class="brand-link">
+    <a class="brand-link">
       <img src="{% static 'dist/img/AdminLTELogo.png' %}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
            style="opacity: .8">
       <span class="brand-text font-weight-light">Empresa Demo</span>
@@ -127,7 +132,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             </a>
           </li>
           <li class="nav-item">
-            <a href="{% url 'produtos' %}" class="nav-link">
+            <a href="{% url 'transportadoras' %}" class="nav-link">
               <i class="nav-icon fas fa-th"></i>
               <p> Transportadoras </p>
             </a>
@@ -139,13 +144,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
             </a>
           </li>
           <li class="nav-item">
-            <a href="{% url 'produtos' %}" class="nav-link">
+            <a href="{% url 'clientes' %}" class="nav-link">
               <i class="nav-icon fas fa-th"></i>
               <p> Clientes </p>
             </a>
           </li>
           <li class="nav-item">
-            <a href="{% url 'representadas' %}" class="nav-link">
+            <a href="{% url 'vendedores' %}" class="nav-link">
               <i class="nav-icon fas fa-th"></i>
               <p> Vendedores </p>
             </a>
@@ -157,19 +162,19 @@ scratch. This page gets rid of all links and provides the needed markup only.
             </a>
           </li>
           <li class="nav-item">
-            <a href="{% url 'representadas' %}" class="nav-link">
+            <a href="{% url 'acabamentos' %}" class="nav-link">
               <i class="nav-icon fas fa-th"></i>
               <p> Acabamentos </p>
             </a>
           </li>
           <li class="nav-item">
-            <a href="{% url 'produtos' %}" class="nav-link">
+            <a href="{% url 'tecidos' %}" class="nav-link">
               <i class="nav-icon fas fa-th"></i>
               <p> Tecidos </p>
             </a>
           </li>
           <li class="nav-item">
-            <a href="{% url 'representadas' %}" class="nav-link">
+            <a href="{% url 'formasPagamento' %}" class="nav-link">
               <i class="nav-icon fas fa-th"></i>
               <p> Formas de Pagamento </p>
             </a>

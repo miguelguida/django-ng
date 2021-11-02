@@ -6,7 +6,6 @@ import datetime
 
 # Create your models here.
 class Representada(models.Model):
-    """Model representing a Language (e.g. English, French, Japanese, etc.)"""
     nome = models.CharField(max_length=200,
                             help_text="Nome da representada")
     contato = models.CharField(max_length=200)    
@@ -27,11 +26,9 @@ class Representada(models.Model):
     lastUpdate = models.DateTimeField(auto_now=True)
 
     def get_absolute_url(self):
-        """Returns the url to access a particular author instance."""
         return reverse('representada-detail', args=[str(self.id)])
 
     def __str__(self):
-        """String for representing the Model object (in Admin site etc.)"""
         return '{0}, {1}'.format(self.nome, self.contato)
 
     def get_text(self):
@@ -40,16 +37,12 @@ class Representada(models.Model):
     def get_edit_url(self):
         return reverse('representada-update', args=[str(self.id)])
 
-    def get_createee_url(self):
-        return reverse('representada-create')
-
     def get_delete_url(self):
         return reverse('representada-delete', args=[str(self.id)])
 
 
 # Create your models here.
 class Produto(models.Model):
-    """Model representing a Language (e.g. English, French, Japanese, etc.)"""
     nome = models.CharField(max_length=200,
                             help_text="Nome do produto")
     valor = models.DecimalField(max_digits=10, decimal_places=2)
@@ -60,11 +53,9 @@ class Produto(models.Model):
     lastUpdate = models.DateTimeField(auto_now=True)
 
     def get_absolute_url(self):
-        """Returns the url to access a particular author instance."""
         return reverse('produto-detail', args=[str(self.id)])
 
     def __str__(self):
-        """String for representing the Model object (in Admin site etc.)"""
         return self.nome
 
     def get_text(self):
@@ -72,9 +63,6 @@ class Produto(models.Model):
 
     def get_edit_url(self):
         return reverse('produto-update', args=[str(self.id)])
-
-    def get_create_url(self):
-        return reverse('produto-create')
 
     def get_delete_url(self):
         return reverse('produto-delete', args=[str(self.id)])
@@ -103,25 +91,23 @@ class Pedido(models.Model):
     
     #Valor do Pedido
     valorBruto = models.DecimalField(max_digits=10, decimal_places=2)
-    desconto1 = models.DecimalField(max_digits=10, decimal_places=2)
-    desconto2 = models.DecimalField(max_digits=10, decimal_places=2)
-    desconto3 = models.DecimalField(max_digits=10, decimal_places=2)
-    desconto4 = models.DecimalField(max_digits=10, decimal_places=2)
-    desconto5 = models.DecimalField(max_digits=10, decimal_places=2)
+    desconto1 = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    desconto2 = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    desconto3 = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    desconto4 = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    desconto5 = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     ipi = models.DecimalField(max_digits=10, decimal_places=2)
     valorIpi = models.DecimalField(max_digits=10, decimal_places=2)
     valorTotal = models.DecimalField(max_digits=10, decimal_places=2)
     porcentagemComissao = models.DecimalField(max_digits=10, decimal_places=2)
     valorComissao = models.DecimalField(max_digits=10, decimal_places=2)
-    observacoes = models.TextField(max_length=600)
+    observacoes = models.TextField(max_length=600, default='')
 
 
     def get_absolute_url(self):
-        """Returns the url to access a particular author instance."""
         return reverse('pedido-detail', args=[str(self.id)])
 
     def __str__(self):
-        """String for representing the Model object (in Admin site etc.)"""
         return self.ordemCompra
 
     def get_text(self):
@@ -129,9 +115,6 @@ class Pedido(models.Model):
 
     def get_edit_url(self):
         return reverse('pedido-update', args=[str(self.id)])
-
-    def get_create_url(self):
-        return reverse('pedido-create')
 
     def get_delete_url(self):
         return reverse('pedido-delete', args=[str(self.id)])
@@ -146,10 +129,11 @@ class ItemPedido(models.Model):
     valorParcial = models.DecimalField(max_digits=10, decimal_places=2)
     lastUpdate = models.DateTimeField(auto_now=True)
 
+    def __str__(self):
+        return self.produto.nome +" "+ self.pedido.ordemCompra +" "+self.referencia
+
 # Create your models here.
 class Cliente(models.Model):
-    nome = models.CharField(max_length=200,
-                            help_text="Nome do produto")
     razaoSocial = models.CharField(max_length=200)
     nomeFantasia = models.CharField(max_length=200)
     diretor = models.CharField(max_length=200)
@@ -192,12 +176,19 @@ class Cliente(models.Model):
     lastUpdate = models.DateTimeField(auto_now=True)
 
     def get_absolute_url(self):
-        """Returns the url to access a particular author instance."""
-        return reverse('produto-detail', args=[str(self.id)])
+        return reverse('cliente-detail', args=[str(self.id)])
 
     def __str__(self):
-        """String for representing the Model object (in Admin site etc.)"""
-        return self.nome
+        return self.razaoSocial
+
+    def get_text(self):
+        return 'Nome Fantasia: {0} \n  '.format(self.nomeFantasia)
+
+    def get_edit_url(self):
+        return reverse('cliente-update', args=[str(self.id)])
+
+    def get_delete_url(self):
+        return reverse('cliente-delete', args=[str(self.id)])
 
 # Create your models here.
 class Transportadora(models.Model):
@@ -217,11 +208,9 @@ class Transportadora(models.Model):
     lastUpdate = models.DateTimeField(auto_now=True)
 
     def get_absolute_url(self):
-        """Returns the url to access a particular author instance."""
         return reverse('transportadora-detail', args=[str(self.id)])
 
     def __str__(self):
-        """String for representing the Model object (in Admin site etc.)"""
         return '{0}, {1}'.format(self.nome, self.contato)
 
     def get_text(self):
@@ -229,9 +218,6 @@ class Transportadora(models.Model):
 
     def get_edit_url(self):
         return reverse('transportadora-update', args=[str(self.id)])
-
-    def get_createee_url(self):
-        return reverse('transportadora-create')
 
     def get_delete_url(self):
         return reverse('transportadora-delete', args=[str(self.id)])
@@ -252,12 +238,19 @@ class Vendedor(models.Model):
     lastUpdate = models.DateTimeField(auto_now=True)
 
     def get_absolute_url(self):
-        """Returns the url to access a particular author instance."""
-        return reverse('produto-detail', args=[str(self.id)])
+        return reverse('vendedor-detail', args=[str(self.id)])
 
     def __str__(self):
-        """String for representing the Model object (in Admin site etc.)"""
-        return self.nome
+        return '{0}, {1}'.format(self.nome, self.email)
+
+    def get_text(self):
+        return 'CPF: {0}, Telefone: {1}, Celular: {2} '.format(self.cpf, self.telefone, self.celular)
+
+    def get_edit_url(self):
+        return reverse('vendedor-update', args=[str(self.id)])
+
+    def get_delete_url(self):
+        return reverse('vendedor-delete', args=[str(self.id)])
 
 
 # Create your models here.
@@ -277,11 +270,9 @@ class Assistencia(models.Model):
     lastUpdate = models.DateTimeField(auto_now=True)
 
     def get_absolute_url(self):
-        """Returns the url to access a particular author instance."""
         return reverse('assistencia-detail', args=[str(self.id)])
 
     def __str__(self):
-        """String for representing the Model object (in Admin site etc.)"""
         return self.numeroSolicitacao
 
     def get_text(self):
@@ -289,9 +280,6 @@ class Assistencia(models.Model):
 
     def get_edit_url(self):
         return reverse('assistencia-update', args=[str(self.id)])
-
-    def get_create_url(self):
-        return reverse('assistencia-create')
 
     def get_delete_url(self):
         return reverse('assistencia-delete', args=[str(self.id)])
@@ -311,12 +299,13 @@ class ItemAssistencia(models.Model):
     lastUpdate = models.DateTimeField(auto_now=True)
 
     def get_absolute_url(self):
-        """Returns the url to access a particular author instance."""
         return reverse('produto-detail', args=[str(self.id)])
 
     def __str__(self):
-        """String for representing the Model object (in Admin site etc.)"""
-        return self.produto.nome
+        
+        if self.assistencia is not None and self.produto is not None:
+            return self.referencia+ ' '+self.produto.nome + ' ' + self.assistencia.numeroSolicitacao
+        return self.referencia
 
 # Create your models here.
 class Acabamento(models.Model):
@@ -324,12 +313,19 @@ class Acabamento(models.Model):
     lastUpdate = models.DateTimeField(auto_now=True)
 
     def get_absolute_url(self):
-        """Returns the url to access a particular author instance."""
-        return reverse('produto-detail', args=[str(self.id)])
+        return reverse('acabamento-detail', args=[str(self.id)])
 
     def __str__(self):
-        """String for representing the Model object (in Admin site etc.)"""
         return self.acabamento
+
+    def get_text(self):
+        return ''
+
+    def get_edit_url(self):
+        return reverse('acabamento-update', args=[str(self.id)])
+
+    def get_delete_url(self):
+        return reverse('acabamento-delete', args=[str(self.id)])
 
 # Create your models here.
 class Tecido(models.Model):
@@ -337,12 +333,19 @@ class Tecido(models.Model):
     lastUpdate = models.DateTimeField(auto_now=True)
 
     def get_absolute_url(self):
-        """Returns the url to access a particular author instance."""
-        return reverse('produto-detail', args=[str(self.id)])
+        return reverse('tecido-detail', args=[str(self.id)])
 
     def __str__(self):
-        """String for representing the Model object (in Admin site etc.)"""
         return self.tecido
+
+    def get_text(self):
+        return ''
+
+    def get_edit_url(self):
+        return reverse('tecido-update', args=[str(self.id)])
+
+    def get_delete_url(self):
+        return reverse('tecido-delete', args=[str(self.id)])
 
 # Create your models here.
 class FormaPagamento(models.Model):
@@ -350,11 +353,18 @@ class FormaPagamento(models.Model):
     lastUpdate = models.DateTimeField(auto_now=True)
 
     def get_absolute_url(self):
-        """Returns the url to access a particular author instance."""
-        return reverse('produto-detail', args=[str(self.id)])
+        return reverse('formaPagamento-detail', args=[str(self.id)])
 
     def __str__(self):
-        """String for representing the Model object (in Admin site etc.)"""
         return self.formaDePagamento
+
+    def get_text(self):
+        return ''
+
+    def get_edit_url(self):
+        return reverse('formaPagamento-update', args=[str(self.id)])
+
+    def get_delete_url(self):
+        return reverse('formaPagamento-delete', args=[str(self.id)])
 
         
