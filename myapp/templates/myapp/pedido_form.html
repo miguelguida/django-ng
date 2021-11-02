@@ -10,20 +10,20 @@
            
             <div class="form-row">
                 <div class="form-group col-md-4">
-                    <label>data</label>
+                    <label>Data</label>
                     {{ form.data|add_class:'form-control' }}
                 </div>
                 <div class="form-group col-md-4">
-                    <label>ordemCompra</label>
+                    <label>Ordem de Compra</label>
                     {{ form.ordemCompra|add_class:'form-control' }}
                 </div>
                 <div class="form-group col-md-4">
-                    <label>status</label>
+                    <label>Status</label>
                     {{ form.status|add_class:'form-control' }}
                 </div>
             </div>
             <div class="form-row">
-                <div class="form-group col-md-6">
+                <div class="form-group col-md-4">
                     <label>Cód. Cliente</label>
                     {{ form.codCliente|add_class:'form-control' }}
                 </div>
@@ -82,6 +82,7 @@
                 {{ formset.management_form }}
                 {% for form in formset %}
                     <div id="formset-{{ forloop.counter0 }}" class="formset-div">
+                        
                         <div class="form-row">
                             <div class="form-group col-md-4">
                                 <label>Produto</label>
