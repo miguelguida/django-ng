@@ -34,7 +34,7 @@ def index(request):
 class RepresentadaListView(generic.ListView):
     
     model = Representada
-    paginate_by = 10
+    paginate_by = 50
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -75,7 +75,7 @@ class RepresentadaDelete( DeleteView):
 class PedidoListView(generic.ListView):
     
     model = Pedido
-    paginate_by = 20
+    paginate_by = 50
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -92,61 +92,7 @@ class PedidoDetailView(generic.DetailView):
     model = Pedido
 
 
-# # Classes created for the forms challenge
-# class PedidoCreate( CreateView):
-#     model = Pedido
-#     form = PedidoForm()
-#     
 
-# def pedido_create_view(request):
-#     """View function for renewing a specific BookInstance by librarian."""
-
-#     form = PedidoForm(request.POST or None)
-
-#         # Check if the form is valid:
-#     if form.is_valid():
-#         form.save()
-
-#     context = {
-#         'form': form,
-#     }
-
-#     return render(request, 'myapp/pedido_form.html', context)
-
-# class PedidoCreate(View):
-#     form_class = PedidoForm
-#     inline_formset = ItemPedidoInlineFormset
-#     template_name = 'myapp/pedido_form.html'
-
-#     def get(self, request, *args, **kwargs):
-#         """handle form display"""
-#         form = self.form_class()
-#         formset = self.inline_formset(instance=Pedido())
-#         return render(request,\
-#             self.template_name,\
-#             {'form': form, 'formset': formset})
-
-
-#     def post(self, request, *args, **kwargs):
-#         """handle form submission"""
-#         form = self.form_class(request.POST)
-#         formset = self.inline_formset(request.POST, instance=Pedido())
-#         if form.is_valid() and formset.is_valid():
-#             # Save the parent
-#             entity = form.save(commit=True)
-#             # Save the formset
-#             formset.instance = entity
-#             formset.save()
-
-#         return render(request,\
-#             self.template_name,\
-#             {'form': form, 'formset': formset})
-
-
-# class PedidoUpdate( UpdateView):
-#     model = Pedido
-#     fields = '__all__'
-    
 
 class PedidoCreate( View):
     form_class = PedidoForm
@@ -169,6 +115,10 @@ class PedidoCreate( View):
         form = self.form_class(request.POST)
         formset = self.inline_formset(request.POST, instance=Pedido())
         
+        valorBruto = 0
+        valorIpi = 0
+        valorTotal =0
+        valorComissao =0
         if form.is_valid():
             # Save the parent
             entity = form.save(commit=True)
@@ -176,15 +126,30 @@ class PedidoCreate( View):
             for f in formset:
                 if f.is_valid():
                     f.clean()
-                    print("CLEAN ",f.cleaned_data)
+                    # print("CLEAN ",f.cleaned_data)
                     if len(f.cleaned_data) > 0:
                         item = f.save(commit=False)
                         item.pedido = entity
-                        print("ITEM: ",item)
-                        print("ENTUTY: ",entity)
+                        valorBruto += item.produto.valor * item.quantidade
+                        # print("ITEM: ",item)
+                        # print("ENTUTY: ",entity)
                         item.save()
-                print("VALID ",f.is_valid())
-                print("CLEAN ",f.cleaned_data)
+                # print("VALID ",f.is_valid())
+                # print("CLEAN ",f.cleaned_data)
+
+            valor_descontos = valorBruto * (( entity.desconto1 + entity.desconto2 + entity.desconto3 + entity.desconto4 + entity.desconto5)/100)
+            valor_desconto_aplicado = valorBruto - valor_descontos
+            valorIpi = valor_desconto_aplicado * (entity.ipi/100)
+            valorTotal = valor_desconto_aplicado + valorIpi
+            valorComissao = valorTotal*(entity.porcentagemComissao/100)
+
+            entity.valorBruto = valorBruto
+            entity.valorIpi = valorIpi
+            entity.valorTotal = valorTotal
+            entity.valorComissao = valorComissao
+            print("VALORES")
+            print(entity.valorBruto,"\n",entity.valorIpi,"\n",entity.valorTotal,"\n",entity.valorComissao,"\n")
+            entity.save()
 
         return HttpResponseRedirect(self.get_success_url())
 
@@ -238,7 +203,7 @@ class PedidoDelete( DeleteView):
 class ProdutoListView(generic.ListView):
     
     model = Produto
-    paginate_by = 10
+    paginate_by = 50
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         user_agent = self.request.META['HTTP_USER_AGENT']
@@ -278,7 +243,7 @@ class ProdutoDelete( DeleteView):
 
 class AssistenciaListView(generic.ListView):
     model = Assistencia
-    paginate_by = 10
+    paginate_by = 50
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -402,7 +367,7 @@ class AssistenciaDelete( DeleteView):
 class ClienteListView(generic.ListView):
     
     model = Cliente
-    paginate_by = 10
+    paginate_by = 50
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -442,7 +407,7 @@ class ClienteDelete( DeleteView):
 
 class TransportadoraListView(generic.ListView):
     model = Transportadora
-    paginate_by = 30
+    paginate_by = 50
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -475,7 +440,7 @@ class TransportadoraDelete( DeleteView):
 
 class VendedorListView(generic.ListView):
     model = Vendedor
-    paginate_by = 30
+    paginate_by = 50
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -507,7 +472,7 @@ class VendedorDelete( DeleteView):
 
 class AcabamentoListView(generic.ListView):
     model = Acabamento
-    paginate_by = 30
+    paginate_by = 50
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -539,7 +504,7 @@ class AcabamentoDelete( DeleteView):
 
 class TecidoListView(generic.ListView):
     model = Tecido
-    paginate_by = 30
+    paginate_by = 50
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -571,7 +536,7 @@ class TecidoDelete( DeleteView):
 
 class FormaPagamentoListView(generic.ListView):
     model = FormaPagamento
-    paginate_by = 30
+    paginate_by = 50
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -626,7 +591,7 @@ def pedido_pdf_view(request, *args, **kwargs):
     # Create a Django response object, and specify content_type as pdf
     # response = HttpResponse(content_type='application/pdf')
     response = HttpResponse(content_type='application/pdf')
-    # response['Content-Disposition'] = 'attachment; filename="pedido_'+pedido.ordemCompra+'.pdf"'
+    response['Content-Disposition'] = 'attachment; filename="pedido_'+pedido.ordemCompra+'.pdf"'
     # find the template and render it.
     template = get_template(template_path)
     html = template.render(context)

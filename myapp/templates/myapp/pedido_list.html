@@ -34,6 +34,21 @@
 
     <div class="obj-list-new-container">
       <a class="create-new-link btn btn-primary" href="{% url 'pedido-create' %}"> Criar Novo</a>
+      <ul class="pagination justify-content-end">
+        {% if page_obj.has_previous %}
+          <li class="page-item"><a class="page-link" href="?page=1">Primeira</a></li>
+          <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Anterior</a></li>
+        {% endif %}
+        <li class="page-item disabled">
+          <span class="page-link">
+            {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}
+          </span>
+        </li>        
+        {% if page_obj.has_next %}
+          <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Próxima</a></li>
+          <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Última</a></li>
+        {% endif %}
+      </ul>
     </div>
     <p>{{ object.get_text }} </p>
     {% else %}
@@ -47,6 +62,7 @@
           <p class="card-text">{{ object.get_text }} </p>
           <a class="btn btn-secondary" href="{{ object.get_edit_url }}"> Editar</a>
           <a class="btn btn-danger" href="{{ object.get_delete_url }}"> Delete</a>
+          <a class="btn btn-warning" href="{% url 'pedido-pdf' object.pk %}"> PDF</a>
         </div>
         <div class="card-footer">
           <small class="text-muted">Atualizado em: {{ object.lastUpdate }}</small>

@@ -20,9 +20,9 @@ class Representada(models.Model):
     telefone = models.CharField(max_length=200)
     celular = models.CharField(max_length=200)
     email = models.EmailField(max_length=200)
-    linha = models.CharField(max_length=200)
-    comissao = models.CharField(max_length=200)
-    ipi = models.CharField(max_length=200)
+    linha = models.CharField(max_length=200, blank=True)
+    comissao = models.CharField(max_length=200, blank=True)
+    ipi = models.CharField(max_length=200, blank=True)
     lastUpdate = models.DateTimeField(auto_now=True)
 
     def get_absolute_url(self):
@@ -47,9 +47,9 @@ class Produto(models.Model):
                             help_text="Nome do produto")
     valor = models.DecimalField(max_digits=10, decimal_places=2)
     referencia = models.CharField(max_length=200)
-    codRepresentada = models.CharField(max_length=200) #TODO
+    # codRepresentada = models.CharField(max_length=200) #TODO
     representada = models.ForeignKey('Representada', on_delete=models.SET_NULL, null=True)
-    observacoes = models.TextField(max_length=600)
+    observacoes = models.TextField(max_length=600, blank=True, null=True)
     lastUpdate = models.DateTimeField(auto_now=True)
 
     def get_absolute_url(self):
@@ -72,13 +72,13 @@ class Pedido(models.Model):
     data = models.DateField()
     ordemCompra = models.CharField(max_length=200)
     status = models.CharField(max_length=200)
-    codCliente = models.CharField(max_length=200)
+    # codCliente = models.CharField(max_length=200)
     cliente = models.ForeignKey('Cliente', on_delete=models.SET_NULL, null=True)
-    codRepresentada = models.CharField(max_length=200)
+    # codRepresentada = models.CharField(max_length=200)
     representada = models.ForeignKey('Representada', on_delete=models.SET_NULL, null=True)
-    codVendedor = models.CharField(max_length=200)
+    # codVendedor = models.CharField(max_length=200)
     vendedor = models.ForeignKey('Vendedor', on_delete=models.SET_NULL, null=True)
-    codTransportadora = models.CharField(max_length=200)
+    # codTransportadora = models.CharField(max_length=200)
     transportadora = models.ForeignKey('Transportadora', on_delete=models.SET_NULL, null=True)
     tipoFrete = models.CharField(max_length=200)
     formaPagamento = models.ForeignKey('FormaPagamento', on_delete=models.SET_NULL, null=True)
@@ -90,18 +90,18 @@ class Pedido(models.Model):
     
     
     #Valor do Pedido
-    valorBruto = models.DecimalField(max_digits=10, decimal_places=2)
+    valorBruto = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     desconto1 = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     desconto2 = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     desconto3 = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     desconto4 = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     desconto5 = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    ipi = models.DecimalField(max_digits=10, decimal_places=2)
-    valorIpi = models.DecimalField(max_digits=10, decimal_places=2)
-    valorTotal = models.DecimalField(max_digits=10, decimal_places=2)
-    porcentagemComissao = models.DecimalField(max_digits=10, decimal_places=2)
-    valorComissao = models.DecimalField(max_digits=10, decimal_places=2)
-    observacoes = models.TextField(max_length=600, default='')
+    ipi = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    valorIpi = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    valorTotal = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    porcentagemComissao = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    valorComissao = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    observacoes = models.TextField(max_length=600, blank=True)
 
 
     def get_absolute_url(self):
@@ -122,28 +122,31 @@ class Pedido(models.Model):
 class ItemPedido(models.Model):
     pedido = models.ForeignKey('Pedido', on_delete=models.SET_NULL, null=True)
     produto = models.ForeignKey('Produto', on_delete=models.SET_NULL, null=True)
-    referencia = models.CharField(max_length=200)
-    acabamento = models.ForeignKey('Acabamento', on_delete=models.SET_NULL, null=True)
+    # referencia = models.CharField(max_length=200)
+    acabamento = models.ForeignKey('Acabamento', on_delete=models.SET_NULL, null=True, blank=True)
     quantidade = models.IntegerField()
-    valorUnitario = models.DecimalField(max_digits=10, decimal_places=2)
-    valorParcial = models.DecimalField(max_digits=10, decimal_places=2)
+    # valorUnitario = models.DecimalField(max_digits=10, decimal_places=2)
+    # valorParcial = models.DecimalField(max_digits=10, decimal_places=2)
     lastUpdate = models.DateTimeField(auto_now=True)
 
+    def get_valorParcial(self):
+        return self.produto.valor * self.quantidade
+
     def __str__(self):
-        return self.produto.nome +" "+ self.pedido.ordemCompra +" "+self.referencia
+        return self.produto.nome +" "+ self.pedido.ordemCompra +" "+self.produto.referencia
 
 # Create your models here.
 class Cliente(models.Model):
     razaoSocial = models.CharField(max_length=200)
     nomeFantasia = models.CharField(max_length=200)
-    diretor = models.CharField(max_length=200)
-    comprador = models.CharField(max_length=200)
-    financeiro = models.CharField(max_length=200)
-    regApuracao = models.CharField(max_length=200, help_text="Regime de apuração")
-    telefone = models.CharField(max_length=200)
-    celular = models.CharField(max_length=200)
-    email = models.EmailField(max_length=200)
-    observacoes = models.CharField(max_length=200)
+    diretor = models.CharField(max_length=200, blank=True)
+    comprador = models.CharField(max_length=200, blank=True)
+    financeiro = models.CharField(max_length=200, blank=True)
+    regApuracao = models.CharField(max_length=200, help_text="Regime de apuração", blank=True)
+    telefone = models.CharField(max_length=200, blank=True)
+    celular = models.CharField(max_length=200, blank=True)
+    email = models.EmailField(max_length=200, blank=True)
+    observacoes = models.CharField(max_length=200, blank=True)
 
     # Dados de Faturamento
     fat_inscEstadual = models.CharField(max_length=200)
@@ -161,16 +164,16 @@ class Cliente(models.Model):
     cob_cep = models.CharField(max_length=200)
     cob_endereco = models.CharField(max_length=200)
     cob_bairro = models.CharField(max_length=200)
-    cob_cnpj = models.CharField(max_length=200)
+    cob_cnpj = models.CharField(max_length=200, blank=True)
 
     # Dados de Entrega
-    entr_inscEstadual = models.CharField(max_length=200)
-    entr_estado = models.CharField(max_length=200)
-    entr_cidade = models.CharField(max_length=200)
-    entr_cep = models.CharField(max_length=200)
-    entr_endereco = models.CharField(max_length=200)
-    entr_bairro = models.CharField(max_length=200)
-    entr_cnpj = models.CharField(max_length=200)
+    entr_inscEstadual = models.CharField(max_length=200, blank=True)
+    entr_estado = models.CharField(max_length=200, blank=True)
+    entr_cidade = models.CharField(max_length=200, blank=True)
+    entr_cep = models.CharField(max_length=200, blank=True)
+    entr_endereco = models.CharField(max_length=200, blank=True)
+    entr_bairro = models.CharField(max_length=200, blank=True)
+    entr_cnpj = models.CharField(max_length=200, blank=True)
 
 
     lastUpdate = models.DateTimeField(auto_now=True)
@@ -193,18 +196,18 @@ class Cliente(models.Model):
 # Create your models here.
 class Transportadora(models.Model):
     nome = models.CharField(max_length=200, help_text="Nome da Transportadora")
-    contato = models.CharField(max_length=200)    
-    cnpj = models.CharField(max_length=200)
-    inscEstadual = models.CharField(max_length=200)
+    contato = models.CharField(max_length=200, blank=True)    
+    cnpj = models.CharField(max_length=200, blank=True)
+    inscEstadual = models.CharField(max_length=200, blank=True)
     estado = models.CharField(max_length=200)
     cidade = models.CharField(max_length=200)
     cep = models.CharField(max_length=200)
     endereco = models.CharField(max_length=200)
     bairro = models.CharField(max_length=200)
-    telefone = models.CharField(max_length=200)
-    celular = models.CharField(max_length=200)
-    email = models.EmailField(max_length=200)
-    observacoes = models.CharField(max_length=200)
+    telefone = models.CharField(max_length=200, blank=True)
+    celular = models.CharField(max_length=200, blank=True)
+    email = models.EmailField(max_length=200, blank=True)
+    observacoes = models.CharField(max_length=200, blank=True)
     lastUpdate = models.DateTimeField(auto_now=True)
 
     def get_absolute_url(self):
@@ -232,9 +235,9 @@ class Vendedor(models.Model):
     cep = models.CharField(max_length=200)
     endereco = models.CharField(max_length=200)
     bairro = models.CharField(max_length=200)
-    telefone = models.CharField(max_length=200)
-    celular = models.CharField(max_length=200)
-    email = models.EmailField(max_length=200)
+    telefone = models.CharField(max_length=200, blank=True)
+    celular = models.CharField(max_length=200, blank=True)
+    email = models.EmailField(max_length=200, blank=True)
     lastUpdate = models.DateTimeField(auto_now=True)
 
     def get_absolute_url(self):
@@ -257,14 +260,14 @@ class Vendedor(models.Model):
 class Assistencia(models.Model):
     data = models.DateField()
     numeroSolicitacao = models.CharField(max_length=200)
-    codCliente = models.CharField(max_length=200)
+    # codCliente = models.CharField(max_length=200)
     cliente = models.ForeignKey('Cliente', on_delete=models.SET_NULL, null=True)
-    codRepresentada = models.CharField(max_length=200)
+    # codRepresentada = models.CharField(max_length=200)
     representada = models.ForeignKey('Representada', on_delete=models.SET_NULL, null=True)
-    codTransportadora = models.CharField(max_length=200)
+    # codTransportadora = models.CharField(max_length=200)
     transportadora = models.ForeignKey('Transportadora', on_delete=models.SET_NULL, null=True)
-    status = models.CharField(max_length=200)
-    observacoes = models.TextField(max_length=600)
+    status = models.CharField(max_length=200, blank=True)
+    observacoes = models.TextField(max_length=600, blank=True)
     #Itens da Assistencia
     # itemAssistencia = models.ManyToManyField('ItemAssistencia')
     lastUpdate = models.DateTimeField(auto_now=True)
@@ -291,10 +294,10 @@ class ItemAssistencia(models.Model):
     #Itens da Assistencia
     assistencia = models.ForeignKey('Assistencia', on_delete=models.SET_NULL, null=True)
     produto = models.ForeignKey('Produto', on_delete=models.SET_NULL, null=True)
-    referencia = models.CharField(max_length=200)
+    # referencia = models.CharField(max_length=200)
     acabamento = models.ForeignKey('Acabamento', on_delete=models.SET_NULL, null=True)
     quantidade = models.IntegerField()
-    observacoes = models.CharField(max_length=200)
+    observacoes = models.CharField(max_length=200, blank=True)
     mostruario = models.BooleanField()
     lastUpdate = models.DateTimeField(auto_now=True)
 

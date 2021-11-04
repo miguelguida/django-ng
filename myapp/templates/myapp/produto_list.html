@@ -20,7 +20,7 @@
           <td><a class="obj-link" href="{{ produto.get_absolute_url }}">{{ produto.nome }}</a></td>
           <!-- <td><a href="{% url 'produto-detail' produto.pk %}"> Detalhes</a></td>/ -->
           <td>{{ produto.valor }}</td>
-          <td>{{ produto.representada }}</td>
+          <!-- <td>{{ produto.representada }}</td> -->
           <td>{{ produto.lastUpdate }}</td>
           <td>
               <a class="btn btn-secondary" href="{% url 'produto-update' produto.pk %}"> Editar</a>
@@ -35,6 +35,21 @@
     </div>
     <div class="obj-list-new-container">
       <a class="create-new-link btn btn-primary" href="{% url 'produto-create' %}"> Criar Novo</a>
+      <ul class="pagination justify-content-end">
+        {% if page_obj.has_previous %}
+          <li class="page-item"><a class="page-link" href="?page=1">Primeira</a></li>
+          <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Anterior</a></li>
+        {% endif %}
+        <li class="page-item disabled">
+          <span class="page-link">
+            {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}
+          </span>
+        </li>        
+        {% if page_obj.has_next %}
+          <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Próxima</a></li>
+          <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Última</a></li>
+        {% endif %}
+      </ul>
     </div>
 
     {% else %}

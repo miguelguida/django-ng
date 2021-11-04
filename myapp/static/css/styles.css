@@ -29,6 +29,12 @@
 .obj-list-new-container{
 	width: 90%;
 	margin: auto;		
+	display: flex;
+	justify-content: space-between;
+}
+
+.obj-list-new-container .pagination{
+	margin: auto 0px;
 }
 
 @media 

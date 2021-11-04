@@ -89,7 +89,7 @@
         <div class="container">
             <div class="card">
                 <table class="table1">
-                    <td style="width: 120px"><img src="../static/dist/img/logo.jpeg" height="85px"/></td>
+                    <td style="width: 120px"><img src="/home/miguelguida/www/static/dist/img/logo.jpeg" height="85px"/></td>
                     <!-- <td style="width: 25%">
                         <div class="list-group">
                             <p>NG Representações</p>
@@ -209,7 +209,7 @@
                         <tr>
                             <th>Referência</th>
                             <th>Qtd.</th>
-                            <th>Tecido</th>
+                            <!-- <th>Tecido</th> -->
                             <th>Produto</th>
                             <th>Acabamento</th>
                             <th>Valor Unitário</th>
@@ -219,13 +219,13 @@
                         <tbody>
                         {% for item in itemsPedido %}
                         <tr>
-                            <td>{{ item.referencia }}</td>
+                            <td>{{ item.produto.referencia }}</td>
                             <td>{{ item.quantidade }}</td>
-                            <td>{{ item.tecido }}</td>
+                            <!-- <td>{{ item.tecido }}</td> -->
                             <td>{{ item.produto }}</td>
                             <td>{{ item.acabamento }}</td>
-                            <td>{{ item.valorUnitario }}</td>
-                            <td>{{ item.valorParcial }}</td>
+                            <td>{{ item.produto.valor }}</td>
+                            <td>{{ item.get_valorParcial }}</td>
                         </tr>
                         {% endfor %}
                         </tbody>
