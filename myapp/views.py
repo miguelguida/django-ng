@@ -89,13 +89,13 @@ class RepresentadaDetailView(generic.DetailView):
 class RepresentadaCreate( CreateView):
     model = Representada
     fields = '__all__'
-    
+    success_url = reverse_lazy('representadas')
 
 
 class RepresentadaUpdate( UpdateView):
     model = Representada
     fields = '__all__'
-    
+    success_url = reverse_lazy('representadas')
 
 
 class RepresentadaDelete( DeleteView):
@@ -329,13 +329,13 @@ class ProdutoDetailView(generic.DetailView):
 class ProdutoCreate( CreateView):
     model = Produto
     fields = '__all__'
-    
+    success_url = reverse_lazy('produtos')
 
 
 class ProdutoUpdate( UpdateView):
     model = Produto
     fields = '__all__'
-    
+    success_url = reverse_lazy('produtos')
 
 
 class ProdutoDelete( DeleteView):
@@ -528,13 +528,13 @@ class ClienteDetailView(generic.DetailView):
 class ClienteCreate( CreateView):
     model = Cliente
     fields = '__all__'
-    
+    success_url = reverse_lazy('clientes')
 
 
 class ClienteUpdate( UpdateView):
     model = Cliente
     fields = '__all__'
-    
+    success_url = reverse_lazy('clientes')
 
 
 class ClienteDelete( DeleteView):
@@ -565,10 +565,12 @@ class TransportadoraDetailView(generic.DetailView):
 class TransportadoraCreate( CreateView):
     model = Transportadora
     fields = '__all__'
+    success_url = reverse_lazy('transportadoras')
     
 class TransportadoraUpdate( UpdateView):
     model = Transportadora
     fields = '__all__'
+    success_url = reverse_lazy('transportadoras')
     
 class TransportadoraDelete( DeleteView):
     model = Transportadora
@@ -598,10 +600,12 @@ class VendedorDetailView(generic.DetailView):
 class VendedorCreate( CreateView):
     model = Vendedor
     fields = '__all__'
+    success_url = reverse_lazy('vendedores')
     
 class VendedorUpdate( UpdateView):
     model = Vendedor
     fields = '__all__'
+    success_url = reverse_lazy('vendedores')
     
 class VendedorDelete( DeleteView):
     model = Vendedor
@@ -665,10 +669,12 @@ class AcabamentoDetailView(generic.DetailView):
 class AcabamentoCreate( CreateView):
     model = Acabamento
     fields = '__all__'
+    success_url = reverse_lazy('acabamentos')
     
 class AcabamentoUpdate( UpdateView):
     model = Acabamento
     fields = '__all__'
+    success_url = reverse_lazy('acabamentos')
     
 class AcabamentoDelete( DeleteView):
     model = Acabamento
@@ -732,10 +738,12 @@ class TecidoDetailView(generic.DetailView):
 class TecidoCreate( CreateView):
     model = Tecido
     fields = '__all__'
+    success_url = reverse_lazy('tecidos')
     
 class TecidoUpdate( UpdateView):
     model = Tecido
     fields = '__all__'
+    success_url = reverse_lazy('tecidos')
     
 class TecidoDelete( DeleteView):
     model = Tecido
@@ -743,20 +751,6 @@ class TecidoDelete( DeleteView):
 
 
 # - - - - - FormaPagamento - - - - -
-
-class FormaPagamentoListView(generic.ListView):
-    model = FormaPagamento
-    paginate_by = 50
-    
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        user_agent = self.request.META['HTTP_USER_AGENT']
-        keywords = ['Mobile','Opera Mini','Android']
-        if any(word in user_agent for word in keywords):
-            context['is_mobile'] = True
-        else:
-            context['is_mobile'] = False
-        return context
 FORMAPAGAMENTO_ORDER_OPTIONS = [
         ['', ''],
         ['formaDePagamento', 'Forma de Pagamento'],
@@ -813,10 +807,12 @@ class FormaPagamentoDetailView(generic.DetailView):
 class FormaPagamentoCreate( CreateView):
     model = FormaPagamento
     fields = '__all__'
+    success_url = reverse_lazy('formasPagamento')
     
 class FormaPagamentoUpdate( UpdateView):
     model = FormaPagamento
     fields = '__all__'
+    success_url = reverse_lazy('formasPagamento')
     
 class FormaPagamentoDelete( DeleteView):
     model = FormaPagamento
