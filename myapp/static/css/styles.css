@@ -39,7 +39,7 @@
 
 @media 
 only screen and (min-width: 760px){
-	.obj-list-table-container{
+	.obj-list-table-container, .filter-container{
 		width: 90%;
 		margin: auto;		
 	}	

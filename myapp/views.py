@@ -30,11 +30,32 @@ def index(request):
 
 
 # - - - - - Representada - - - - -
-
+REPRESENTADA_ORDER_OPTIONS = [
+        ['', ''],
+        ['nome', 'Nome'],
+        ['lastUpdate', 'Última atualização'],
+    ]
 class RepresentadaListView(generic.ListView):
-    
     model = Representada
     paginate_by = 50
+
+    def get_queryset(self):
+        filter_val = self.request.GET.get('filter', '')
+        order = self.request.GET.get('orderby', '')
+
+        if filter_val != '' and order != '':
+            new_context = Representada.objects.filter(
+                nome__startswith=filter_val,
+            ).order_by(order)
+        elif order != '':
+            new_context = Representada.objects.all().order_by(order)
+        elif filter_val != '':
+            new_context = Representada.objects.filter(
+                nome__startswith=filter_val,
+            )
+        else:
+            new_context = Representada.objects.all()
+        return new_context
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -44,6 +65,10 @@ class RepresentadaListView(generic.ListView):
             context['is_mobile'] = True
         else:
             context['is_mobile'] = False
+
+        context['filter'] = self.request.GET.get('filter', '')
+        context['orderby'] = self.request.GET.get('orderby', '')
+        context['options'] = REPRESENTADA_ORDER_OPTIONS
         return context
    
 class RepresentadaDetailView(generic.DetailView):
@@ -71,11 +96,32 @@ class RepresentadaDelete( DeleteView):
 
 
 # - - - - - Pedido - - - - -
-
+PEDIDO_ORDER_OPTIONS = [
+        ['', ''],
+        ['ordemCompra', 'Ordem Compra'],
+        ['lastUpdate', 'Última atualização'],
+    ]
 class PedidoListView(generic.ListView):
-    
     model = Pedido
     paginate_by = 50
+
+    def get_queryset(self):
+        filter_val = self.request.GET.get('filter', '')
+        order = self.request.GET.get('orderby', '')
+
+        if filter_val != '' and order != '':
+            new_context = Pedido.objects.filter(
+                ordemCompra__startswith=filter_val,
+            ).order_by(order)
+        elif order != '':
+            new_context = Pedido.objects.all().order_by(order)
+        elif filter_val != '':
+            new_context = Pedido.objects.filter(
+                ordemCompra__startswith=filter_val,
+            )
+        else:
+            new_context = Pedido.objects.all()
+        return new_context
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -85,8 +131,13 @@ class PedidoListView(generic.ListView):
             context['is_mobile'] = True
         else:
             context['is_mobile'] = False
+
+        context['filter'] = self.request.GET.get('filter', '')
+        context['orderby'] = self.request.GET.get('orderby', '')
+        context['options'] = PEDIDO_ORDER_OPTIONS
         return context
-   
+
+
 class PedidoDetailView(generic.DetailView):
     
     model = Pedido
@@ -199,11 +250,33 @@ class PedidoDelete( DeleteView):
     
 
 # - - - - - Produto - - - - -
-
+PRODUTO_ORDER_OPTIONS = [
+        ['', ''],
+        ['nome', 'Nome'],
+        ['lastUpdate', 'Última atualização'],
+    ]
 class ProdutoListView(generic.ListView):
-    
     model = Produto
     paginate_by = 50
+
+    def get_queryset(self):
+        filter_val = self.request.GET.get('filter', '')
+        order = self.request.GET.get('orderby', '')
+
+        if filter_val != '' and order != '':
+            new_context = Produto.objects.filter(
+                nome__startswith=filter_val,
+            ).order_by(order)
+        elif order != '':
+            new_context = Produto.objects.all().order_by(order)
+        elif filter_val != '':
+            new_context = Produto.objects.filter(
+                nome__startswith=filter_val,
+            )
+        else:
+            new_context = Produto.objects.all()
+        return new_context
+    
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         user_agent = self.request.META['HTTP_USER_AGENT']
@@ -212,7 +285,13 @@ class ProdutoListView(generic.ListView):
             context['is_mobile'] = True
         else:
             context['is_mobile'] = False
+
+        context['filter'] = self.request.GET.get('filter', '')
+        context['orderby'] = self.request.GET.get('orderby', '')
+        context['options'] = PRODUTO_ORDER_OPTIONS
         return context
+
+
 
 class ProdutoDetailView(generic.DetailView):
     
@@ -239,11 +318,32 @@ class ProdutoDelete( DeleteView):
 
 
 # - - - - - Assistencia - - - - -
-
-
+ASSISTENCIA_ORDER_OPTIONS = [
+        ['', ''],
+        ['numeroSolicitacao', 'Numero Solicitacao'],
+        ['lastUpdate', 'Última atualização'],
+    ]
 class AssistenciaListView(generic.ListView):
     model = Assistencia
     paginate_by = 50
+
+    def get_queryset(self):
+        filter_val = self.request.GET.get('filter', '')
+        order = self.request.GET.get('orderby', '')
+
+        if filter_val != '' and order != '':
+            new_context = Assistencia.objects.filter(
+                numeroSolicitacao__startswith=filter_val,
+            ).order_by(order)
+        elif order != '':
+            new_context = Assistencia.objects.all().order_by(order)
+        elif filter_val != '':
+            new_context = Assistencia.objects.filter(
+                numeroSolicitacao__startswith=filter_val,
+            )
+        else:
+            new_context = Assistencia.objects.all()
+        return new_context
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -253,6 +353,10 @@ class AssistenciaListView(generic.ListView):
             context['is_mobile'] = True
         else:
             context['is_mobile'] = False
+
+        context['filter'] = self.request.GET.get('filter', '')
+        context['orderby'] = self.request.GET.get('orderby', '')
+        context['options'] = ASSISTENCIA_ORDER_OPTIONS
         return context
    
 
@@ -418,7 +522,7 @@ class TransportadoraListView(generic.ListView):
         else:
             context['is_mobile'] = False
         return context
-   
+
 class TransportadoraDetailView(generic.DetailView):    
     model = Transportadora
 
@@ -469,10 +573,32 @@ class VendedorDelete( DeleteView):
 
 
 # - - - - - Acabamento - - - - -
-
+ACABAMENTO_ORDER_OPTIONS = [
+        ['', ''],
+        ['acabamento', 'Acabamento'],
+        ['lastUpdate', 'Última atualização'],
+    ]
 class AcabamentoListView(generic.ListView):
     model = Acabamento
     paginate_by = 50
+
+    def get_queryset(self):
+        filter_val = self.request.GET.get('filter', '')
+        order = self.request.GET.get('orderby', '')
+
+        if filter_val != '' and order != '':
+            new_context = Acabamento.objects.filter(
+                acabamento__startswith=filter_val,
+            ).order_by(order)
+        elif order != '':
+            new_context = Acabamento.objects.all().order_by(order)
+        elif filter_val != '':
+            new_context = Acabamento.objects.filter(
+                acabamento__startswith=filter_val,
+            )
+        else:
+            new_context = Acabamento.objects.all()
+        return new_context
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -482,6 +608,10 @@ class AcabamentoListView(generic.ListView):
             context['is_mobile'] = True
         else:
             context['is_mobile'] = False
+
+        context['filter'] = self.request.GET.get('filter', '')
+        context['orderby'] = self.request.GET.get('orderby', '')
+        context['options'] = ACABAMENTO_ORDER_OPTIONS
         return context
    
 class AcabamentoDetailView(generic.DetailView):
@@ -501,10 +631,32 @@ class AcabamentoDelete( DeleteView):
 
 
 # - - - - - Tecido - - - - -
-
+TECIDO_ORDER_OPTIONS = [
+        ['', ''],
+        ['tecido', 'Tecido'],
+        ['lastUpdate', 'Última atualização'],
+    ]
 class TecidoListView(generic.ListView):
     model = Tecido
     paginate_by = 50
+
+    def get_queryset(self):
+        filter_val = self.request.GET.get('filter', '')
+        order = self.request.GET.get('orderby', '')
+
+        if filter_val != '' and order != '':
+            new_context = Tecido.objects.filter(
+                tecido__startswith=filter_val,
+            ).order_by(order)
+        elif order != '':
+            new_context = Tecido.objects.all().order_by(order)
+        elif filter_val != '':
+            new_context = Tecido.objects.filter(
+                tecido__startswith=filter_val,
+            )
+        else:
+            new_context = Tecido.objects.all()
+        return new_context
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -514,6 +666,10 @@ class TecidoListView(generic.ListView):
             context['is_mobile'] = True
         else:
             context['is_mobile'] = False
+
+        context['filter'] = self.request.GET.get('filter', '')
+        context['orderby'] = self.request.GET.get('orderby', '')
+        context['options'] = TECIDO_ORDER_OPTIONS
         return context
    
 class TecidoDetailView(generic.DetailView):
@@ -546,6 +702,46 @@ class FormaPagamentoListView(generic.ListView):
             context['is_mobile'] = True
         else:
             context['is_mobile'] = False
+        return context
+FORMAPAGAMENTO_ORDER_OPTIONS = [
+        ['', ''],
+        ['formaDePagamento', 'Forma de Pagamento'],
+        ['lastUpdate', 'Última atualização'],
+    ]
+class FormaPagamentoListView(generic.ListView):
+    model = FormaPagamento
+    paginate_by = 50
+
+    def get_queryset(self):
+        filter_val = self.request.GET.get('filter', '')
+        order = self.request.GET.get('orderby', '')
+
+        if filter_val != '' and order != '':
+            new_context = FormaPagamento.objects.filter(
+                formaDePagamento__startswith=filter_val,
+            ).order_by(order)
+        elif order != '':
+            new_context = FormaPagamento.objects.all().order_by(order)
+        elif filter_val != '':
+            new_context = FormaPagamento.objects.filter(
+                formaDePagamento__startswith=filter_val,
+            )
+        else:
+            new_context = FormaPagamento.objects.all()
+        return new_context
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user_agent = self.request.META['HTTP_USER_AGENT']
+        keywords = ['Mobile','Opera Mini','Android']
+        if any(word in user_agent for word in keywords):
+            context['is_mobile'] = True
+        else:
+            context['is_mobile'] = False
+
+        context['filter'] = self.request.GET.get('filter', '')
+        context['orderby'] = self.request.GET.get('orderby', '')
+        context['options'] = FORMAPAGAMENTO_ORDER_OPTIONS
         return context
    
 class FormaPagamentoDetailView(generic.DetailView):

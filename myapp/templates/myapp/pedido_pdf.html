@@ -114,7 +114,7 @@
                         
                         <div class="order-info-table">
                             <table class="inner-table">
-                                <tr><td class="field-td">Nr. Pedido: </td><td class="value-td"> {{ pedido.ordemCompra }}</td></tr>
+                                <tr><td class="field-td">Nr. Pedido: </td><td class="value-td"> {{ pedido.id }}</td></tr>
                                 <tr><td class="field-td">Ordem de Compra: </td><td class="value-td"> {{ pedido.ordemCompra }}</td></tr>
                                 <tr><td class="field-td">Vendedor: </td><td class="value-td"> {{ pedido.vendedor.nome }}</td></tr>
                                 <tr><td class="field-td">Data: </td><td class="value-td"> {{ pedido.data }}</td></tr>
@@ -171,7 +171,6 @@
                         
                         <div class="representada-info">
                             <table class="inner-table">
-                                <tr><td class="field-td">Status: </td><td class="value-td"> {{ pedido.status }}</td></tr>
                                 <tr><td class="field-td">Forma de Pag.: </td><td class="value-td"> {{ pedido.formaPagamento }}</td></tr>
                                 <tr><td class="field-td">Tipo da Cobrança: </td><td class="value-td"> {{ pedido.tipoCobranca }}</td></tr>
                                 <tr><td class="field-td">Tipo de Frete: </td><td class="value-td"> {{ pedido.tipoFrete }}</td></tr>

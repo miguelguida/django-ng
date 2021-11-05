@@ -5,6 +5,23 @@
     <h1>Formas de Pagamento</h1>
     
     {% if not is_mobile %}
+    <div class="filter-container">
+      <form method="get" action="{% url 'formasPagamento' %}">
+        <div class="input-group mb-3">
+          <input type="text" class="form-control mr-2" value="{{filter}}" name="filter" placeholder="Buscar"/>
+          <div class="input-group-prepend">
+            <label class="input-group-text" for="inputGroupSelect01">Ordenar por</label>
+          </div>
+          <select id="inputGroupSelect01" class="form-control mr-2"  name="orderby">
+            {% for option in options %}
+              <option value="{{option.0}}" {% ifequal option.0 orderby %} selected {% endifequal %}> {{option.1}}</option>
+            {% endfor %}
+          </select>
+          <button class="btn btn-secondary" type="submit" name="submit"><i class="fas fa-search"></i></button>
+        </div>
+      </form>
+    </div>
+
     <div class="table-responsive obj-list-table-container">
       
       <table class="table obj-list-table" style="width:100%">
