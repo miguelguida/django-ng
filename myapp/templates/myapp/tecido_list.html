@@ -7,14 +7,19 @@
     {% if not is_mobile %}
     <div class="filter-container">
       <form method="get" action="{% url 'tecidos' %}">
-        <div class="input-group mb-3">
-          <input type="text" class="form-control mr-2" value="{{filter}}" name="filter" placeholder="Buscar"/>
+        <div class="input-group form-row mb-3">
+          <input type="text" class="form-control col-5 mr-2 ml-2" value="{{filter}}" name="filter" placeholder="Buscar"/>
           <div class="input-group-prepend">
             <label class="input-group-text" for="inputGroupSelect01">Ordenar por</label>
           </div>
-          <select id="inputGroupSelect01" class="form-control mr-2"  name="orderby">
+          <select id="inputGroupSelect01" class="form-control col-3 mr-2"  name="orderby">
             {% for option in options %}
               <option value="{{option.0}}" {% ifequal option.0 orderby %} selected {% endifequal %}> {{option.1}}</option>
+            {% endfor %}
+          </select>
+          <select class="form-control col-2 mr-2"  name="asc_desc">
+            {% for option in asc_desc_options %}
+              <option value="{{option.0}}" {% ifequal option.0 asc_desc %} selected {% endifequal %}> {{option.1}}</option>
             {% endfor %}
           </select>
           <button class="btn btn-secondary" type="submit" name="submit"><i class="fas fa-search"></i></button>

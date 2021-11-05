@@ -42,6 +42,13 @@ class RepresentadaListView(generic.ListView):
     def get_queryset(self):
         filter_val = self.request.GET.get('filter', '')
         order = self.request.GET.get('orderby', '')
+        asc_desc = self.request.GET.get('asc_desc', '')
+
+        if order != '':
+            if asc_desc == "desc" and order[0] != '-':
+                order = '-' + order
+            elif asc_desc == "asc" and order[0] == '-':
+                order = order[:1]
 
         if filter_val != '' and order != '':
             new_context = Representada.objects.filter(
@@ -69,6 +76,8 @@ class RepresentadaListView(generic.ListView):
         context['filter'] = self.request.GET.get('filter', '')
         context['orderby'] = self.request.GET.get('orderby', '')
         context['options'] = REPRESENTADA_ORDER_OPTIONS
+        context['asc_desc'] = self.request.GET.get('asc_desc', 'asc')
+        context['asc_desc_options'] = [['asc', 'Crescente'],['desc', 'Decrescente']]
         return context
    
 class RepresentadaDetailView(generic.DetailView):
@@ -108,6 +117,13 @@ class PedidoListView(generic.ListView):
     def get_queryset(self):
         filter_val = self.request.GET.get('filter', '')
         order = self.request.GET.get('orderby', '')
+        asc_desc = self.request.GET.get('asc_desc', '')
+
+        if order != '':
+            if asc_desc == "desc" and order[0] != '-':
+                order = '-' + order
+            elif asc_desc == "asc" and order[0] == '-':
+                order = order[:1]
 
         if filter_val != '' and order != '':
             new_context = Pedido.objects.filter(
@@ -135,6 +151,8 @@ class PedidoListView(generic.ListView):
         context['filter'] = self.request.GET.get('filter', '')
         context['orderby'] = self.request.GET.get('orderby', '')
         context['options'] = PEDIDO_ORDER_OPTIONS
+        context['asc_desc'] = self.request.GET.get('asc_desc', 'asc')
+        context['asc_desc_options'] = [['asc', 'Crescente'],['desc', 'Decrescente']]
         return context
 
 
@@ -262,6 +280,13 @@ class ProdutoListView(generic.ListView):
     def get_queryset(self):
         filter_val = self.request.GET.get('filter', '')
         order = self.request.GET.get('orderby', '')
+        asc_desc = self.request.GET.get('asc_desc', '')
+
+        if order != '':
+            if asc_desc == "desc" and order[0] != '-':
+                order = '-' + order
+            elif asc_desc == "asc" and order[0] == '-':
+                order = order[:1]
 
         if filter_val != '' and order != '':
             new_context = Produto.objects.filter(
@@ -289,6 +314,8 @@ class ProdutoListView(generic.ListView):
         context['filter'] = self.request.GET.get('filter', '')
         context['orderby'] = self.request.GET.get('orderby', '')
         context['options'] = PRODUTO_ORDER_OPTIONS
+        context['asc_desc'] = self.request.GET.get('asc_desc', 'asc')
+        context['asc_desc_options'] = [['asc', 'Crescente'],['desc', 'Decrescente']]
         return context
 
 
@@ -330,6 +357,13 @@ class AssistenciaListView(generic.ListView):
     def get_queryset(self):
         filter_val = self.request.GET.get('filter', '')
         order = self.request.GET.get('orderby', '')
+        asc_desc = self.request.GET.get('asc_desc', '')
+
+        if order != '':
+            if asc_desc == "desc" and order[0] != '-':
+                order = '-' + order
+            elif asc_desc == "asc" and order[0] == '-':
+                order = order[:1]
 
         if filter_val != '' and order != '':
             new_context = Assistencia.objects.filter(
@@ -357,6 +391,8 @@ class AssistenciaListView(generic.ListView):
         context['filter'] = self.request.GET.get('filter', '')
         context['orderby'] = self.request.GET.get('orderby', '')
         context['options'] = ASSISTENCIA_ORDER_OPTIONS
+        context['asc_desc'] = self.request.GET.get('asc_desc', 'asc')
+        context['asc_desc_options'] = [['asc', 'Crescente'],['desc', 'Decrescente']]
         return context
    
 
@@ -585,6 +621,13 @@ class AcabamentoListView(generic.ListView):
     def get_queryset(self):
         filter_val = self.request.GET.get('filter', '')
         order = self.request.GET.get('orderby', '')
+        asc_desc = self.request.GET.get('asc_desc', '')
+
+        if order != '':
+            if asc_desc == "desc" and order[0] != '-':
+                order = '-' + order
+            elif asc_desc == "asc" and order[0] == '-':
+                order = order[:1]
 
         if filter_val != '' and order != '':
             new_context = Acabamento.objects.filter(
@@ -612,6 +655,8 @@ class AcabamentoListView(generic.ListView):
         context['filter'] = self.request.GET.get('filter', '')
         context['orderby'] = self.request.GET.get('orderby', '')
         context['options'] = ACABAMENTO_ORDER_OPTIONS
+        context['asc_desc'] = self.request.GET.get('asc_desc', 'asc')
+        context['asc_desc_options'] = [['asc', 'Crescente'],['desc', 'Decrescente']]
         return context
    
 class AcabamentoDetailView(generic.DetailView):
@@ -643,6 +688,13 @@ class TecidoListView(generic.ListView):
     def get_queryset(self):
         filter_val = self.request.GET.get('filter', '')
         order = self.request.GET.get('orderby', '')
+        asc_desc = self.request.GET.get('asc_desc', '')
+
+        if order != '':
+            if asc_desc == "desc" and order[0] != '-':
+                order = '-' + order
+            elif asc_desc == "asc" and order[0] == '-':
+                order = order[:1]
 
         if filter_val != '' and order != '':
             new_context = Tecido.objects.filter(
@@ -670,6 +722,8 @@ class TecidoListView(generic.ListView):
         context['filter'] = self.request.GET.get('filter', '')
         context['orderby'] = self.request.GET.get('orderby', '')
         context['options'] = TECIDO_ORDER_OPTIONS
+        context['asc_desc'] = self.request.GET.get('asc_desc', 'asc')
+        context['asc_desc_options'] = [['asc', 'Crescente'],['desc', 'Decrescente']]
         return context
    
 class TecidoDetailView(generic.DetailView):
@@ -715,6 +769,13 @@ class FormaPagamentoListView(generic.ListView):
     def get_queryset(self):
         filter_val = self.request.GET.get('filter', '')
         order = self.request.GET.get('orderby', '')
+        asc_desc = self.request.GET.get('asc_desc', '')
+
+        if order != '':
+            if asc_desc == "desc" and order[0] != '-':
+                order = '-' + order
+            elif asc_desc == "asc" and order[0] == '-':
+                order = order[:1]
 
         if filter_val != '' and order != '':
             new_context = FormaPagamento.objects.filter(
@@ -742,6 +803,8 @@ class FormaPagamentoListView(generic.ListView):
         context['filter'] = self.request.GET.get('filter', '')
         context['orderby'] = self.request.GET.get('orderby', '')
         context['options'] = FORMAPAGAMENTO_ORDER_OPTIONS
+        context['asc_desc'] = self.request.GET.get('asc_desc', 'asc')
+        context['asc_desc_options'] = [['asc', 'Crescente'],['desc', 'Decrescente']]
         return context
    
 class FormaPagamentoDetailView(generic.DetailView):
