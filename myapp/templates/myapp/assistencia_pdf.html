@@ -1,0 +1,242 @@
+{% load static %}
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Resumo de Pedido - {{assistencia.ordemCompra}}</title>
+        <style type="text/css">
+            @page {
+                size: A4;
+                margin: 1cm;
+            }
+            
+            .items-table, td, th {  
+                border-bottom: 1px solid #ddd;
+                border-top: 1px solid #ddd;
+                text-align: left;
+                padding: 5px;
+            }
+            .items-table {
+                border-collapse: collapse;
+                width: 100%;
+            }
+            
+            /* .td{
+                word-break: none;
+            } */
+            .list-group p {
+                font-size: 1em;
+            }
+
+            .table1, .table-cliente, .table-valores, .table-resumo{
+                width: 100%;
+                max-width: 100%;
+                margin-bottom: 5px;
+                background-color: #fff;
+            }
+            .table1, .table-cliente, .table-valores{
+                border: none;
+            }
+            
+            .table1 td, .table-cliente td, .table-valores td, .table-resumo td {
+                border: none;
+                vertical-align: top;
+            }
+            .table-valores{
+                margin-top:20px;
+            }
+            .inner-table{
+                width: 100%;
+                max-width: 100%;
+                background-color: #fff;
+                border: none;
+                text-align: start;
+            }
+
+            .inner-table td{
+                padding: 0px;
+            }
+            
+            .inner-table .field-td{
+                width: 35%; 
+                font-weight: bold;
+                text-align: start;
+                margin-left: 10px;
+            }
+
+            .inner-table .value-td{
+                width: 65%; 
+                text-align: start;
+            }
+            
+            .company-info-table, .order-info-table{
+                text-align: start;
+            }
+            .cliente-info, .representada-info, .valores-info{
+                text-align: start;
+                padding: 0px;
+            }
+            .cliente-info h2, .representada-info h2{
+                margin: 10px 0px 0px 0px;
+                padding: 0px;
+
+            }
+            
+
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="card">
+                <table class="table1">
+                    <td style="width: 120px"><img src="/home/miguelguida/www/static/dist/img/logo.jpeg" height="85px"/></td>
+                    <!-- <td style="width: 25%">
+                        <div class="list-group">
+                            <p>NG Representações</p>
+                            <p>Date - {% now "jS F Y H:i" %}</p>
+                        </div>
+                    </td> -->
+                    <td style="width: 40%">
+                        <div class="company-info-table">
+                            <table class="inner-table">
+                                <tr><td class="field-td">Telefone: </td><td class="value-td"> (14) 3422-1610</td></tr>
+                                <tr><td class="field-td">Celular: </td><td class="value-td"> (14) 98129-8551 e (14) 98129-8610</td></tr>
+                                <tr><td class="field-td">E-mail: </td><td class="value-td"> contato@ngrepresentacoes.com.br</td></tr>
+                                <tr><td class="field-td">Endereço: </td><td class="value-td"> Rua André Martins Parra, 250 - C41</td></tr>
+                                <tr><td class="field-td">Bairro: </td><td class="value-td"> Jardim Colibri</td></tr>
+                                <tr><td class="field-td">Cidade: </td><td class="value-td"> Marília-SP</td></tr>
+                            </table>
+                            
+                        </div>
+                        
+                    </td>
+                    <td style="width: 50%">
+                        
+                        <div class="order-info-table">
+                            <table class="inner-table">
+                                <tr><td class="field-td">Nr. Assistência: </td><td class="value-td"> {{ assistencia.id }}</td></tr>
+                                <tr><td class="field-td">Ordem de Compra: </td><td class="value-td"> {{ assistencia.numeroSolicitacao }}</td></tr>
+                                <tr><td class="field-td">Data: </td><td class="value-td"> {{ assistencia.data }}</td></tr>
+                            </table>
+                            
+                        </div>
+                        
+                    </td>
+                </table>
+
+                <hr/>
+
+                <table class="table-cliente">
+                    <td style="width: 50%">
+                        
+                        <div class="cliente-info">
+                            <table class="inner-table">
+                                <tr><td class="field-td">Cliente:  </td><td class="value-td">{{ assistencia.cliente.razaoSocial }}</td></tr>
+                                <tr><td class="field-td">Telefone: </td><td class="value-td">{{ assistencia.cliente.telefone }}</td></tr>
+                                <tr><td class="field-td">Email:    </td><td class="value-td">{{ assistencia.cliente.email }}</td></tr>
+                            </table>
+                            <h2>Faturamento</h2>
+                            <table class="inner-table">
+                                <tr><td class="field-td">CNPJ: </td><td class="value-td"> {{ assistencia.cliente.fat_cnpj }}</td></tr>
+                                <tr><td class="field-td">Insc. Estadual: </td><td class="value-td"> {{ assistencia.cliente.fat_inscEstadual }}</td></tr>
+                                <tr><td class="field-td">Endereço: </td><td class="value-td"> {{ assistencia.cliente.fat_endereco }}</td></tr>
+                                <tr><td class="field-td">Bairro: </td><td class="value-td"> {{ assistencia.cliente.fat_bairro }}</td></tr>
+                                <tr><td class="field-td">Cidade: </td><td class="value-td"> {{ assistencia.cliente.fat_cidade }}-{{ assistencia.cliente.fat_estado }}</td></tr>
+                                <tr><td class="field-td">CEP: </td><td class="value-td"> {{ assistencia.cliente.fat_cep }}</td></tr>
+                            </table>
+                            <h2>Cobrança</h2>
+                            <table class="inner-table">
+                                <tr><td class="field-td">CNPJ: </td><td class="value-td"> {{ assistencia.cliente.cob_cnpj }}</td></tr>
+                                <tr><td class="field-td">Insc. Estadual: </td><td class="value-td"> {{ assistencia.cliente.cob_inscEstadual }}</td></tr>
+                                <tr><td class="field-td">Endereço: </td><td class="value-td"> {{ assistencia.cliente.cob_endereco }}</td></tr>
+                                <tr><td class="field-td">Bairro: </td><td class="value-td"> {{ assistencia.cliente.cob_bairro }}</td></tr>
+                                <tr><td class="field-td">Cidade: </td><td class="value-td"> {{ assistencia.cliente.cob_cidade }}-{{ assistencia.cliente.cob_estado }}</td></tr>
+                                <tr><td class="field-td">CEP: </td><td class="value-td"> {{ assistencia.cliente.cob_cep }}</td></tr>
+                            </table>
+                            <h2>Entrega</h2>
+                            <table class="inner-table">
+                                <tr><td class="field-td">CNPJ: </td><td class="value-td"> {{ assistencia.cliente.entr_cnpj }}</td></tr>
+                                <tr><td class="field-td">Insc. Estadual: </td><td class="value-td"> {{ assistencia.cliente.entr_inscEstadual }}</td></tr>
+                                <tr><td class="field-td">Endereço: </td><td class="value-td"> {{ assistencia.cliente.entr_endereco }}</td></tr>
+                                <tr><td class="field-td">Bairro: </td><td class="value-td"> {{ assistencia.cliente.entr_bairro }}</td></tr>
+                                <tr><td class="field-td">Cidade: </td><td class="value-td"> {{ assistencia.cliente.entr_cidade }}-{{ assistencia.cliente.entr_estado }}</td></tr>
+                                <tr><td class="field-td">CEP: </td><td class="value-td"> {{ assistencia.cliente.entr_cep }}</td></tr>
+                            </table>
+                            
+                        </div>
+                        
+                    </td>
+                    <td style="width: 50%">
+                        
+                        <div class="representada-info">
+                            <table class="inner-table">
+                                <tr><td class="field-td">Status: </td><td class="value-td"> {{ assistencia.status }}</td></tr>
+                            </table>
+                            <h2>Representada</h2>
+                            <table class="inner-table">
+                                <tr><td class="field-td">Representada: </td><td class="value-td"> {{ assistencia.representada.contato }}</td></tr>
+                                <tr><td class="field-td">Telefone: </td><td class="value-td"> {{ assistencia.representada.telefone }}</td></tr>
+                                <tr><td class="field-td">Email: </td><td class="value-td"> {{ assistencia.representada.email }}</td></tr>
+                                <tr><td class="field-td">Endereço: </td><td class="value-td"> {{ assistencia.representada.endereco }}</td></tr>
+                                <tr><td class="field-td">Bairro: </td><td class="value-td"> {{ assistencia.representada.bairro }}</td></tr>
+                                <tr><td class="field-td">Cidade: </td><td class="value-td"> {{ assistencia.representada.cidade }}-{{ assistencia.representada.estado }}</td></tr>
+                                <tr><td class="field-td">CEP: </td><td class="value-td"> {{ assistencia.representada.cep }}</td></tr>
+                            </table>
+                            <h2>Transportadora</h2>
+                            <table class="inner-table">
+                                <tr><td class="field-td">Transportadora: </td><td class="value-td"> {{ assistencia.transportadora.nome }}</td></tr>
+                                <tr><td class="field-td">Telefone: </td><td class="value-td"> {{ assistencia.transportadora.telefone }}</td></tr>
+                                <tr><td class="field-td">Email: </td><td class="value-td"> {{ assistencia.transportadora.email }}</td></tr>
+                                <tr><td class="field-td">Endereço: </td><td class="value-td"> {{ assistencia.transportadora.endereco }}</td></tr>
+                                <tr><td class="field-td">Bairro: </td><td class="value-td"> {{ assistencia.transportadora.bairro }}</td></tr>
+                                <tr><td class="field-td">Cidade: </td><td class="value-td"> {{ assistencia.transportadora.cidade }}-{{ assistencia.transportadora.estado }}</td></tr>
+                                <tr><td class="field-td">CEP: </td><td class="value-td"> {{ assistencia.transportadora.cep }}</td></tr>
+                            </table>
+                        </div>
+                        
+                    </td>
+                </table>
+                <br>
+
+                <!-- Itens da Assistência -->
+                <table class="items-table">
+                    <h1>Itens da Assistência</h1>
+                    <thead>
+                        <tr>
+                            <th>Referência</th>
+                            <th>Qtd.</th>
+                            <!-- <th>Tecido</th> -->
+                            <th>Produto</th>
+                            <th>Acabamento</th>
+                            <th>Observações</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for item in itemsAssistencia %}
+                        <tr>
+                            <td>{{ item.produto.referencia }}</td>
+                            <td>{{ item.quantidade }}</td>
+                            <!-- <td>{{ item.tecido }}</td> -->
+                            <td>{{ item.produto }}</td>
+                            <td>{{ item.acabamento }}</td>
+                            <td>{{ item.observacoes }}</td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                </table>
+                <table class="table-resumo">
+                    <tr>
+                        <td style="width: 50%">
+                            <div class="valores-info">
+                                <table class="inner-table">
+                                    <tr><td class="field-td">Observações: </td><td class="value-td"> {{ assistencia.observacoes }}</td></tr>
+                                </table>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+    </body>
+</html>

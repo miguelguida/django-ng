@@ -43,6 +43,7 @@
           <td>
               <a class="btn btn-secondary" href="{{ object.get_edit_url }}"> Editar</a>
               <a class="btn btn-danger" href="{{ object.get_delete_url }}"> Delete</a>
+              <a class="btn btn-warning" href="{% url 'assistencia-pdf' object.pk %}"> PDF</a>
           </td>
         </tr>
 
@@ -83,6 +84,7 @@
           <p class="card-text">{{ object.get_text }} </p>
           <a class="btn btn-secondary" href="{{ object.get_edit_url }}"> Editar</a>
           <a class="btn btn-danger" href="{{ object.get_delete_url }}"> Delete</a>
+          <a class="btn btn-warning" href="{% url 'assistencia-pdf' object.pk %}"> PDF</a>
         </div>
         <div class="card-footer">
           <small class="text-muted">Atualizado em: {{ object.lastUpdate }}</small>

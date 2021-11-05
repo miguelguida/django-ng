@@ -37,6 +37,7 @@ urlpatterns += [
     path('assistencia/create/', views.AssistenciaCreate.as_view(), name='assistencia-create'),
     path('assistencia/<int:pk>/update/', views.AssistenciaUpdate.as_view(), name='assistencia-update'),
     path('assistencia/<int:pk>/delete/', views.AssistenciaDelete.as_view(), name='assistencia-delete'),
+    path('assistencia/<int:pk>/pdf/', views.assistencia_pdf_view, name='assistencia-pdf'),
 ]
 
 urlpatterns += [

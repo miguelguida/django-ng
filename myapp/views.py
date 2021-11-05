@@ -859,6 +859,32 @@ def pedido_pdf_view(request, *args, **kwargs):
        return HttpResponse('We had some errors <pre>' + html + '</pre>')
     return response
 
+def assistencia_pdf_view(request, *args, **kwargs):
+    template_path = 'myapp/assistencia_pdf.html'
+    pk = kwargs.get('pk')
+    assistencia = get_object_or_404(Assistencia, pk=pk)
+    itemsAssistencia = ItemAssistencia.objects.filter(assistencia=assistencia)
+
+    
+
+    context = {'assistencia': assistencia, 
+               'itemsAssistencia': itemsAssistencia,
+               }
+    # Create a Django response object, and specify content_type as pdf
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="pedido_'+assistencia.numeroSolicitacao+'.pdf"'
+    # find the template and render it.
+    template = get_template(template_path)
+    html = template.render(context)
+
+    # create a pdf
+    pisa_status = pisa.CreatePDF(
+       html, dest=response)
+    # if error then show some funy view
+    if pisa_status.err:
+       return HttpResponse('We had some errors <pre>' + html + '</pre>')
+    return response
+
 
 
 
