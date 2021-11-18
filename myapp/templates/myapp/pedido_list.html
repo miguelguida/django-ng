@@ -31,15 +31,33 @@
       
       <table class="table obj-list-table" style="width:100%">
         <tr>
-          <th>Ordem Compra</th>
-          <th>Atualizado em</th>
+          <th style="width: 80px;">Numero</th>
+          <th style="width: 100px;">Data</th>
+          <th style="width: 130px;">Ordem</th>
+          <th>Cliente</th>
+          <th>Representada</th>
+          <th style="width: 100px;">Status</th>
+          <th style="width: 80px;">Subtotal</th>
+          <th style="width: 80px;">IPI</th>
+          <th style="width: 115px;">Total da Venda</th>
+          <th style="width: 85px;">Comissao</th>
+          <th style="width: 175px;">Acoes</th>
+          <!-- <th>Atualizado em</th> -->
         </tr>
         {% for object in object_list %}
         
         <tr>
-          <td><a class="obj-link" href="{{ object.get_absolute_url }}">{{ object.ordemCompra }}</a></td>
-          
-          <td>{{ object.lastUpdate }}</td>
+          <td style="width: 80px;"><a class="obj-link" href="{{ object.get_absolute_url }}">{{ object.id }}</a></td>
+          <td>{{ object.data }}</td>
+          <td>{{ object.ordemCompra }}</td>
+          <td>{{ object.cliente.razaoSocial }}</td>
+          <td>{{ object.representada.nome }}</td>
+          <td>{{ object.status }}</td>
+          <td>{{ object.valorBruto }}</td>
+          <td>{{ object.valorIpi }}</td>
+          <td>{{ object.valorTotal }}</td>
+          <td>{{ object.valorComissao }}</td>
+          <!-- <td>{{ object.lastUpdate }}</td> -->
           <td>
               <a class="btn btn-secondary" href="{{ object.get_edit_url }}"> Editar</a>
               <a class="btn btn-danger" href="{{ object.get_delete_url }}"> Delete</a>

@@ -31,17 +31,26 @@
       
       <table class="table obj-list-table" style="width:100%">
         <tr>
+          <th style="width: 80px;">Codigo</th>
           <th>Nome</th>
-          <th>Valor</th>
+          <th style="width: 80px;">Valor</th>
+          <th style="width: 140px;">Referencia</th>
           <th>Representada</th>
+          <th>Observacao</th>
           <th>Atualizado em</th>
+          <th style="width: 140px;">Acoes</th>
+          <!-- <th>Representada</th> -->
         </tr>
         {% for produto in produto_list %}
 
         <tr>
+          <td>{{ produto.id }}</td>
           <td><a class="obj-link" href="{{ produto.get_absolute_url }}">{{ produto.nome }}</a></td>
           <!-- <td><a href="{% url 'produto-detail' produto.pk %}"> Detalhes</a></td>/ -->
           <td>{{ produto.valor }}</td>
+          <td>{{ produto.referencia }}</td>
+          <td>{{ produto.representada.nome }}</td>
+          <td>{{ produto.observacoes }}</td>
           <!-- <td>{{ produto.representada }}</td> -->
           <td>{{ produto.lastUpdate }}</td>
           <td>

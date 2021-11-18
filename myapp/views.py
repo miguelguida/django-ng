@@ -271,6 +271,7 @@ class PedidoDelete( DeleteView):
 PRODUTO_ORDER_OPTIONS = [
         ['', ''],
         ['nome', 'Nome'],
+        ['valor', 'Valor'],
         ['lastUpdate', 'Última atualização'],
     ]
 class ProdutoListView(generic.ListView):

@@ -27,20 +27,33 @@
 }
 
 .obj-list-new-container{
-	width: 90%;
+	width: 96%;
 	margin: auto;		
+	display: flex;
+	justify-content: space-between;
+}
+
+.obj-list-new-container .pagination{
+	margin: auto 0px;
 }
 
 @media 
 only screen and (min-width: 760px){
-	.obj-list-table-container{
-		width: 90%;
+	.obj-list-table-container, .filter-container{
+		width: 96%;
 		margin: auto;		
 	}	
 }
 
 .obj-list-table{
 	margin-bottom:  0px;
+	table-layout: fixed;
+	font-size: 14px;
+}
+
+.obj-list-table .btn{
+	font-size: 14px;
+	padding: .2rem .45rem;
 }
 
 tr:nth-child(even) {
@@ -49,4 +62,5 @@ tr:nth-child(even) {
 
 th, td {
   text-align: left;
+  word-break: break-word;
 }

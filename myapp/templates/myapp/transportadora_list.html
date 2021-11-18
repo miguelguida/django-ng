@@ -9,20 +9,30 @@
       
       <table class="table obj-list-table" style="width:100%">
         <tr>
+          <th style="width: 80px;">Codigo</th>
           <th>Nome</th>
-          <th>Telefone</th>
-          <!-- <th>Celular</th> -->
+          <th style="width: 150px;">CNPJ</th>
+          <th>Contato</th>
+          
+          <th style="width: 120px;">Telefone</th>
+          <th style="width: 120px;">Celular</th>
           <th>Email</th>
-          <th>Atualizado em</th>
+          <th>Cidade</th>
+          <th style="width: 60px;">UF</th>
+          <th style="width: 140px;">Acao</th>
         </tr>
         {% for object in object_list %}
         
         <tr>
+          <td>{{ object.id }}</td>
           <td><a class="obj-link" href="{{ object.get_absolute_url }}">{{ object.nome }}</a></td>
+          <td>{{ object.cnpj }}</td>
+          <td>{{ object.contato }}</td>
           <td>{{ object.telefone }}</td>
-          <!-- <td>{{ object.celular }}</td> -->
+          <td>{{ object.celular }}</td>
           <td>{{ object.email }}</td>
-          <td>{{ object.lastUpdate }}</td>
+          <td>{{ object.cidade }}</td>
+          <td>{{ object.estado }}</td>
           <td>
               <a class="btn btn-secondary" href="{{ object.get_edit_url }}"> Editar</a>
               <a class="btn btn-danger" href="{{ object.get_delete_url }}"> Delete</a>
@@ -57,6 +67,8 @@
     <p>{{ object.get_text }} </p>
     {% else %}
     
+    <!-- #############    MOBILE     ################# -->
+
     <div class="card-deck">
       <a class="create-new-link-sm btn btn-primary" href="{% url 'transportadora-create' %}"> Criar Novo</a>
       {% for object in object_list %}

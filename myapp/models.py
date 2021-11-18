@@ -25,6 +25,9 @@ class Representada(models.Model):
     ipi = models.CharField(max_length=200, blank=True)
     lastUpdate = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        ordering = ['nome']
+
     def get_absolute_url(self):
         return reverse('representada-detail', args=[str(self.id)])
 
@@ -51,6 +54,9 @@ class Produto(models.Model):
     representada = models.ForeignKey('Representada', on_delete=models.SET_NULL, null=True)
     observacoes = models.TextField(max_length=600, blank=True, null=True)
     lastUpdate = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['nome']
 
     def get_absolute_url(self):
         return reverse('produto-detail', args=[str(self.id)])
@@ -178,6 +184,9 @@ class Cliente(models.Model):
 
     lastUpdate = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        ordering = ['razaoSocial']
+
     def get_absolute_url(self):
         return reverse('cliente-detail', args=[str(self.id)])
 
@@ -210,6 +219,9 @@ class Transportadora(models.Model):
     observacoes = models.CharField(max_length=200, blank=True)
     lastUpdate = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        ordering = ['nome']
+
     def get_absolute_url(self):
         return reverse('transportadora-detail', args=[str(self.id)])
 
@@ -239,6 +251,9 @@ class Vendedor(models.Model):
     celular = models.CharField(max_length=200, blank=True)
     email = models.EmailField(max_length=200, blank=True)
     lastUpdate = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['nome']
 
     def get_absolute_url(self):
         return reverse('vendedor-detail', args=[str(self.id)])
@@ -315,6 +330,9 @@ class Acabamento(models.Model):
     acabamento = models.CharField(max_length=200, help_text="Tipo de acabamento")
     lastUpdate = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        ordering = ['acabamento']
+
     def get_absolute_url(self):
         return reverse('acabamento-detail', args=[str(self.id)])
 
@@ -335,6 +353,9 @@ class Tecido(models.Model):
     tecido = models.CharField(max_length=200, help_text="Tipo de Tecido")
     lastUpdate = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        ordering = ['tecido']
+
     def get_absolute_url(self):
         return reverse('tecido-detail', args=[str(self.id)])
 
@@ -354,6 +375,9 @@ class Tecido(models.Model):
 class FormaPagamento(models.Model):
     formaDePagamento = models.CharField(max_length=200, help_text="Tipo de Forma de Pagamento")
     lastUpdate = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['formaDePagamento']
 
     def get_absolute_url(self):
         return reverse('formaPagamento-detail', args=[str(self.id)])

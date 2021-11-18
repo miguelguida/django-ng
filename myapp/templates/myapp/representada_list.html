@@ -31,15 +31,25 @@
       
       <table class="table obj-list-table" style="width:100%">
         <tr>
+          <th style="width: 80px;">Codigo</th>
           <th>Nome</th>
-          <th>Atualizado em</th>
+          <th>Contato</th>
+          <th style="width: 150px;">CNPJ</th>
+          <th style="width: 120px;">Telefone</th>
+          <th style="width: 120px;">Celular</th>
+          <th>Email</th>
+          <th style="width: 140px;">Acao</th>
         </tr>
         {% for object in object_list %}
         
         <tr>
+          <td>{{ object.id }}</td>
           <td><a class="obj-link" href="{{ object.get_absolute_url }}">{{ object.nome }}</a></td>
-          
-          <td>{{ object.lastUpdate }}</td>
+          <td>{{ object.contato }}</td>
+          <td>{{ object.cnpj }}</td>
+          <td>{{ object.telefone }}</td>
+          <td>{{ object.celular }}</td>
+          <td>{{ object.email }}</td>
           <td>
               <a class="btn btn-secondary" href="{{ object.get_edit_url }}"> Editar</a>
               <a class="btn btn-danger" href="{{ object.get_delete_url }}"> Delete</a>

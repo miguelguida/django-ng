@@ -31,15 +31,29 @@
       
       <table class="table obj-list-table" style="width:100%">
         <tr>
-          <th>Num Solicitacao</th>
-          <th>Atualizado em</th>
+          <th style="width: 80px;">Codigo</th>
+          <th style="width: 100px;">Data</th>
+          <th style="width: 100px;">Nr. Solicitacao</th>
+          <th>Cliente</th>
+          <th>Representada</th>
+          <th>Observacoes</th>
+          <th style="width: 100px;">Status</th>
+          <th style="width: 175px;">Acao</th>
+          <!-- <th>Atualizado em</th> -->
         </tr>
         {% for object in object_list %}
         
         <tr>
+          <td>{{ object.id }}</td>
+          <td>{{ object.data }}</td>
           <td><a class="obj-link" href="{{ object.get_absolute_url }}">{{ object.numeroSolicitacao }}</a></td>
-          
-          <td>{{ object.lastUpdate }}</td>
+          <td>{{ object.cliente.razaoSocial }}</td>
+          <td>{{ object.representada.nome }}</td>
+          <td>{{ object.observacoes }}</td>
+          <td>{{ object.status }}</td>
+
+          <!-- <td>{{ object.lastUpdate }}</td> -->
+
           <td>
               <a class="btn btn-secondary" href="{{ object.get_edit_url }}"> Editar</a>
               <a class="btn btn-danger" href="{{ object.get_delete_url }}"> Delete</a>

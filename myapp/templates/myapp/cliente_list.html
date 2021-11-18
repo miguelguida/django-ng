@@ -9,20 +9,29 @@
       
       <table class="table obj-list-table" style="width:100%">
         <tr>
+          <th style="width: 80px;">Codigo</th>
           <th>Nome</th>
-          <th>Telefone</th>
-          <th>Celular</th>
+          <th style="width: 120px;">Telefone</th>
+          <th style="width: 120px;">Celular</th>
           <th>Email</th>
-          <th>Atualizado em</th>
+          <th style="width: 120px;">Diretor</th>
+          <th style="width: 120px;">Comprador</th>
+          <th style="width: 120px;">Financeiro</th>
+          <th style="width: 140px;">Acao</th>
+          <!-- <th>Atualizado em</th> -->
         </tr>
         {% for object in object_list %}
         
         <tr>
+          <td>{{ object.id }}</td>
           <td><a class="obj-link" href="{{ object.get_absolute_url }}">{{ object.razaoSocial }}</a></td>
           <td>{{ object.telefone }}</td>
           <td>{{ object.celular }}</td>
           <td>{{ object.email }}</td>
-          <td>{{ object.lastUpdate }}</td>
+          <td>{{ object.diretor }}</td>
+          <td>{{ object.comprador }}</td>
+          <td>{{ object.financeiro }}</td>
+          <!-- <td>{{ object.lastUpdate }}</td> -->
           <td>
               <a class="btn btn-secondary" href="{{ object.get_edit_url }}"> Editar</a>
               <a class="btn btn-danger" href="{{ object.get_delete_url }}"> Delete</a>
