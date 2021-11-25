@@ -11,6 +11,7 @@ from xhtml2pdf import pisa
 
 import datetime
 
+from django.db.models import Q
 
 from django.views import generic
 from django.views import View
@@ -31,7 +32,7 @@ def index(request):
 
 # - - - - - Representada - - - - -
 REPRESENTADA_ORDER_OPTIONS = [
-        ['', ''],
+        ['id', 'Código'],
         ['nome', 'Nome'],
         ['lastUpdate', 'Última atualização'],
     ]
@@ -41,7 +42,7 @@ class RepresentadaListView(generic.ListView):
 
     def get_queryset(self):
         filter_val = self.request.GET.get('filter', '')
-        order = self.request.GET.get('orderby', '')
+        order = self.request.GET.get('orderby', 'id')
         asc_desc = self.request.GET.get('asc_desc', '')
 
         if order != '':
@@ -52,13 +53,13 @@ class RepresentadaListView(generic.ListView):
 
         if filter_val != '' and order != '':
             new_context = Representada.objects.filter(
-                nome__startswith=filter_val,
+                nome__icontains=filter_val,
             ).order_by(order)
         elif order != '':
             new_context = Representada.objects.all().order_by(order)
         elif filter_val != '':
             new_context = Representada.objects.filter(
-                nome__startswith=filter_val,
+                nome__icontains=filter_val,
             )
         else:
             new_context = Representada.objects.all()
@@ -74,7 +75,7 @@ class RepresentadaListView(generic.ListView):
             context['is_mobile'] = False
 
         context['filter'] = self.request.GET.get('filter', '')
-        context['orderby'] = self.request.GET.get('orderby', '')
+        context['orderby'] = self.request.GET.get('orderby', 'id')
         context['options'] = REPRESENTADA_ORDER_OPTIONS
         context['asc_desc'] = self.request.GET.get('asc_desc', 'asc')
         context['asc_desc_options'] = [['asc', 'Crescente'],['desc', 'Decrescente']]
@@ -106,7 +107,7 @@ class RepresentadaDelete( DeleteView):
 
 # - - - - - Pedido - - - - -
 PEDIDO_ORDER_OPTIONS = [
-        ['', ''],
+        ['id', 'Número'],
         ['ordemCompra', 'Ordem Compra'],
         ['lastUpdate', 'Última atualização'],
     ]
@@ -116,7 +117,7 @@ class PedidoListView(generic.ListView):
 
     def get_queryset(self):
         filter_val = self.request.GET.get('filter', '')
-        order = self.request.GET.get('orderby', '')
+        order = self.request.GET.get('orderby', 'id')
         asc_desc = self.request.GET.get('asc_desc', '')
 
         if order != '':
@@ -127,13 +128,13 @@ class PedidoListView(generic.ListView):
 
         if filter_val != '' and order != '':
             new_context = Pedido.objects.filter(
-                ordemCompra__startswith=filter_val,
+                Q(ordemCompra__icontains=filter_val) | Q(cliente__razaoSocial__icontains=filter_val)
             ).order_by(order)
         elif order != '':
             new_context = Pedido.objects.all().order_by(order)
         elif filter_val != '':
             new_context = Pedido.objects.filter(
-                ordemCompra__startswith=filter_val,
+                Q(ordemCompra__icontains=filter_val) | Q(cliente__razaoSocial__icontains=filter_val)
             )
         else:
             new_context = Pedido.objects.all()
@@ -149,7 +150,7 @@ class PedidoListView(generic.ListView):
             context['is_mobile'] = False
 
         context['filter'] = self.request.GET.get('filter', '')
-        context['orderby'] = self.request.GET.get('orderby', '')
+        context['orderby'] = self.request.GET.get('orderby', 'id')
         context['options'] = PEDIDO_ORDER_OPTIONS
         context['asc_desc'] = self.request.GET.get('asc_desc', 'asc')
         context['asc_desc_options'] = [['asc', 'Crescente'],['desc', 'Decrescente']]
@@ -269,7 +270,7 @@ class PedidoDelete( DeleteView):
 
 # - - - - - Produto - - - - -
 PRODUTO_ORDER_OPTIONS = [
-        ['', ''],
+        ['id', 'Código'],
         ['nome', 'Nome'],
         ['valor', 'Valor'],
         ['lastUpdate', 'Última atualização'],
@@ -280,7 +281,7 @@ class ProdutoListView(generic.ListView):
 
     def get_queryset(self):
         filter_val = self.request.GET.get('filter', '')
-        order = self.request.GET.get('orderby', '')
+        order = self.request.GET.get('orderby', 'id')
         asc_desc = self.request.GET.get('asc_desc', '')
 
         if order != '':
@@ -291,13 +292,13 @@ class ProdutoListView(generic.ListView):
 
         if filter_val != '' and order != '':
             new_context = Produto.objects.filter(
-                nome__startswith=filter_val,
+                nome__icontains=filter_val,
             ).order_by(order)
         elif order != '':
             new_context = Produto.objects.all().order_by(order)
         elif filter_val != '':
             new_context = Produto.objects.filter(
-                nome__startswith=filter_val,
+                nome__icontains=filter_val,
             )
         else:
             new_context = Produto.objects.all()
@@ -313,7 +314,7 @@ class ProdutoListView(generic.ListView):
             context['is_mobile'] = False
 
         context['filter'] = self.request.GET.get('filter', '')
-        context['orderby'] = self.request.GET.get('orderby', '')
+        context['orderby'] = self.request.GET.get('orderby', 'id')
         context['options'] = PRODUTO_ORDER_OPTIONS
         context['asc_desc'] = self.request.GET.get('asc_desc', 'asc')
         context['asc_desc_options'] = [['asc', 'Crescente'],['desc', 'Decrescente']]
@@ -347,7 +348,7 @@ class ProdutoDelete( DeleteView):
 
 # - - - - - Assistencia - - - - -
 ASSISTENCIA_ORDER_OPTIONS = [
-        ['', ''],
+        ['id', 'Código'],
         ['numeroSolicitacao', 'Numero Solicitacao'],
         ['lastUpdate', 'Última atualização'],
     ]
@@ -357,7 +358,7 @@ class AssistenciaListView(generic.ListView):
 
     def get_queryset(self):
         filter_val = self.request.GET.get('filter', '')
-        order = self.request.GET.get('orderby', '')
+        order = self.request.GET.get('orderby', 'id')
         asc_desc = self.request.GET.get('asc_desc', '')
 
         if order != '':
@@ -368,13 +369,13 @@ class AssistenciaListView(generic.ListView):
 
         if filter_val != '' and order != '':
             new_context = Assistencia.objects.filter(
-                numeroSolicitacao__startswith=filter_val,
+                numeroSolicitacao__icontains=filter_val,
             ).order_by(order)
         elif order != '':
             new_context = Assistencia.objects.all().order_by(order)
         elif filter_val != '':
             new_context = Assistencia.objects.filter(
-                numeroSolicitacao__startswith=filter_val,
+                numeroSolicitacao__icontains=filter_val,
             )
         else:
             new_context = Assistencia.objects.all()
@@ -390,7 +391,7 @@ class AssistenciaListView(generic.ListView):
             context['is_mobile'] = False
 
         context['filter'] = self.request.GET.get('filter', '')
-        context['orderby'] = self.request.GET.get('orderby', '')
+        context['orderby'] = self.request.GET.get('orderby', 'id')
         context['options'] = ASSISTENCIA_ORDER_OPTIONS
         context['asc_desc'] = self.request.GET.get('asc_desc', 'asc')
         context['asc_desc_options'] = [['asc', 'Crescente'],['desc', 'Decrescente']]
@@ -505,10 +506,41 @@ class AssistenciaDelete( DeleteView):
 
 # - - - - - Cliente - - - - -
 
+CLIENTE_ORDER_OPTIONS = [
+        ['id', 'Código'],
+        ['razaoSocial', 'Razão Social'],
+        ['lastUpdate', 'Última atualização'],
+]
+
 class ClienteListView(generic.ListView):
     
     model = Cliente
     paginate_by = 50
+    
+    def get_queryset(self):
+        filter_val = self.request.GET.get('filter', '')
+        order = self.request.GET.get('orderby', 'id')
+        asc_desc = self.request.GET.get('asc_desc', '')
+
+        if order != '':
+            if asc_desc == "desc" and order[0] != '-':
+                order = '-' + order
+            elif asc_desc == "asc" and order[0] == '-':
+                order = order[:1]
+
+        if filter_val != '' and order != '':
+            new_context = Cliente.objects.filter(
+                Q(fat_cidade__icontains=filter_val) | Q(razaoSocial__icontains=filter_val)
+            ).order_by(order)
+        elif order != '':
+            new_context = Cliente.objects.all().order_by(order)
+        elif filter_val != '':
+            new_context = Cliente.objects.filter(
+                Q(fat_cidade__icontains=filter_val) | Q(razaoSocial__icontains=filter_val)
+            )
+        else:
+            new_context = Cliente.objects.all()
+        return new_context
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -518,6 +550,12 @@ class ClienteListView(generic.ListView):
             context['is_mobile'] = True
         else:
             context['is_mobile'] = False
+
+        context['filter'] = self.request.GET.get('filter', '')
+        context['orderby'] = self.request.GET.get('orderby', 'id')
+        context['options'] = CLIENTE_ORDER_OPTIONS
+        context['asc_desc'] = self.request.GET.get('asc_desc', 'asc')
+        context['asc_desc_options'] = [['asc', 'Crescente'],['desc', 'Decrescente']]
         return context
    
 class ClienteDetailView(generic.DetailView):
@@ -546,9 +584,40 @@ class ClienteDelete( DeleteView):
 
 # - - - - - Transportadora - - - - -
 
+TRANSPORTADORA_ORDER_OPTIONS = [
+        ['id', 'Código'],
+        ['Nome', 'Numero Solicitacao'],
+]
+
 class TransportadoraListView(generic.ListView):
+    
     model = Transportadora
     paginate_by = 50
+    
+    def get_queryset(self):
+        filter_val = self.request.GET.get('filter', '')
+        order = self.request.GET.get('orderby', 'id')
+        asc_desc = self.request.GET.get('asc_desc', '')
+
+        if order != '':
+            if asc_desc == "desc" and order[0] != '-':
+                order = '-' + order
+            elif asc_desc == "asc" and order[0] == '-':
+                order = order[:1]
+
+        if filter_val != '' and order != '':
+            new_context = Transportadora.objects.filter(
+                Q(nome__icontains=filter_val) | Q(cnpj__icontains=filter_val)
+            ).order_by(order)
+        elif order != '':
+            new_context = Transportadora.objects.all().order_by(order)
+        elif filter_val != '':
+            new_context = Transportadora.objects.filter(
+                Q(nome__icontains=filter_val) | Q(cnpj__icontains=filter_val)
+            )
+        else:
+            new_context = Transportadora.objects.all()
+        return new_context
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -558,7 +627,14 @@ class TransportadoraListView(generic.ListView):
             context['is_mobile'] = True
         else:
             context['is_mobile'] = False
+
+        context['filter'] = self.request.GET.get('filter', '')
+        context['orderby'] = self.request.GET.get('orderby', 'id')
+        context['options'] = TRANSPORTADORA_ORDER_OPTIONS
+        context['asc_desc'] = self.request.GET.get('asc_desc', 'asc')
+        context['asc_desc_options'] = [['asc', 'Crescente'],['desc', 'Decrescente']]
         return context
+
 
 class TransportadoraDetailView(generic.DetailView):    
     model = Transportadora
@@ -581,9 +657,41 @@ class TransportadoraDelete( DeleteView):
 
 # - - - - - Vendedor - - - - -
 
+VENDEDOR_ORDER_OPTIONS = [
+        ['id', 'Código'],
+        ['nome', 'Nome'],
+        ['lastUpdate', 'Última atualização'],
+]
+
 class VendedorListView(generic.ListView):
+    
     model = Vendedor
     paginate_by = 50
+    
+    def get_queryset(self):
+        filter_val = self.request.GET.get('filter', '')
+        order = self.request.GET.get('orderby', 'id')
+        asc_desc = self.request.GET.get('asc_desc', '')
+
+        if order != '':
+            if asc_desc == "desc" and order[0] != '-':
+                order = '-' + order
+            elif asc_desc == "asc" and order[0] == '-':
+                order = order[:1]
+
+        if filter_val != '' and order != '':
+            new_context = Vendedor.objects.filter(
+                Q(nome__icontains=filter_val) | Q(email__icontains=filter_val)
+            ).order_by(order)
+        elif order != '':
+            new_context = Vendedor.objects.all().order_by(order)
+        elif filter_val != '':
+            new_context = Vendedor.objects.filter(
+                Q(nome__icontains=filter_val) | Q(email__icontains=filter_val)
+            )
+        else:
+            new_context = Vendedor.objects.all()
+        return new_context
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -593,6 +701,12 @@ class VendedorListView(generic.ListView):
             context['is_mobile'] = True
         else:
             context['is_mobile'] = False
+
+        context['filter'] = self.request.GET.get('filter', '')
+        context['orderby'] = self.request.GET.get('orderby', 'id')
+        context['options'] = VENDEDOR_ORDER_OPTIONS
+        context['asc_desc'] = self.request.GET.get('asc_desc', 'asc')
+        context['asc_desc_options'] = [['asc', 'Crescente'],['desc', 'Decrescente']]
         return context
    
 class VendedorDetailView(generic.DetailView):
@@ -615,7 +729,7 @@ class VendedorDelete( DeleteView):
 
 # - - - - - Acabamento - - - - -
 ACABAMENTO_ORDER_OPTIONS = [
-        ['', ''],
+        ['id', 'Código'],
         ['acabamento', 'Acabamento'],
         ['lastUpdate', 'Última atualização'],
     ]
@@ -625,7 +739,7 @@ class AcabamentoListView(generic.ListView):
 
     def get_queryset(self):
         filter_val = self.request.GET.get('filter', '')
-        order = self.request.GET.get('orderby', '')
+        order = self.request.GET.get('orderby', 'id')
         asc_desc = self.request.GET.get('asc_desc', '')
 
         if order != '':
@@ -636,13 +750,13 @@ class AcabamentoListView(generic.ListView):
 
         if filter_val != '' and order != '':
             new_context = Acabamento.objects.filter(
-                acabamento__startswith=filter_val,
+                acabamento__icontains=filter_val,
             ).order_by(order)
         elif order != '':
             new_context = Acabamento.objects.all().order_by(order)
         elif filter_val != '':
             new_context = Acabamento.objects.filter(
-                acabamento__startswith=filter_val,
+                acabamento__icontains=filter_val,
             )
         else:
             new_context = Acabamento.objects.all()
@@ -658,7 +772,7 @@ class AcabamentoListView(generic.ListView):
             context['is_mobile'] = False
 
         context['filter'] = self.request.GET.get('filter', '')
-        context['orderby'] = self.request.GET.get('orderby', '')
+        context['orderby'] = self.request.GET.get('orderby', 'id')
         context['options'] = ACABAMENTO_ORDER_OPTIONS
         context['asc_desc'] = self.request.GET.get('asc_desc', 'asc')
         context['asc_desc_options'] = [['asc', 'Crescente'],['desc', 'Decrescente']]
@@ -684,7 +798,7 @@ class AcabamentoDelete( DeleteView):
 
 # - - - - - Tecido - - - - -
 TECIDO_ORDER_OPTIONS = [
-        ['', ''],
+        ['id', 'Código'],
         ['tecido', 'Tecido'],
         ['lastUpdate', 'Última atualização'],
     ]
@@ -694,7 +808,7 @@ class TecidoListView(generic.ListView):
 
     def get_queryset(self):
         filter_val = self.request.GET.get('filter', '')
-        order = self.request.GET.get('orderby', '')
+        order = self.request.GET.get('orderby', 'id')
         asc_desc = self.request.GET.get('asc_desc', '')
 
         if order != '':
@@ -705,13 +819,13 @@ class TecidoListView(generic.ListView):
 
         if filter_val != '' and order != '':
             new_context = Tecido.objects.filter(
-                tecido__startswith=filter_val,
+                tecido__icontains=filter_val,
             ).order_by(order)
         elif order != '':
             new_context = Tecido.objects.all().order_by(order)
         elif filter_val != '':
             new_context = Tecido.objects.filter(
-                tecido__startswith=filter_val,
+                tecido__icontains=filter_val,
             )
         else:
             new_context = Tecido.objects.all()
@@ -727,7 +841,7 @@ class TecidoListView(generic.ListView):
             context['is_mobile'] = False
 
         context['filter'] = self.request.GET.get('filter', '')
-        context['orderby'] = self.request.GET.get('orderby', '')
+        context['orderby'] = self.request.GET.get('orderby', 'id')
         context['options'] = TECIDO_ORDER_OPTIONS
         context['asc_desc'] = self.request.GET.get('asc_desc', 'asc')
         context['asc_desc_options'] = [['asc', 'Crescente'],['desc', 'Decrescente']]
@@ -753,7 +867,7 @@ class TecidoDelete( DeleteView):
 
 # - - - - - FormaPagamento - - - - -
 FORMAPAGAMENTO_ORDER_OPTIONS = [
-        ['', ''],
+        ['id', 'Código'],
         ['formaDePagamento', 'Forma de Pagamento'],
         ['lastUpdate', 'Última atualização'],
     ]
@@ -763,7 +877,7 @@ class FormaPagamentoListView(generic.ListView):
 
     def get_queryset(self):
         filter_val = self.request.GET.get('filter', '')
-        order = self.request.GET.get('orderby', '')
+        order = self.request.GET.get('orderby', 'id')
         asc_desc = self.request.GET.get('asc_desc', '')
 
         if order != '':
@@ -774,13 +888,13 @@ class FormaPagamentoListView(generic.ListView):
 
         if filter_val != '' and order != '':
             new_context = FormaPagamento.objects.filter(
-                formaDePagamento__startswith=filter_val,
+                formaDePagamento__icontains=filter_val,
             ).order_by(order)
         elif order != '':
             new_context = FormaPagamento.objects.all().order_by(order)
         elif filter_val != '':
             new_context = FormaPagamento.objects.filter(
-                formaDePagamento__startswith=filter_val,
+                formaDePagamento__icontains=filter_val,
             )
         else:
             new_context = FormaPagamento.objects.all()
@@ -796,7 +910,7 @@ class FormaPagamentoListView(generic.ListView):
             context['is_mobile'] = False
 
         context['filter'] = self.request.GET.get('filter', '')
-        context['orderby'] = self.request.GET.get('orderby', '')
+        context['orderby'] = self.request.GET.get('orderby', 'id')
         context['options'] = FORMAPAGAMENTO_ORDER_OPTIONS
         context['asc_desc'] = self.request.GET.get('asc_desc', 'asc')
         context['asc_desc_options'] = [['asc', 'Crescente'],['desc', 'Decrescente']]
