@@ -2,13 +2,14 @@
 
 {% block content %}
   <div class="obj-list-container">
-    <h1>Tecidos</h1>
-    
     {% if not is_mobile %}
+    <h1>Tecidos</h1>
+
     <div class="filter-container">
+      <a class="create-new-link btn btn-primary" href="{% url 'tecido-create' %}"> Criar Novo</a>
       <form method="get" action="{% url 'tecidos' %}">
         <div class="input-group form-row mb-3">
-          <input type="text" class="form-control col-5 mr-2 ml-2" value="{{filter}}" name="filter" placeholder="Buscar"/>
+          <input type="text" class="form-control col-6 mr-2 ml-2" value="{{filter}}" name="filter" placeholder="Buscar"/>
           <div class="input-group-prepend">
             <label class="input-group-text" for="inputGroupSelect01">Ordenar por</label>
           </div>
@@ -17,12 +18,14 @@
               <option value="{{option.0}}" {% ifequal option.0 orderby %} selected {% endifequal %}> {{option.1}}</option>
             {% endfor %}
           </select>
-          <select class="form-control col-2 mr-2"  name="asc_desc">
-            {% for option in asc_desc_options %}
-              <option value="{{option.0}}" {% ifequal option.0 asc_desc %} selected {% endifequal %}> {{option.1}}</option>
-            {% endfor %}
-          </select>
-          <button class="btn btn-secondary" type="submit" name="submit"><i class="fas fa-search"></i></button>
+          <div class="asc-desc-container col-3">
+            <select class="form-control mr-2"  name="asc_desc">
+              {% for option in asc_desc_options %}
+                <option value="{{option.0}}" {% ifequal option.0 asc_desc %} selected {% endifequal %}> {{option.1}}</option>
+              {% endfor %}
+            </select>
+            <button class="btn btn-secondary" type="submit" name="submit"><i class="fas fa-search"></i></button>
+          </div>
         </div>
       </form>
     </div>
@@ -73,10 +76,53 @@
       </ul>
     </div>
     <p>{{ object.get_text }} </p>
+
     {% else %}
+    <h1>Tecidos <a style="float:right;" class="create-new-link-sm btn btn-primary" href="{% url 'tecido-create' %}"> Criar Novo</a></h1>
     
-    <div class="card-deck">
-      <a class="create-new-link-sm btn btn-primary" href="{% url 'tecido-create' %}"> Criar Novo</a>
+
+    <div class="filter-container">
+      <form method="get" action="{% url 'tecidos' %}">
+        <div class="input-group form-row mb-3">
+          <input type="text" class="form-control col-12" value="{{filter}}" name="filter" placeholder="Buscar"/>
+        </div>
+        <div class="input-group form-row mb-3">
+          
+          <div class="input-group-prepend">
+            <label class="input-group-text" for="inputGroupSelect01">Ordenar por</label>
+          </div>
+          <select id="inputGroupSelect01" class="form-control col-4 mr-2"  name="orderby">
+            {% for option in options %}
+              <option value="{{option.0}}" {% ifequal option.0 orderby %} selected {% endifequal %}> {{option.1}}</option>
+            {% endfor %}
+          </select>
+          <select class="form-control col-3 mr-2"  name="asc_desc">
+            {% for option in asc_desc_options %}
+              <option value="{{option.0}}" {% ifequal option.0 asc_desc %} selected {% endifequal %}> {{option.1}}</option>
+            {% endfor %}
+          </select>
+          <button class="btn btn-secondary" type="submit" name="submit"><i class="fas fa-search"></i></button>
+        </div>
+      </form>
+    </div>
+
+    <ul class="pagination justify-content-center">
+      {% if page_obj.has_previous %}
+        <li class="page-item"><a class="page-link" href="?page=1">Primeira</a></li>
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">&#5176;</a></li>
+      {% endif %}
+      <li class="page-item disabled">
+        <span class="page-link">
+          {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}
+        </span>
+      </li>        
+      {% if page_obj.has_next %}
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">&#5171;</a></li>
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Última</a></li>
+      {% endif %}
+    </ul>
+    
+    <div class="card-deck">      
       {% for object in object_list %}
       <div class="card">
         <div class="card-body">
@@ -91,6 +137,23 @@
       </div>
       {% endfor %}
     </div>
+
+    <ul class="pagination justify-content-center">
+      {% if page_obj.has_previous %}
+        <li class="page-item"><a class="page-link" href="?page=1">Primeira</a></li>
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">&#5176;</a></li>
+      {% endif %}
+      <li class="page-item disabled">
+        <span class="page-link">
+          {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}
+        </span>
+      </li>        
+      {% if page_obj.has_next %}
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">&#5171;</a></li>
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Última</a></li>
+      {% endif %}
+    </ul>
+
     {% endif %}
   </div>       
 {% endblock %}
