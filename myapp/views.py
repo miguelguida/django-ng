@@ -17,7 +17,7 @@ from django.views import generic
 from django.views import View
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
-from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
 
 from .models import *
 from .forms import *
@@ -36,7 +36,7 @@ REPRESENTADA_ORDER_OPTIONS = [
         ['nome', 'Nome'],
         ['lastUpdate', 'Última atualização'],
     ]
-class RepresentadaListView(generic.ListView):
+class RepresentadaListView(LoginRequiredMixin, generic.ListView):
     model = Representada
     paginate_by = 50
 
@@ -81,25 +81,25 @@ class RepresentadaListView(generic.ListView):
         context['asc_desc_options'] = [['asc', 'Crescente'],['desc', 'Decrescente']]
         return context
    
-class RepresentadaDetailView(generic.DetailView):
+class RepresentadaDetailView(LoginRequiredMixin, generic.DetailView):
     
     model = Representada
 
 
 # Classes created for the forms challenge
-class RepresentadaCreate( CreateView):
+class RepresentadaCreate(LoginRequiredMixin, CreateView):
     model = Representada
     fields = '__all__'
     success_url = reverse_lazy('representadas')
 
 
-class RepresentadaUpdate( UpdateView):
+class RepresentadaUpdate(LoginRequiredMixin,  UpdateView):
     model = Representada
     fields = '__all__'
     success_url = reverse_lazy('representadas')
 
 
-class RepresentadaDelete( DeleteView):
+class RepresentadaDelete(LoginRequiredMixin,  DeleteView):
     model = Representada
     success_url = reverse_lazy('representadas')
     
@@ -111,7 +111,7 @@ PEDIDO_ORDER_OPTIONS = [
         ['ordemCompra', 'Ordem Compra'],
         ['lastUpdate', 'Última atualização'],
     ]
-class PedidoListView(generic.ListView):
+class PedidoListView(LoginRequiredMixin, generic.ListView):
     model = Pedido
     paginate_by = 50
 
@@ -157,7 +157,7 @@ class PedidoListView(generic.ListView):
         return context
 
 
-class PedidoDetailView(generic.DetailView):
+class PedidoDetailView(LoginRequiredMixin, generic.DetailView):
     
     model = Pedido
 
@@ -224,7 +224,7 @@ class PedidoCreate( View):
         return HttpResponseRedirect(self.get_success_url())
 
 
-class PedidoUpdate( UpdateView):
+class PedidoUpdate(LoginRequiredMixin,  UpdateView):
     model = Pedido
     form_class = PedidoForm
     inline_formset = ItemPedidoInlineFormset
@@ -263,7 +263,7 @@ class PedidoUpdate( UpdateView):
         return HttpResponseRedirect(self.get_success_url())
 
 
-class PedidoDelete( DeleteView):
+class PedidoDelete(LoginRequiredMixin,  DeleteView):
     model = Pedido
     success_url = reverse_lazy('pedidos')
     
@@ -275,7 +275,7 @@ PRODUTO_ORDER_OPTIONS = [
         ['valor', 'Valor'],
         ['lastUpdate', 'Última atualização'],
     ]
-class ProdutoListView(generic.ListView):
+class ProdutoListView(LoginRequiredMixin, generic.ListView):
     model = Produto
     paginate_by = 50
 
@@ -322,25 +322,25 @@ class ProdutoListView(generic.ListView):
 
 
 
-class ProdutoDetailView(generic.DetailView):
+class ProdutoDetailView(LoginRequiredMixin, generic.DetailView):
     
     model = Produto
 
 
 # Classes created for the forms challenge
-class ProdutoCreate( CreateView):
+class ProdutoCreate(LoginRequiredMixin,  CreateView):
     model = Produto
     fields = '__all__'
     success_url = reverse_lazy('produtos')
 
 
-class ProdutoUpdate( UpdateView):
+class ProdutoUpdate(LoginRequiredMixin,  UpdateView):
     model = Produto
     fields = '__all__'
     success_url = reverse_lazy('produtos')
 
 
-class ProdutoDelete( DeleteView):
+class ProdutoDelete(LoginRequiredMixin,  DeleteView):
     model = Produto
     success_url = reverse_lazy('produtos')
     
@@ -352,7 +352,7 @@ ASSISTENCIA_ORDER_OPTIONS = [
         ['numeroSolicitacao', 'Numero Solicitacao'],
         ['lastUpdate', 'Última atualização'],
     ]
-class AssistenciaListView(generic.ListView):
+class AssistenciaListView(LoginRequiredMixin, generic.ListView):
     model = Assistencia
     paginate_by = 50
 
@@ -399,13 +399,13 @@ class AssistenciaListView(generic.ListView):
    
 
 
-class AssistenciaDetailView(generic.DetailView):
+class AssistenciaDetailView(LoginRequiredMixin, generic.DetailView):
     
     model = Assistencia
 
 
 # Classes created for the forms challenge
-class AssistenciaCreate( View):
+class AssistenciaCreate(LoginRequiredMixin,  View):
     form_class = AssistenciaForm
     inline_formset = ItemAssistenciaInlineFormset
     template_name = 'myapp/assistencia_form.html'
@@ -446,7 +446,7 @@ class AssistenciaCreate( View):
         return HttpResponseRedirect(self.get_success_url())
 
 
-class AssistenciaUpdate( UpdateView):
+class AssistenciaUpdate(LoginRequiredMixin,  UpdateView):
     model = Assistencia
     form_class = AssistenciaForm
     inline_formset = ItemAssistenciaInlineFormset
@@ -497,7 +497,7 @@ class AssistenciaUpdate( UpdateView):
     #     return super().form_valid(form)
 
 
-class AssistenciaDelete( DeleteView):
+class AssistenciaDelete(LoginRequiredMixin,  DeleteView):
     model = Assistencia
     success_url = reverse_lazy('assistencias')
     
@@ -512,7 +512,7 @@ CLIENTE_ORDER_OPTIONS = [
         ['lastUpdate', 'Última atualização'],
 ]
 
-class ClienteListView(generic.ListView):
+class ClienteListView(LoginRequiredMixin, generic.ListView):
     
     model = Cliente
     paginate_by = 50
@@ -558,25 +558,25 @@ class ClienteListView(generic.ListView):
         context['asc_desc_options'] = [['asc', 'Crescente'],['desc', 'Decrescente']]
         return context
    
-class ClienteDetailView(generic.DetailView):
+class ClienteDetailView(LoginRequiredMixin, generic.DetailView):
     
     model = Cliente
 
 
 # Classes created for the forms challenge
-class ClienteCreate( CreateView):
+class ClienteCreate(LoginRequiredMixin,  CreateView):
     model = Cliente
     fields = '__all__'
     success_url = reverse_lazy('clientes')
 
 
-class ClienteUpdate( UpdateView):
+class ClienteUpdate(LoginRequiredMixin,  UpdateView):
     model = Cliente
     fields = '__all__'
     success_url = reverse_lazy('clientes')
 
 
-class ClienteDelete( DeleteView):
+class ClienteDelete(LoginRequiredMixin,  DeleteView):
     model = Cliente
     success_url = reverse_lazy('clientes')
     
@@ -589,7 +589,7 @@ TRANSPORTADORA_ORDER_OPTIONS = [
         ['Nome', 'Numero Solicitacao'],
 ]
 
-class TransportadoraListView(generic.ListView):
+class TransportadoraListView(LoginRequiredMixin, generic.ListView):
     
     model = Transportadora
     paginate_by = 50
@@ -636,20 +636,20 @@ class TransportadoraListView(generic.ListView):
         return context
 
 
-class TransportadoraDetailView(generic.DetailView):    
+class TransportadoraDetailView(LoginRequiredMixin, generic.DetailView):    
     model = Transportadora
 
-class TransportadoraCreate( CreateView):
+class TransportadoraCreate(LoginRequiredMixin,  CreateView):
     model = Transportadora
     fields = '__all__'
     success_url = reverse_lazy('transportadoras')
     
-class TransportadoraUpdate( UpdateView):
+class TransportadoraUpdate(LoginRequiredMixin,  UpdateView):
     model = Transportadora
     fields = '__all__'
     success_url = reverse_lazy('transportadoras')
     
-class TransportadoraDelete( DeleteView):
+class TransportadoraDelete(LoginRequiredMixin,  DeleteView):
     model = Transportadora
     success_url = reverse_lazy('transportadoras')
     
@@ -663,7 +663,7 @@ VENDEDOR_ORDER_OPTIONS = [
         ['lastUpdate', 'Última atualização'],
 ]
 
-class VendedorListView(generic.ListView):
+class VendedorListView(LoginRequiredMixin, generic.ListView):
     
     model = Vendedor
     paginate_by = 50
@@ -709,20 +709,20 @@ class VendedorListView(generic.ListView):
         context['asc_desc_options'] = [['asc', 'Crescente'],['desc', 'Decrescente']]
         return context
    
-class VendedorDetailView(generic.DetailView):
+class VendedorDetailView(LoginRequiredMixin, generic.DetailView):
     model = Vendedor
 
-class VendedorCreate( CreateView):
+class VendedorCreate(LoginRequiredMixin,  CreateView):
     model = Vendedor
     fields = '__all__'
     success_url = reverse_lazy('vendedores')
     
-class VendedorUpdate( UpdateView):
+class VendedorUpdate(LoginRequiredMixin,  UpdateView):
     model = Vendedor
     fields = '__all__'
     success_url = reverse_lazy('vendedores')
     
-class VendedorDelete( DeleteView):
+class VendedorDelete(LoginRequiredMixin,  DeleteView):
     model = Vendedor
     success_url = reverse_lazy('vendedores')
 
@@ -733,7 +733,7 @@ ACABAMENTO_ORDER_OPTIONS = [
         ['acabamento', 'Acabamento'],
         ['lastUpdate', 'Última atualização'],
     ]
-class AcabamentoListView(generic.ListView):
+class AcabamentoListView(LoginRequiredMixin, generic.ListView):
     model = Acabamento
     paginate_by = 50
 
@@ -778,20 +778,20 @@ class AcabamentoListView(generic.ListView):
         context['asc_desc_options'] = [['asc', 'Crescente'],['desc', 'Decrescente']]
         return context
    
-class AcabamentoDetailView(generic.DetailView):
+class AcabamentoDetailView(LoginRequiredMixin, generic.DetailView):
     model = Acabamento
 
-class AcabamentoCreate( CreateView):
+class AcabamentoCreate(LoginRequiredMixin,  CreateView):
     model = Acabamento
     fields = '__all__'
     success_url = reverse_lazy('acabamentos')
     
-class AcabamentoUpdate( UpdateView):
+class AcabamentoUpdate(LoginRequiredMixin,  UpdateView):
     model = Acabamento
     fields = '__all__'
     success_url = reverse_lazy('acabamentos')
     
-class AcabamentoDelete( DeleteView):
+class AcabamentoDelete(LoginRequiredMixin,  DeleteView):
     model = Acabamento
     success_url = reverse_lazy('acabamentos')
 
@@ -802,7 +802,7 @@ TECIDO_ORDER_OPTIONS = [
         ['tecido', 'Tecido'],
         ['lastUpdate', 'Última atualização'],
     ]
-class TecidoListView(generic.ListView):
+class TecidoListView(LoginRequiredMixin, generic.ListView):
     model = Tecido
     paginate_by = 50
 
@@ -847,20 +847,20 @@ class TecidoListView(generic.ListView):
         context['asc_desc_options'] = [['asc', 'Crescente'],['desc', 'Decrescente']]
         return context
    
-class TecidoDetailView(generic.DetailView):
+class TecidoDetailView(LoginRequiredMixin, generic.DetailView):
     model = Tecido
 
-class TecidoCreate( CreateView):
+class TecidoCreate(LoginRequiredMixin,  CreateView):
     model = Tecido
     fields = '__all__'
     success_url = reverse_lazy('tecidos')
     
-class TecidoUpdate( UpdateView):
+class TecidoUpdate(LoginRequiredMixin,  UpdateView):
     model = Tecido
     fields = '__all__'
     success_url = reverse_lazy('tecidos')
     
-class TecidoDelete( DeleteView):
+class TecidoDelete(LoginRequiredMixin,  DeleteView):
     model = Tecido
     success_url = reverse_lazy('tecidos')
 
@@ -871,7 +871,7 @@ FORMAPAGAMENTO_ORDER_OPTIONS = [
         ['formaDePagamento', 'Forma de Pagamento'],
         ['lastUpdate', 'Última atualização'],
     ]
-class FormaPagamentoListView(generic.ListView):
+class FormaPagamentoListView(LoginRequiredMixin, generic.ListView):
     model = FormaPagamento
     paginate_by = 50
 
@@ -916,26 +916,26 @@ class FormaPagamentoListView(generic.ListView):
         context['asc_desc_options'] = [['asc', 'Crescente'],['desc', 'Decrescente']]
         return context
    
-class FormaPagamentoDetailView(generic.DetailView):
+class FormaPagamentoDetailView(LoginRequiredMixin, generic.DetailView):
     model = FormaPagamento
 
-class FormaPagamentoCreate( CreateView):
-    model = FormaPagamento
-    fields = '__all__'
-    success_url = reverse_lazy('formasPagamento')
-    
-class FormaPagamentoUpdate( UpdateView):
+class FormaPagamentoCreate(LoginRequiredMixin,  CreateView):
     model = FormaPagamento
     fields = '__all__'
     success_url = reverse_lazy('formasPagamento')
     
-class FormaPagamentoDelete( DeleteView):
+class FormaPagamentoUpdate(LoginRequiredMixin,  UpdateView):
+    model = FormaPagamento
+    fields = '__all__'
+    success_url = reverse_lazy('formasPagamento')
+    
+class FormaPagamentoDelete(LoginRequiredMixin,  DeleteView):
     model = FormaPagamento
     success_url = reverse_lazy('formasPagamento')
     
 
 
-
+@login_required
 def pedido_pdf_view(request, *args, **kwargs):
     template_path = 'myapp/pedido_pdf.html'
     pk = kwargs.get('pk')
@@ -974,6 +974,7 @@ def pedido_pdf_view(request, *args, **kwargs):
        return HttpResponse('We had some errors <pre>' + html + '</pre>')
     return response
 
+@login_required
 def assistencia_pdf_view(request, *args, **kwargs):
     template_path = 'myapp/assistencia_pdf.html'
     pk = kwargs.get('pk')
