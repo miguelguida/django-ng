@@ -3,9 +3,10 @@ from django.urls import reverse  # To generate URLS by reversing URL patterns
 import uuid  # Required for unique book instances
 from datetime import date
 import datetime
+from .soft_delete import *
 
 # Create your models here.
-class Representada(models.Model):
+class Representada(SoftDeletionModel):
     nome = models.CharField(max_length=200,
                             help_text="Nome da representada")
     contato = models.CharField(max_length=200)    
@@ -45,7 +46,7 @@ class Representada(models.Model):
 
 
 # Create your models here.
-class Produto(models.Model):
+class Produto(SoftDeletionModel):
     nome = models.CharField(max_length=200,
                             help_text="Nome do produto")
     valor = models.DecimalField(max_digits=10, decimal_places=2)
@@ -74,7 +75,7 @@ class Produto(models.Model):
         return reverse('produto-delete', args=[str(self.id)])
 
 # Create your models here.
-class Pedido(models.Model):
+class Pedido(SoftDeletionModel):
     data = models.DateField()
     ordemCompra = models.CharField(max_length=200)
     status = models.CharField(max_length=200)
@@ -125,11 +126,12 @@ class Pedido(models.Model):
     def get_delete_url(self):
         return reverse('pedido-delete', args=[str(self.id)])
 
-class ItemPedido(models.Model):
+class ItemPedido(SoftDeletionModel):
     pedido = models.ForeignKey('Pedido', on_delete=models.SET_NULL, null=True)
     produto = models.ForeignKey('Produto', on_delete=models.SET_NULL, null=True)
     # referencia = models.CharField(max_length=200)
     acabamento = models.ForeignKey('Acabamento', on_delete=models.SET_NULL, null=True, blank=True)
+    tecido = models.ForeignKey('Tecido', on_delete=models.SET_NULL, null=True, blank=True)
     quantidade = models.IntegerField()
     # valorUnitario = models.DecimalField(max_digits=10, decimal_places=2)
     # valorParcial = models.DecimalField(max_digits=10, decimal_places=2)
@@ -142,7 +144,7 @@ class ItemPedido(models.Model):
         return self.produto.nome +" "+ self.pedido.ordemCompra +" "+self.produto.referencia
 
 # Create your models here.
-class Cliente(models.Model):
+class Cliente(SoftDeletionModel):
     razaoSocial = models.CharField(max_length=200)
     nomeFantasia = models.CharField(max_length=200)
     diretor = models.CharField(max_length=200, blank=True)
@@ -203,7 +205,7 @@ class Cliente(models.Model):
         return reverse('cliente-delete', args=[str(self.id)])
 
 # Create your models here.
-class Transportadora(models.Model):
+class Transportadora(SoftDeletionModel):
     nome = models.CharField(max_length=200, help_text="Nome da Transportadora")
     contato = models.CharField(max_length=200, blank=True)    
     cnpj = models.CharField(max_length=200, blank=True)
@@ -239,7 +241,7 @@ class Transportadora(models.Model):
 
 
 # Create your models here.
-class Vendedor(models.Model):
+class Vendedor(SoftDeletionModel):
     nome = models.CharField(max_length=200, help_text="Nome do Vendedor")
     cpf = models.CharField(max_length=200)
     estado = models.CharField(max_length=200)
@@ -272,7 +274,7 @@ class Vendedor(models.Model):
 
 
 # Create your models here.
-class Assistencia(models.Model):
+class Assistencia(SoftDeletionModel):
     data = models.DateField()
     numeroSolicitacao = models.CharField(max_length=200)
     # codCliente = models.CharField(max_length=200)
@@ -303,7 +305,7 @@ class Assistencia(models.Model):
         return reverse('assistencia-delete', args=[str(self.id)])
 
 # Create your models here.
-class ItemAssistencia(models.Model):
+class ItemAssistencia(SoftDeletionModel):
     
 
     #Itens da Assistencia
@@ -311,6 +313,7 @@ class ItemAssistencia(models.Model):
     produto = models.ForeignKey('Produto', on_delete=models.SET_NULL, null=True)
     # referencia = models.CharField(max_length=200)
     acabamento = models.ForeignKey('Acabamento', on_delete=models.SET_NULL, null=True)
+    tecido = models.ForeignKey('Tecido', on_delete=models.SET_NULL, null=True, blank=True)
     quantidade = models.IntegerField()
     observacoes = models.CharField(max_length=200, blank=True)
     mostruario = models.BooleanField()
@@ -326,7 +329,7 @@ class ItemAssistencia(models.Model):
         return self.referencia
 
 # Create your models here.
-class Acabamento(models.Model):
+class Acabamento(SoftDeletionModel):
     acabamento = models.CharField(max_length=200, help_text="Tipo de acabamento")
     lastUpdate = models.DateTimeField(auto_now=True)
 
@@ -349,7 +352,7 @@ class Acabamento(models.Model):
         return reverse('acabamento-delete', args=[str(self.id)])
 
 # Create your models here.
-class Tecido(models.Model):
+class Tecido(SoftDeletionModel):
     tecido = models.CharField(max_length=200, help_text="Tipo de Tecido")
     lastUpdate = models.DateTimeField(auto_now=True)
 
@@ -372,7 +375,7 @@ class Tecido(models.Model):
         return reverse('tecido-delete', args=[str(self.id)])
 
 # Create your models here.
-class FormaPagamento(models.Model):
+class FormaPagamento(SoftDeletionModel):
     formaDePagamento = models.CharField(max_length=200, help_text="Tipo de Forma de Pagamento")
     lastUpdate = models.DateTimeField(auto_now=True)
 
