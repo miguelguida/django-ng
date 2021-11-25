@@ -13,51 +13,32 @@
              -->
 
             <div class="form-row">
-                <div class="form-group col-md-6">
+                <div class="form-group col-md-4">
                     <label>Data</label>
                     {{ form.data|add_class:'form-control' }}
                 </div>
-                <div class="form-group col-md-6">
+                <div class="form-group col-md-4">
                     <label>Nr. Solicitação</label>
                     {{ form.numeroSolicitacao|add_class:'form-control' }}
                 </div>
-            </div>
-            <div class="form-row">
-                <!-- <div class="form-group col-md-6">
-                    <label>Cód. Cliente</label>
-                    {{ form.codCliente|add_class:'form-control' }}
-                </div> -->
-                <div class="form-group col-md-6">
-                    <label>Cliente</label>
-                    {{ form.cliente|add_class:'form-control' }}
-                </div>
-            </div>
-            <div class="form-row">
-                <!-- <div class="form-group col-md-4">
-                    <label>Cód. Representada</label>
-                    {{ form.codRepresentada|add_class:'form-control' }}
-                </div> -->
-                <div class="form-group col-md-6">
-                   <label>Representada</label>
-                    {{ form.representada|add_class:'form-control' }}
-                </div>
-            </div>
-            <div class="form-row">
-                <!-- <div class="form-group col-md-4">
-                    <label>Cód. Tansportadora</label>
-                    {{ form.codTransportadora|add_class:'form-control' }}
-                </div> -->
-                <div class="form-group col-md-8">
-                    <label>Transportadora</label>
-                    {{ form.transportadora|add_class:'form-control' }}
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group col-md-6">
+                <div class="form-group col-md-4">
                     <label>Status</label>
                     {{ form.status|add_class:'form-control' }}
                 </div>
-               
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label>Cliente</label>
+                    {{ form.cliente|add_class:'form-control' }}
+                </div>
+                <div class="form-group col-md-4">
+                   <label>Representada</label>
+                    {{ form.representada|add_class:'form-control' }}
+                </div>
+                <div class="form-group col-md-4">
+                    <label>Transportadora</label>
+                    {{ form.transportadora|add_class:'form-control' }}
+                </div>
             </div>
 
             <div class="form-group">
@@ -120,9 +101,13 @@
                                 {{ form.referencia|add_class:'form-control' }}
                             </div> -->
                     
-                            <div class="form-group col-md-4">
+                            <div class="form-group col-md-3">
                                 <label>Acabamento</label>
                                 {{ form.acabamento|add_class:'form-control' }}
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label>Tecido</label>
+                                {{ form.tecido|add_class:'form-control' }}
                             </div>
                             <div class="form-group col-md-2">
                                 <label>Quantidade</label>
@@ -156,14 +141,18 @@
                                 <label>Produto</label>
                                 {{ form.produto|add_class:'form-control' }}
                             </div>
-                            <div class="form-group col-md-2">
+                            <!-- <div class="form-group col-md-2">
                                 <label>Referencia</label>
                                 {{ form.referencia|add_class:'form-control' }}
-                            </div>
+                            </div> -->
                     
-                            <div class="form-group col-md-4">
+                            <div class="form-group col-md-3">
                                 <label>Acabamento</label>
                                 {{ form.acabamento|add_class:'form-control' }}
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label>Tecido</label>
+                                {{ form.tecido|add_class:'form-control' }}
                             </div>
                             <div class="form-group col-md-2">
                                 <label>Quantidade</label>
