@@ -28,7 +28,7 @@
 
 .obj-list-new-container{
 	width: 96%;
-	margin: auto;		
+	margin: 10px auto;	
 	display: flex;
 	justify-content: space-between;
 }
