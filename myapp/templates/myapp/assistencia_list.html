@@ -73,7 +73,6 @@
     </div>
 
     <div class="obj-list-new-container">
-      <a class="create-new-link btn btn-primary" href="{% url 'assistencia-create' %}"> Criar Novo</a>
       <ul class="pagination justify-content-end">
         {% if page_obj.has_previous %}
           <li class="page-item"><a class="page-link" href="?page=1">Primeira</a></li>
@@ -91,6 +90,8 @@
       </ul>
     </div>
     <p>{{ object.get_text }} </p>
+
+
     {% else %}
     <h1>Assistências <a style="float:right;" class="create-new-link-sm btn btn-primary" href="{% url 'assistencia-create' %}"> Criar Novo</a></h1>
     
