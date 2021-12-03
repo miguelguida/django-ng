@@ -49,7 +49,7 @@
             <!-- ######  Item Assistencia  ######## -->
 
             <hr>
-            
+
             <div id="formset-container">
                 <h3>Item Assistência</h3>
                 {{ formset.management_form }}
@@ -181,7 +181,7 @@
 
             $.ajax({
                 method: "GET",
-                url: "/myapp/api/get_produto_info",
+                url: "{% url 'get_produto_info' %}",
                 dataType: 'json',
                 data: { produto: $id_produto },
                 success: function(data, status) {
@@ -199,6 +199,26 @@
     $(function() {
         populateFields();
         $("[id$='-quantidade']").inputSpinner();
+    });
+    $("[id$='-produto']").each(function() {
+        console.log(this.id);
+        var $id_split = this.id.split("-");
+        var $id_produto = $('#'+$id_split[0]+'-'+$id_split[1]+'-produto').val();
+        if($id_produto){
+            $.ajax({    
+                method: "GET",
+                url: "{% url 'get_produto_info' %}",
+                dataType: 'json',
+                data: { produto: $id_produto },
+                success: function(data, status) {
+                    referencia = data['referencia'];
+                    
+                    $('#'+$id_split[0]+'-'+$id_split[1]+'-referencia').val(referencia);
+                },
+                error: function(response) {
+                }
+            });
+        }   
     });
 
 

@@ -270,7 +270,7 @@
 
             $.ajax({
                 method: "GET",
-                url: "/myapp/api/get_produto_info",
+                url: "{% url 'get_produto_info' %}",
                 dataType: 'json',
                 data: { produto: $id_produto },
                 success: function(data, status) {
@@ -320,7 +320,7 @@
         if($id_produto){
             $.ajax({    
                 method: "GET",
-                url: "/myapp/api/get_produto_info",
+                url: "{% url 'get_produto_info' %}",
                 dataType: 'json',
                 data: { produto: $id_produto },
                 success: function(data, status) {
