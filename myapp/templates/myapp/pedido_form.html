@@ -64,22 +64,35 @@
                     <div id="formset-{{ forloop.counter0 }}" class="formset-div">
                         
                         <div class="form-row">
-                            <div class="form-group col-md-4">
+                            <div class="form-group col-md-3">
                                 <label>Produto</label>
                                 {{ form.produto|add_class:'form-control' }}
                             </div>
-                            <div class="form-group col-md-3">
+                            <div class="form-group col-md-1">
+                                <label>Referencia</label>
+                                {{ form.referencia|add_class:'form-control'|attr:'readonly' }}
+                            </div>
+                            <div class="form-group col-md-2">
                                 <label>Acabamento</label>
                                 {{ form.acabamento|add_class:'form-control' }}
                             </div>
-                            <div class="form-group col-md-3">
+                            <div class="form-group col-md-2">
                                 <label>Tecido</label>
                                 {{ form.tecido|add_class:'form-control' }}
+                            </div>
+                            <div class="form-group col-md-1">
+                                <label>Valor Unitario</label>
+                                {{ form.valorUnitario|add_class:'form-control'|attr:'readonly' }}
+                            </div>
+                            <div class="form-group col-md-1">
+                                <label>Valor Parcial</label>
+                                {{ form.valorParcial|add_class:'form-control'|attr:'readonly' }}
                             </div>
                             <div class="form-group col-md-2">
                                 <label>Quantidade</label>
                                 {{ form.quantidade|add_class:'form-control' }}
                             </div>
+                            
                         </div>
                     </div>                
                 {% endfor %}
@@ -94,22 +107,35 @@
                         {{ form.id|add_class:'form-control' }}
                     </div>
                     <div class="form-row">
-                        <div class="form-group col-md-4">
+                        <div class="form-group col-md-3">
                             <label>Produto</label>
                             {{ form.produto|add_class:'form-control' }}
                         </div>
-                        <div class="form-group col-md-3">
+                        <div class="form-group col-md-1">
+                            <label>Referencia</label>
+                            {{ form.referencia|add_class:'form-control'|attr:'readonly' }}
+                        </div>
+                        <div class="form-group col-md-2">
                             <label>Acabamento</label>
                             {{ form.acabamento|add_class:'form-control' }}
                         </div>
-                        <div class="form-group col-md-3">
+                        <div class="form-group col-md-2">
                             <label>Tecido</label>
                             {{ form.tecido|add_class:'form-control' }}
                         </div>
-                        <div class="form-group col-md-2">
+                        <div class="form-group col-md-1">
+                            <label>Valor Unitario</label>
+                            {{ form.valorUnitario|add_class:'form-control'|attr:'readonly' }}
+                        </div>
+                        <div class="form-group col-md-1">
+                            <label>Valor Parcial</label>
+                            {{ form.valorParcial|add_class:'form-control'|attr:'readonly' }}
+                        </div>
+                        <div class="form-group col-md-1">
                             <label>Quantidade</label>
                             {{ form.quantidade|add_class:'form-control' }}
                         </div>
+                        
                     </div>
                 </div>                
                 {% endif %}
@@ -182,6 +208,7 @@
             
         </form>
     </div>
+
 <script>
     // var cep = document.getElementById("id_cep")
     // cep.onblur = function(){
@@ -210,6 +237,9 @@
     $( function() {
         $( "#id_data" ).datepicker();
     } );
+    function get2decimal(number){
+        return Math.round(number * 100) / 100;
+    }
     $(function() {
         $('.add-item').on('click', function(ev) {
             console.log("DJONODCN");
@@ -227,9 +257,101 @@
             $('html, body').animate({
                 scrollTop: $("#add-item-button").position().top-200
             }, 800);
+            $("[id$='-quantidade']").inputSpinner();
+            populateFields();
         });
     });
 
+    function populateFields(){
+        $("[id$='-produto']").on('change', function(){
+            console.log(this.id);
+            var $id_split = this.id.split("-");
+            var $id_produto = $('#'+$id_split[0]+'-'+$id_split[1]+'-produto').val();
 
+            $.ajax({
+                method: "GET",
+                url: "/myapp/api/get_produto_info",
+                dataType: 'json',
+                data: { produto: $id_produto },
+                success: function(data, status) {
+                    console.log("SUCCESS:");
+                    console.log(data);
+                    console.log(data['referencia']);
+                    console.log(data['valor']);
+                    
+                    referencia = data['referencia'];
+                    valorUnitario = data['valor'];
+
+                    console.log('@@@@@@@@@@@@');
+                    
+                    $('#'+$id_split[0]+'-'+$id_split[1]+'-referencia').val(referencia);
+                    $('#'+$id_split[0]+'-'+$id_split[1]+'-valorUnitario').val(valorUnitario);
+                    qtde = $('#'+$id_split[0]+'-'+$id_split[1]+'-quantidade').val();
+                    $('#'+$id_split[0]+'-'+$id_split[1]+'-valorParcial').val((parseFloat(qtde)*valorUnitario).toFixed(2));
+                    updateValorBruto();
+                },
+                error: function(response) {
+                }
+            });
+            
+
+        });
+        $("[id$='-quantidade']").on('change', function(){
+            var $id_split = this.id.split("-");
+
+            qtde = $('#'+$id_split[0]+'-'+$id_split[1]+'-quantidade').val();
+            valorUnitario = $('#'+$id_split[0]+'-'+$id_split[1]+'-valorUnitario').val();
+
+            if(qtde && qtde > 0 && valorUnitario){
+                $('#'+$id_split[0]+'-'+$id_split[1]+'-valorParcial').val((parseFloat(qtde)*valorUnitario).toFixed(2));
+            }
+            updateValorBruto();
+        });
+    }
+    $(function() {
+        populateFields();
+        $("[id$='-quantidade']").inputSpinner();
+    });
+
+    $("[id$='-produto']").each(function() {
+        console.log(this.id);
+        var $id_split = this.id.split("-");
+        var $id_produto = $('#'+$id_split[0]+'-'+$id_split[1]+'-produto').val();
+        if($id_produto){
+            $.ajax({    
+                method: "GET",
+                url: "/myapp/api/get_produto_info",
+                dataType: 'json',
+                data: { produto: $id_produto },
+                success: function(data, status) {
+                    referencia = data['referencia'];
+                    valorUnitario = data['valor'];
+                    
+                    $('#'+$id_split[0]+'-'+$id_split[1]+'-referencia').val(referencia);
+                    $('#'+$id_split[0]+'-'+$id_split[1]+'-valorUnitario').val(valorUnitario);
+                    qtde = $('#'+$id_split[0]+'-'+$id_split[1]+'-quantidade').val();
+                    $('#'+$id_split[0]+'-'+$id_split[1]+'-valorParcial').val(parseFloat((parseFloat(qtde)*valorUnitario).toFixed(2)));
+                },
+                error: function(response) {
+                }
+            });
+        }   
+    });
+
+    function updateValorBruto(){
+        var $valorBruto = 0.00;
+        $("[id$='-valorParcial']").each(function() {
+            if($(this).val()){
+                $valorBruto += parseFloat($(this).val());
+                console.log("this.val: "+$(this).val());
+            }
+        });
+        $("[id$='_valorBruto']").val(get2decimal($valorBruto));
+        console.log("VBVBVBVB: "+$valorBruto);
+    }
+    updateValorBruto();
+
+
+    
 </script>
 {% endblock %}

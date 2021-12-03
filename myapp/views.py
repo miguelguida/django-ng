@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponse 
 from django.http import HttpResponseRedirect
+from django.http import JsonResponse
+from django.core import serializers
 from django.shortcuts import get_object_or_404
 from django.template.loader import get_template
 from django.urls import reverse
@@ -1001,7 +1003,30 @@ def assistencia_pdf_view(request, *args, **kwargs):
        return HttpResponse('We had some errors <pre>' + html + '</pre>')
     return response
 
+def get_produto_info(request, *args, **kwargs):
+    
 
+    if request.method == "GET":
+        if request.is_ajax():
+            
+            print("ajax test")
+
+            #print(request.GET.get)
+            print(request.GET.get('produto'))
+            produto_id =request.GET.get('produto')
+            produto = get_object_or_404(Produto, pk=produto_id)
+            # produto_json = serializers.serialize('json',[produto])
+            # print("PRODUTO:   ",produto_json)
+
+            data = {
+                'view_amount': "test",
+                'referencia': produto.referencia,   
+                'valor': produto.valor,
+            }
+
+            
+
+            return JsonResponse(data)
 
 
 

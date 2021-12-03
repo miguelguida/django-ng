@@ -129,12 +129,12 @@ class Pedido(SoftDeletionModel):
 class ItemPedido(SoftDeletionModel):
     pedido = models.ForeignKey('Pedido', on_delete=models.SET_NULL, null=True)
     produto = models.ForeignKey('Produto', on_delete=models.SET_NULL, null=True)
-    # referencia = models.CharField(max_length=200)
+    referencia = models.CharField(max_length=200, null=True, blank=True)
     acabamento = models.ForeignKey('Acabamento', on_delete=models.SET_NULL, null=True, blank=True)
     tecido = models.ForeignKey('Tecido', on_delete=models.SET_NULL, null=True, blank=True)
-    quantidade = models.IntegerField()
-    # valorUnitario = models.DecimalField(max_digits=10, decimal_places=2)
-    # valorParcial = models.DecimalField(max_digits=10, decimal_places=2)
+    quantidade = models.IntegerField(default=1)
+    valorUnitario = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    valorParcial = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     lastUpdate = models.DateTimeField(auto_now=True)
 
     def get_valorParcial(self):
@@ -311,7 +311,7 @@ class ItemAssistencia(SoftDeletionModel):
     #Itens da Assistencia
     assistencia = models.ForeignKey('Assistencia', on_delete=models.SET_NULL, null=True)
     produto = models.ForeignKey('Produto', on_delete=models.SET_NULL, null=True)
-    # referencia = models.CharField(max_length=200)
+    referencia = models.CharField(max_length=200, null=True, blank=True)
     acabamento = models.ForeignKey('Acabamento', on_delete=models.SET_NULL, null=True)
     tecido = models.ForeignKey('Tecido', on_delete=models.SET_NULL, null=True, blank=True)
     quantidade = models.IntegerField()

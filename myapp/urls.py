@@ -6,6 +6,10 @@ urlpatterns =[
 ]
 
 urlpatterns += [
+    path('api/get_produto_info', views.get_produto_info, name='get_produto_info'),
+]
+
+urlpatterns += [
     path('representadas/', views.RepresentadaListView.as_view(), name='representadas'),
     path('representada/<int:pk>', views.RepresentadaDetailView.as_view(), name='representada-detail'),
     path('representada/create/', views.RepresentadaCreate.as_view(), name='representada-create'),

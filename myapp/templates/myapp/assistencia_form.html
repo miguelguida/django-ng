@@ -48,41 +48,8 @@
 
             <!-- ######  Item Assistencia  ######## -->
 
-            <!-- {% for formset in inlines %}
-                {{ formset.management_form }}
-                {% for form in formset.forms %}
-                <div class="form-row">
-                    <div class="form-group col-md-4">
-                        <label>Produto</label>
-                        {{ form.produto|add_class:'form-control' }}
-                    </div>
-                    <div class="form-group col-md-2">
-                        <label>Referencia</label>
-                        {{ form.referencia|add_class:'form-control' }}
-                    </div>
-               
-                    <div class="form-group col-md-4">
-                        <label>Acabamento</label>
-                        {{ form.acabamento|add_class:'form-control' }}
-                    </div>
-                    <div class="form-group col-md-2">
-                        <label>Quantidade</label>
-                        {{ form.quantidade|add_class:'form-control' }}
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group col-md-6">
-                        <label>Observacoes</label>
-                        {{ form.observacoes|add_class:'form-control' }}
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label>Mostruario</label>
-                        {{ form.mostruario|add_class:'form-control' }}
-                    </div>
-                </div>
-                
-                {% endfor %}
-            {% endfor %} -->
+            <hr>
+            
             <div id="formset-container">
                 <h3>Item Assistência</h3>
                 {{ formset.management_form }}
@@ -92,30 +59,27 @@
                             <div hidden>                           
                                 {{ form.id|add_class:'form-control' }}
                             </div>
-                            <div class="form-group col-md-4">
+                            <div class="form-group col-md-3">
                                 <label>Produto</label>
                                 {{ form.produto|add_class:'form-control' }}
                             </div>
-                            <!-- <div class="form-group col-md-2">
+                            <div class="form-group col-md-1">
                                 <label>Referencia</label>
-                                {{ form.referencia|add_class:'form-control' }}
-                            </div> -->
-                    
-                            <div class="form-group col-md-3">
+                                {{ form.referencia|add_class:'form-control'|attr:'readonly' }}
+                            </div>
+                            <div class="form-group col-md-2">
                                 <label>Acabamento</label>
                                 {{ form.acabamento|add_class:'form-control' }}
                             </div>
-                            <div class="form-group col-md-3">
+                            <div class="form-group col-md-2">
                                 <label>Tecido</label>
                                 {{ form.tecido|add_class:'form-control' }}
                             </div>
-                            <div class="form-group col-md-2">
+                            <div class="form-group col-md-1">
                                 <label>Quantidade</label>
                                 {{ form.quantidade|add_class:'form-control' }}
                             </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group col-md-6">
+                            <div class="form-group col-md-2">
                                 <label>Observacoes</label>
                                 {{ form.observacoes|add_class:'form-control' }}
                             </div>
@@ -137,30 +101,27 @@
                             {{ form.id|add_class:'form-control' }}
                         </div>
                         <div class="form-row">
-                            <div class="form-group col-md-4">
+                            <div class="form-group col-md-3">
                                 <label>Produto</label>
                                 {{ form.produto|add_class:'form-control' }}
                             </div>
-                            <!-- <div class="form-group col-md-2">
+                            <div class="form-group col-md-1">
                                 <label>Referencia</label>
-                                {{ form.referencia|add_class:'form-control' }}
-                            </div> -->
-                    
-                            <div class="form-group col-md-3">
+                                {{ form.referencia|add_class:'form-control'|attr:'readonly' }}
+                            </div>
+                            <div class="form-group col-md-2">
                                 <label>Acabamento</label>
                                 {{ form.acabamento|add_class:'form-control' }}
                             </div>
-                            <div class="form-group col-md-3">
+                            <div class="form-group col-md-2">
                                 <label>Tecido</label>
                                 {{ form.tecido|add_class:'form-control' }}
                             </div>
-                            <div class="form-group col-md-2">
+                            <div class="form-group col-md-1">
                                 <label>Quantidade</label>
                                 {{ form.quantidade|add_class:'form-control' }}
                             </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group col-md-6">
+                            <div class="form-group col-md-2">
                                 <label>Observacoes</label>
                                 {{ form.observacoes|add_class:'form-control' }}
                             </div>
@@ -176,48 +137,20 @@
             </script>
                 
             <a href="#" id="add-item-button" class="btn btn-info add-item">Add formset</a>
-
-            <!-- <div class="input-group">
-                <label>observacoes</label>
-                <div class="input-group-append">
-                    <div class="input-group-text"> <span class="fas fa-user"></span> </div>
-                </div>
-                
-                {{ form.observacoes|add_class:'form-control' }}
-            </div>   -->
-          
+            
+            <hr>
             
             <input class="btn btn-primary submit-btn" type="submit" value="Submit" />
             <a href="{% url 'assistencias' %}"><input class="btn btn-secondary submit-btn" type="button" value="Cancel" /></a>
             
         </form>
     </div>
+
 <script>
-    // var cep = document.getElementById("id_cep")
-    // cep.onblur = function(){
-    //     console.log("poaspoaspoaspoaspoaspo")
-    //     var url = "https://viacep.com.br/ws/"+cep.value+"/json/";
-                
-    //     // Faz a pesquisa do CEP, tratando o retorno com try/catch para que
-    //     // caso ocorra algum erro (o cep pode não existir, por exemplo) a
-    //     // usabilidade não seja afetada, assim o usuário pode continuar//
-    //     // preenchendo os campos normalmente
-    //     fetch(url, {
-    //         method: 'get'
-    //     })
-    //     .then(response => response.json())
-    //     .then(data => {
-    //         console.log(data)
-    //         document.getElementById("id_estado").value = data.uf
-    //         document.getElementById("id_endereco").value = data.logradouro
-    //         document.getElementById("id_cidade").value = data.localidade
-    //         document.getElementById("id_bairro").value = data.bairro
-
-    //     }).catch(function(err) {
-    //         // Error :(
-    //     });
-    // };
-
+    
+    $( function() {
+        $( "#id_data" ).datepicker();
+    } );
     $(function() {
         $('.add-item').on('click', function(ev) {
             console.log("DJONODCN");
@@ -235,7 +168,37 @@
             $('html, body').animate({
                 scrollTop: $("#add-item-button").position().top-200
             }, 800);
+            populateFields();
+            $("[id$='-quantidade']").inputSpinner();
         });
+    });
+
+    function populateFields(){
+        $("[id$='-produto']").on('change', function(){
+            console.log(this.id);
+            var $id_split = this.id.split("-");
+            var $id_produto = $('#'+$id_split[0]+'-'+$id_split[1]+'-produto').val();
+
+            $.ajax({
+                method: "GET",
+                url: "/myapp/api/get_produto_info",
+                dataType: 'json',
+                data: { produto: $id_produto },
+                success: function(data, status) {
+                    referencia = data['referencia'];
+                    
+                    $('#'+$id_split[0]+'-'+$id_split[1]+'-referencia').val(referencia);
+                },
+                error: function(response) {
+                }
+            });
+            
+
+        });        
+    }
+    $(function() {
+        populateFields();
+        $("[id$='-quantidade']").inputSpinner();
     });
 
 
