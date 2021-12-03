@@ -313,6 +313,7 @@
         $("[id$='-quantidade']").inputSpinner();
     });
 
+    
     $("[id$='-produto']").each(function() {
         console.log(this.id);
         var $id_split = this.id.split("-");
@@ -331,6 +332,7 @@
                     $('#'+$id_split[0]+'-'+$id_split[1]+'-valorUnitario').val(valorUnitario);
                     qtde = $('#'+$id_split[0]+'-'+$id_split[1]+'-quantidade').val();
                     $('#'+$id_split[0]+'-'+$id_split[1]+'-valorParcial').val(parseFloat((parseFloat(qtde)*valorUnitario).toFixed(2)));
+                    updateValorBruto();
                 },
                 error: function(response) {
                 }
@@ -349,7 +351,6 @@
         $("[id$='_valorBruto']").val(get2decimal($valorBruto));
         console.log("VBVBVBVB: "+$valorBruto);
     }
-    updateValorBruto();
 
 
     
