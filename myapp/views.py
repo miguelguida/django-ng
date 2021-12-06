@@ -18,6 +18,7 @@ from django.db.models import Q
 from django.views import generic
 from django.views import View
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views.generic.base import TemplateView
 
 from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
 
@@ -1029,11 +1030,58 @@ def get_produto_info(request, *args, **kwargs):
             return JsonResponse(data)
 
 
+class Relatorios(LoginRequiredMixin, TemplateView):
+    template_name = 'myapp/relatorios.html'
+    
 
+@login_required
+def relatorio_clientes_view(request, *args, **kwargs):
+    template_path = 'myapp/relatorio_clientes_pdf.html'
+    
+    clientes = Cliente.objects.all()
+    
 
+    context = {'clientes': clientes, 
+               
+               }
+    # Create a Django response object, and specify content_type as pdf
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="lista_de_clientes.pdf"'
+    # find the template and render it.
+    template = get_template(template_path)
+    html = template.render(context)
 
+    # create a pdf
+    pisa_status = pisa.CreatePDF(
+       html, dest=response)
+    # if error then show some funy view
+    if pisa_status.err:
+       return HttpResponse('We had some errors <pre>' + html + '</pre>')
+    return response
 
+@login_required
+def relatorio_representadas_view(request, *args, **kwargs):
+    template_path = 'myapp/relatorio_representadas_pdf.html'
+    
+    representadas = Representada.objects.all()
+    
+    context = {'representadas': representadas, 
+               
+               }
+    # Create a Django response object, and specify content_type as pdf
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="lista_de_representadas.pdf"'
+    # find the template and render it.
+    template = get_template(template_path)
+    html = template.render(context)
 
+    # create a pdf
+    pisa_status = pisa.CreatePDF(
+       html, dest=response)
+    # if error then show some funy view
+    if pisa_status.err:
+       return HttpResponse('We had some errors <pre>' + html + '</pre>')
+    return response
 
 
 

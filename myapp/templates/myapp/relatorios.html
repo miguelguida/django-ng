@@ -1,0 +1,36 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <div class="obj-list-container">
+    <h1>Relatórios</h1>
+    
+    <div class="table-responsive obj-list-table-container">
+      
+      
+      
+        <table class="table obj-list-table" style="width:100%">
+
+            
+            
+            <tr>
+                <th>Tipo de relatório</th>
+                
+
+            </tr>
+            <tr>
+                <td>Lista de Clientes</td>
+                <td><a class="btn btn-warning"href="{% url 'relatorio-clientes' %}"> Gerar PDF</a></td>
+            </tr>
+            <tr>
+                <td>Lista de Representadas</td>
+                <td><a class="btn btn-warning"href="{% url 'relatorio-representadas' %}"> Gerar PDF</a></td>
+            </tr>
+        
+
+      </table>
+
+     
+    </div>
+  </div>       
+{% endblock %}
+

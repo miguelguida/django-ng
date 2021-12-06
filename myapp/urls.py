@@ -91,3 +91,9 @@ urlpatterns += [
     path('formaPagamento/<int:pk>/update/', views.FormaPagamentoUpdate.as_view(), name='formaPagamento-update'),
     path('formaPagamento/<int:pk>/delete/', views.FormaPagamentoDelete.as_view(), name='formaPagamento-delete'),
 ]
+
+urlpatterns += [
+    path('relatorios/', views.Relatorios.as_view(), name='relatorios'),
+    path('relatorio/clientes/', views.relatorio_clientes_view, name='relatorio-clientes'),
+    path('relatorio/representadas/', views.relatorio_representadas_view, name='relatorio-representadas'),
+]
