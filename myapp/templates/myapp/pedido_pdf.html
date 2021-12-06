@@ -208,7 +208,7 @@
                         <tr>
                             <th>Referência</th>
                             <th>Qtd.</th>
-                            <!-- <th>Tecido</th> -->
+                            <th>Tecido</th>
                             <th>Produto</th>
                             <th>Acabamento</th>
                             <th>Valor Unitário</th>
@@ -220,11 +220,11 @@
                         <tr>
                             <td>{{ item.produto.referencia }}</td>
                             <td>{{ item.quantidade }}</td>
-                            <!-- <td>{{ item.tecido }}</td> -->
+                            <td>{{ item.tecido }}</td>
                             <td>{{ item.produto }}</td>
                             <td>{{ item.acabamento }}</td>
-                            <td>{{ item.produto.valor }}</td>
-                            <td>{{ item.get_valorParcial }}</td>
+                            <td>{{ item.valorUnitario }}</td>
+                            <td>{{ item.valorParcial }}</td>
                         </tr>
                         {% endfor %}
                         </tbody>

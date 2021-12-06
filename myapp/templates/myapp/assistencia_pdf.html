@@ -3,7 +3,7 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <title>Resumo de Pedido - {{assistencia.ordemCompra}}</title>
+        <title>Resumo de Assistencia - {{assistencia.numeroSolicitacao}}</title>
         <style type="text/css">
             @page {
                 size: A4;
@@ -205,7 +205,7 @@
                         <tr>
                             <th>Referência</th>
                             <th>Qtd.</th>
-                            <!-- <th>Tecido</th> -->
+                            <th>Tecido</th>
                             <th>Produto</th>
                             <th>Acabamento</th>
                             <th>Observações</th>
@@ -216,10 +216,26 @@
                         <tr>
                             <td>{{ item.produto.referencia }}</td>
                             <td>{{ item.quantidade }}</td>
-                            <!-- <td>{{ item.tecido }}</td> -->
+                            
+                            {% if item.tecido %}
+                                <td>{{ item.tecido }}</td>
+                            {% else %} 
+                                <td> </td>
+                            {% endif %}   
+                            
                             <td>{{ item.produto }}</td>
-                            <td>{{ item.acabamento }}</td>
-                            <td>{{ item.observacoes }}</td>
+                            
+                            {% if item.acabamento %}
+                                <td>{{ item.acabamento }}</td>
+                            {% else %} 
+                                <td> </td>
+                            {% endif %}   
+                            
+                            {% if item.observacoes %}
+                                <td>{{ item.observacoes }}</td>
+                            {% else %} 
+                                <td> </td>
+                            {% endif %}    
                         </tr>
                         {% endfor %}
                         </tbody>
