@@ -315,7 +315,7 @@ class ItemAssistencia(SoftDeletionModel):
     acabamento = models.ForeignKey('Acabamento', on_delete=models.SET_NULL, null=True)
     tecido = models.ForeignKey('Tecido', on_delete=models.SET_NULL, null=True, blank=True)
     quantidade = models.IntegerField()
-    observacoes = models.CharField(max_length=255, null=True, blank=True)
+    observacoes = models.TextField(max_length=255, null=True, blank=True)
     mostruario = models.BooleanField()
     lastUpdate = models.DateTimeField(auto_now=True)
 

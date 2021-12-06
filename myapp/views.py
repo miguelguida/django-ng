@@ -963,7 +963,7 @@ def pedido_pdf_view(request, *args, **kwargs):
     # Create a Django response object, and specify content_type as pdf
     # response = HttpResponse(content_type='application/pdf')
     response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename="pedido_'+pedido.ordemCompra+'.pdf"'
+    response['Content-Disposition'] = 'attachment; filename="pedido_'+str(pedido.id)+'.pdf"'
     # find the template and render it.
     template = get_template(template_path)
     html = template.render(context)
@@ -990,7 +990,7 @@ def assistencia_pdf_view(request, *args, **kwargs):
                }
     # Create a Django response object, and specify content_type as pdf
     response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename="pedido_'+assistencia.numeroSolicitacao+'.pdf"'
+    response['Content-Disposition'] = 'attachment; filename="assistencia_'+str(assistencia.id)+'.pdf"'
     # find the template and render it.
     template = get_template(template_path)
     html = template.render(context)
