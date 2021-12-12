@@ -96,4 +96,5 @@ urlpatterns += [
     path('relatorios/', views.Relatorios.as_view(), name='relatorios'),
     path('relatorio/clientes/', views.relatorio_clientes_view, name='relatorio-clientes'),
     path('relatorio/representadas/', views.relatorio_representadas_view, name='relatorio-representadas'),
+    path('relatorio/produtos-por-repr/', views.relatorio_produtos_por_repr_view, name='relatorio-produtos-por-repr'),
 ]

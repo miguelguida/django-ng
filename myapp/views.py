@@ -1083,6 +1083,34 @@ def relatorio_representadas_view(request, *args, **kwargs):
        return HttpResponse('We had some errors <pre>' + html + '</pre>')
     return response
 
+@login_required
+def relatorio_produtos_por_repr_view(request, *args, **kwargs):
+    template_path = 'myapp/relatorio_produtos_por_repr_pdf.html'
+    
+    representadas = Representada.objects.all()
+    produtos = {}
+    for r in representadas:
+        produtos[r] = Produto.objects.filter(representada=r)
+            
+    
+    context = {'representadas': representadas, 
+               'produtos': produtos, 
+               }
+
+    # Create a Django response object, and specify content_type as pdf
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="lista_de_prod_por_repr.pdf"'
+    # find the template and render it.
+    template = get_template(template_path)
+    html = template.render(context)
+
+    # create a pdf
+    pisa_status = pisa.CreatePDF(
+       html, dest=response)
+    # if error then show some funy view
+    if pisa_status.err:
+       return HttpResponse('We had some errors <pre>' + html + '</pre>')
+    return response
 
 
 # class MyView(UpdateView): # FormView, CreateView, etc
