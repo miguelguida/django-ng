@@ -74,11 +74,31 @@ class Produto(SoftDeletionModel):
     def get_delete_url(self):
         return reverse('produto-delete', args=[str(self.id)])
 
+
+class Status(SoftDeletionModel):
+    status = models.CharField(max_length=255, null=True, blank=True)
+
+    def __str__(self):
+        return self.status
+
+
+class TipoFrete(SoftDeletionModel):
+    tipoFrete = models.CharField(max_length=255, null=True, blank=True)
+
+    def __str__(self):
+        return self.tipoFrete
+
+class TipoCobranca(SoftDeletionModel):
+    tipoCobranca = models.CharField(max_length=255, null=True, blank=True)
+
+    def __str__(self):
+        return self.tipoCobranca
+
 # Create your models here.
 class Pedido(SoftDeletionModel):
     data = models.DateField()
     ordemCompra = models.CharField(max_length=255, null=True, blank=True)
-    status = models.CharField(max_length=255, null=True, blank=True)
+    status = models.ForeignKey('Status', on_delete=models.SET_NULL, null=True)
     # codCliente = models.CharField(max_length=255, null=True, blank=True)
     cliente = models.ForeignKey('Cliente', on_delete=models.SET_NULL, null=True)
     # codRepresentada = models.CharField(max_length=255, null=True, blank=True)
@@ -87,7 +107,7 @@ class Pedido(SoftDeletionModel):
     vendedor = models.ForeignKey('Vendedor', on_delete=models.SET_NULL, null=True)
     # codTransportadora = models.CharField(max_length=255, null=True, blank=True)
     transportadora = models.ForeignKey('Transportadora', on_delete=models.SET_NULL, null=True)
-    tipoFrete = models.CharField(max_length=255, null=True, blank=True)
+    tipoFrete = models.ForeignKey('TipoFrete', on_delete=models.SET_NULL, null=True)
     formaPagamento = models.ForeignKey('FormaPagamento', on_delete=models.SET_NULL, null=True)
     tipoCobranca = models.CharField(max_length=255, null=True, blank=True)
 
@@ -283,7 +303,7 @@ class Assistencia(SoftDeletionModel):
     representada = models.ForeignKey('Representada', on_delete=models.SET_NULL, null=True)
     # codTransportadora = models.CharField(max_length=255, null=True, blank=True)
     transportadora = models.ForeignKey('Transportadora', on_delete=models.SET_NULL, null=True)
-    status = models.CharField(max_length=255, null=True, blank=True)
+    status = models.ForeignKey('Status', on_delete=models.SET_NULL, null=True)
     observacoes = models.TextField(max_length=600, blank=True)
     #Itens da Assistencia
     # itemAssistencia = models.ManyToManyField('ItemAssistencia')

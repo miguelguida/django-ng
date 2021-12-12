@@ -15,6 +15,9 @@ admin.site.register(ItemAssistencia)
 admin.site.register(ItemPedido)
 admin.site.register(Vendedor)
 admin.site.register(FormaPagamento)
+admin.site.register(Status)
+admin.site.register(TipoFrete)
+admin.site.register(TipoCobranca)
 
 
 class ItemPedidoInline(admin.TabularInline):
