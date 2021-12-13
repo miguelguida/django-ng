@@ -147,7 +147,12 @@
     </div>
 
 <script>
-    
+    $("[id$='_cliente']").select2();
+    $("[id$='_representada']").select2();
+    $("[id$='_trasnportadora']").select2();
+    $("[id$='-produto']").select2();
+    $("[id$='-acabamento']").select2();
+    $("[id$='-tecido']").select2();
     $( function() {
         $( "#id_data" ).datepicker();
     } );
@@ -168,6 +173,9 @@
             $('html, body').animate({
                 scrollTop: $("#add-item-button").position().top-200
             }, 800);
+            $("[id$='-produto']").select2();
+            $("[id$='-acabamento']").select2();
+            $("[id$='-tecido']").select2();
             populateFields();
             $("[id$='-quantidade']").inputSpinner();
         });

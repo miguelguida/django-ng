@@ -24,130 +24,151 @@
                     {{ form.diretor|add_class:'form-control' }}
                 </div>
                 <div class="form-group col-md-3">
-                    <label>comprador</label>
+                    <label>Comprador</label>
                     {{ form.comprador|add_class:'form-control' }}
                 </div>
                 <div class="form-group col-md-3">
-                    <label>financeiro</label>
+                    <label>Financeiro</label>
                     {{ form.financeiro|add_class:'form-control' }}
                 </div>
                 <div class="form-group col-md-3">
-                    <label>regApuracao</label>
+                    <label>Região de Apuração</label>
                     {{ form.regApuracao|add_class:'form-control' }}
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group col-md-3">
-                    <label>telefone</label>
+                    <label>Telefone</label>
                     {{ form.telefone|add_class:'form-control' }}
                 </div>
                 <div class="form-group col-md-3">
-                    <label>celular</label>
+                    <label>Celular</label>
                     {{ form.celular|add_class:'form-control' }}
                 </div>
                 <div class="form-group col-md-3">
-                    <label>email</label>
+                    <label>E-mail</label>
                     {{ form.email|add_class:'form-control' }}
                 </div>
                 <div class="form-group col-md-3">
-                    <label>observacoes</label>
+                    <label>Observações</label>
                     {{ form.observacoes|add_class:'form-control' }}
                 </div>
             </div>
-            <div class="form-row">
-                <div class="form-group col-md-3">
-                    <label>fat_inscEstadual</label>
-                    {{ form.fat_inscEstadual|add_class:'form-control' }}
+            <div class="faturamento-div">
+                <h3>Dados de Faturamento</h3>
+                <div class="form-row">
+                    <div class="form-group col-md-3">
+                        <label>Inscrição Estadual</label>
+                        {{ form.fat_inscEstadual|add_class:'form-control' }}
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label>CNPJ</label>
+                        {{ form.fat_cnpj|add_class:'form-control' }}
+                    </div>
+                    
+                    
+                    
                 </div>
-                <div class="form-group col-md-3">
-                    <label>fat_estado</label>
-                    {{ form.fat_estado|add_class:'form-control' }}
-                </div>
-                <div class="form-group col-md-3">
-                    <label>fat_cidade</label>
-                    {{ form.fat_cidade|add_class:'form-control' }}
-                </div>
-                <div class="form-group col-md-3">
-                    <label>fat_cep</label>
-                    {{ form.fat_cep|add_class:'form-control' }}
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group col-md-3">
-                    <label>fat_endereco</label>
-                    {{ form.fat_endereco|add_class:'form-control' }}
-                </div>
-                <div class="form-group col-md-3">
-                    <label>fat_bairro</label>
-                    {{ form.fat_bairro|add_class:'form-control' }}
-                </div>
-                <div class="form-group col-md-3">
-                    <label>fat_cnpj</label>
-                    {{ form.fat_cnpj|add_class:'form-control' }}
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group col-md-3">
-                    <label>cob_inscEstadual</label>
-                    {{ form.cob_inscEstadual|add_class:'form-control' }}
-                </div>
-                <div class="form-group col-md-3">
-                    <label>cob_estado</label>
-                    {{ form.cob_estado|add_class:'form-control' }}
-                </div>
-                <div class="form-group col-md-3">
-                    <label>cob_cidade</label>
-                    {{ form.cob_cidade|add_class:'form-control' }}
-                </div>
-                <div class="form-group col-md-3">
-                    <label>cob_cep</label>
-                    {{ form.cob_cep|add_class:'form-control' }}
+                <div class="form-row">
+                    <div class="form-group col-md-2">
+                        <label>CEP</label>
+                        {{ form.fat_cep|add_class:'form-control' }}
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label>Cidade</label>
+                        {{ form.fat_cidade|add_class:'form-control' }}
+                    </div>
+                    <div class="form-group col-md-1">
+                        <label>Estado</label>
+                        {{ form.fat_estado|add_class:'form-control' }}
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label>Endereco</label>
+                        {{ form.fat_endereco|add_class:'form-control' }}
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label>Bairro</label>
+                        {{ form.fat_bairro|add_class:'form-control' }}
+                    </div>
+                    
                 </div>
             </div>
-            <div class="form-row">
-                <div class="form-group col-md-3">
-                    <label>cob_endereco</label>
-                    {{ form.cob_endereco|add_class:'form-control' }}
+            <div class="cobranca-div">
+                <h3>Dados de Cobrança</h3>
+                <div class="form-row">
+                    <div class="form-group col-md-3">
+                        <label>Inscrição Estadual</label>
+                        {{ form.cob_inscEstadual|add_class:'form-control' }}
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label>CNPJ</label>
+                        {{ form.cob_cnpj|add_class:'form-control' }}
+                    </div>
+                    
+                    
+                    
                 </div>
-                <div class="form-group col-md-3">
-                    <label>cob_bairro</label>
-                    {{ form.cob_bairro|add_class:'form-control' }}
-                </div>
-                <div class="form-group col-md-3">
-                    <label>cob_cnpj</label>
-                    {{ form.cob_cnpj|add_class:'form-control' }}
+                <div class="form-row">
+                    <div class="form-group col-md-2">
+                        <label>CEP</label>
+                        {{ form.cob_cep|add_class:'form-control' }}
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label>Cidade</label>
+                        {{ form.cob_cidade|add_class:'form-control' }}
+                    </div>
+                    <div class="form-group col-md-1">
+                        <label>Estado</label>
+                        {{ form.cob_estado|add_class:'form-control' }}
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label>Endereco</label>
+                        {{ form.cob_endereco|add_class:'form-control' }}
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label>Bairro</label>
+                        {{ form.cob_bairro|add_class:'form-control' }}
+                    </div>
+                    
                 </div>
             </div>
-            <div class="form-row">
-                <div class="form-group col-md-3">
-                    <label>entr_inscEstadual</label>
-                    {{ form.entr_inscEstadual|add_class:'form-control' }}
+            <div class="entrega-div">
+                <h3>Dados de Entrega</h3>
+                <div class="form-row">
+                    <div class="form-group col-md-3">
+                        <label>Inscrição Estadual</label>
+                        {{ form.entr_inscEstadual|add_class:'form-control' }}
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label>CNPJ</label>
+                        {{ form.entr_cnpj|add_class:'form-control' }}
+                    </div>
+                    
+                    
+                    
                 </div>
-                <div class="form-group col-md-3">
-                    <label>entr_estado</label>
-                    {{ form.entr_estado|add_class:'form-control' }}
-                </div>
-                <div class="form-group col-md-3">
-                    <label>entr_cidade</label>
-                    {{ form.entr_cidade|add_class:'form-control' }}
-                </div>
-                <div class="form-group col-md-3">
-                    <label>entr_cep</label>
-                    {{ form.entr_cep|add_class:'form-control' }}
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group col-md-3">
-                    <label>entr_endereco</label>
-                    {{ form.entr_endereco|add_class:'form-control' }}
-                </div>
-                <div class="form-group col-md-3">
-                    <label>entr_bairro</label>
-                    {{ form.entr_bairro|add_class:'form-control' }}
-                </div>
-                <div class="form-group col-md-3">
-                    <label>entr_cnpj</label>
-                    {{ form.entr_cnpj|add_class:'form-control' }}
+                <div class="form-row">
+                    <div class="form-group col-md-2">
+                        <label>CEP</label>
+                        {{ form.entr_cep|add_class:'form-control' }}
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label>Cidade</label>
+                        {{ form.entr_cidade|add_class:'form-control' }}
+                    </div>
+                    <div class="form-group col-md-1">
+                        <label>Estado</label>
+                        {{ form.entr_estado|add_class:'form-control' }}
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label>Endereco</label>
+                        {{ form.entr_endereco|add_class:'form-control' }}
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label>Bairro</label>
+                        {{ form.entr_bairro|add_class:'form-control' }}
+                    </div>
+                    
                 </div>
             </div>
 

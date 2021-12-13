@@ -57,6 +57,8 @@
                 </div>
             </div>
 
+            <hr/>
+
             <div id="formset-container">
                 <h3>Item Pedido</h3>
                 {{ formset.management_form }}
@@ -131,7 +133,7 @@
                             <label>Valor Parcial</label>
                             {{ form.valorParcial|add_class:'form-control'|attr:'readonly' }}
                         </div>
-                        <div class="form-group col-md-1">
+                        <div class="form-group col-md-2">
                             <label>Quantidade</label>
                             {{ form.quantidade|add_class:'form-control' }}
                         </div>
@@ -144,60 +146,63 @@
             </script>
                 
             <a href="#" id="add-item-button" class="btn btn-info add-item">Add formset</a>
+
+            <hr/>
             
             <div class="form-row">
                 <div class="form-group col-md-2">
                     <label>Valor Bruto</label>
                     {{ form.valorBruto|add_class:'form-control'|attr:'readonly' }}
                 </div>
-                <div class="form-group col-md-2">
+                <div class="form-group col-md-1">
                    <label>Desconto 1</label>
                     {{ form.desconto1|add_class:'form-control' }}
                 </div>
-                <div class="form-group col-md-2">
+                <div class="form-group col-md-1">
                     <label>Desconto 2</label>
                      {{ form.desconto2|add_class:'form-control' }}
                  </div>
             
-                <div class="form-group col-md-2">
+                <div class="form-group col-md-1">
                     <label>Desconto 3</label>
                     {{ form.desconto3|add_class:'form-control' }}
                 </div>
-                <div class="form-group col-md-2">
+                <div class="form-group col-md-1">
                    <label>Desconto 4</label>
                     {{ form.desconto4|add_class:'form-control' }}
                 </div>
-                <div class="form-group col-md-2">
-                    <label>desconto5</label>
+                <div class="form-group col-md-1">
+                    <label>Desconto 5</label>
                     {{ form.desconto5|add_class:'form-control' }}
                 </div>
-            </div>
-            <div class="form-row">
                 <div class="form-group col-md-2">
-                    <label>ipi</label>
+                    <label>IPI</label>
                     {{ form.ipi|add_class:'form-control' }}
                 </div>
                 <div class="form-group col-md-2">
-                    <label>valorIpi</label>
+                    <label>Valor do IPI</label>
                     {{ form.valorIpi|add_class:'form-control'|attr:'readonly'  }}
                 </div>
+            </div>
+            <div class="form-row">
+               
                 <div class="form-group col-md-2">
-                    <label>valorTotal</label>
+                    <label>Valor Total</label>
                     {{ form.valorTotal|add_class:'form-control'|attr:'readonly'  }}
                 </div>
                 <div class="form-group col-md-2">
-                    <label>porcentagemComissao</label>
+                    <label>Porcentagem da Comissão</label>
                     {{ form.porcentagemComissao|add_class:'form-control' }}
                 </div>
                 <div class="form-group col-md-2">
-                    <label>valorComissao</label>
+                    <label>Valor da Comissão</label>
                     {{ form.valorComissao|add_class:'form-control'|attr:'readonly'  }}
                 </div>
                 
             </div>
             <div class="form-row">
                 <div class="form-group col-md-6">
-                    <label>observacoes</label>
+                    <label>Observções</label>
                     {{ form.observacoes|add_class:'form-control' }}
                 </div>
             </div>
@@ -210,12 +215,20 @@
     </div>
 
 <script>
+    $("[id$='_cliente']").select2();
+    $("[id$='_representada']").select2();
+    $("[id$='_trasnportadora']").select2();
+    $("[id$='_formaPagamento']").select2();
+    $("[id$='-produto']").select2();
+    $("[id$='-acabamento']").select2();
+    $("[id$='-tecido']").select2();
     $( function() {
         $( "#id_data" ).datepicker();
     } );
     function get2decimal(number){
-        return Math.round(number * 100) / 100;
+        return parseFloat(number).toFixed(2);
     }
+
     $(function() {
         $('.add-item').on('click', function(ev) {
             console.log("DJONODCN");
@@ -235,6 +248,9 @@
             }, 800);
             $("[id$='-quantidade']").inputSpinner();
             populateFields();
+            $("[id$='-produto']").select2();
+            $("[id$='-acabamento']").select2();
+            $("[id$='-tecido']").select2();
         });
     });
 
@@ -265,6 +281,7 @@
                     qtde = $('#'+$id_split[0]+'-'+$id_split[1]+'-quantidade').val();
                     $('#'+$id_split[0]+'-'+$id_split[1]+'-valorParcial').val((parseFloat(qtde)*valorUnitario).toFixed(2));
                     updateValorBruto();
+                    updateValorTotal();
                 },
                 error: function(response) {
                 }
@@ -278,10 +295,11 @@
             qtde = $('#'+$id_split[0]+'-'+$id_split[1]+'-quantidade').val();
             valorUnitario = $('#'+$id_split[0]+'-'+$id_split[1]+'-valorUnitario').val();
 
-            if(qtde && qtde > 0 && valorUnitario){
+            if(qtde !== undefined && qtde >= 0 && valorUnitario){
                 $('#'+$id_split[0]+'-'+$id_split[1]+'-valorParcial').val((parseFloat(qtde)*valorUnitario).toFixed(2));
             }
             updateValorBruto();
+            updateValorTotal();
         });
     }
     $(function() {
@@ -309,6 +327,7 @@
                     qtde = $('#'+$id_split[0]+'-'+$id_split[1]+'-quantidade').val();
                     $('#'+$id_split[0]+'-'+$id_split[1]+'-valorParcial').val(parseFloat((parseFloat(qtde)*valorUnitario).toFixed(2)));
                     updateValorBruto();
+                    updateValorTotal();
                 },
                 error: function(response) {
                 }
@@ -328,6 +347,78 @@
         console.log("VBVBVBVB: "+$valorBruto);
     }
 
+    function onDescontoEdit(){
+        $("[id*='_desconto']").on('change', function(){
+            updateValorTotal();
+        });
+    }
+
+    function onIpiEdit(){
+        $("[id$='_ipi']").on('change', function(){
+            updateValorTotal();
+        });
+    }
+
+    function getValorDescontoAplicado(){
+        valorBruto = parseFloat($("[id$='_valorBruto']").val());
+
+        var $descontos= 0;
+        $("[id*='_desconto']").each(function() {
+            if($(this).val()){
+                $descontos += parseFloat($(this).val());
+                console.log("descpntp "+$(this).val());
+            }
+        });
+        valor_descontos = 0;
+        if($descontos > 0){
+            valor_descontos = valorBruto * ($descontos/100);
+        }
+        valor_desconto_aplicado = valorBruto - valor_descontos; 
+        console.log("VALOR valor_desconto_aplicado: "+ valor_desconto_aplicado);
+        return valor_desconto_aplicado;
+    }
+
+    function updateValorIpi(){
+        ipi = parseFloat($("[id$='_ipi']").val());
+        if(ipi){
+            
+            valor_desconto_aplicado = getValorDescontoAplicado();
+            valor_ipi = get2decimal(valor_desconto_aplicado * (ipi/100));
+            $("[id$='_valorIpi']").val(valor_ipi);
+            console.log("VALOR IPI: "+ valor_ipi);
+        }
+    }
+
+    function updateValorTotal(){
+        updateValorIpi();
+        updateValorComissao();
+        valorBruto = parseFloat($("[id$='_valorBruto']").val());
+        valorIpi = parseFloat($("[id$='_valorIpi']").val());
+        valor_desconto_aplicado = parseFloat(getValorDescontoAplicado());
+        valor_total = get2decimal(valor_desconto_aplicado + valorIpi);
+        $("[id$='_valorTotal']").val(valor_total);
+        console.log("VALOR TOTAL: "+ valor_total);
+    }
+
+    function onPorcentagemComissaoEdit(){
+        $("[id$='_porcentagemComissao']").on('change', function(){
+            updateValorComissao();
+        });
+    }
+
+    function updateValorComissao(){
+        valorBruto = parseFloat($("[id$='_valorBruto']").val());
+        porcentagemComissao = parseFloat($("[id$='_porcentagemComissao']").val());
+        if(porcentagemComissao > 0){
+            valorComissao = get2decimal(valorBruto * (porcentagemComissao/100));
+            $("[id$='_valorComissao']").val(valorComissao);
+            console.log("VALOR COMISAO: "+ valorComissao);
+        }
+    }
+    
+    onDescontoEdit();
+    onIpiEdit();
+    onPorcentagemComissaoEdit();
 
     
 </script>

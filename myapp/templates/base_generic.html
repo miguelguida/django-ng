@@ -24,12 +24,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
   {% load static %}
   <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+  <link rel="stylesheet" href="{% static 'css/select2bootstrap.css' %}">
   <link rel="stylesheet" href="{% static 'css/form_styles.css' %}">
   <link rel="stylesheet" href="{% static 'css/home_styles.css' %}">
   <!-- jQuery -->
   <script src="{% static 'plugins/jquery/jquery.min.js' %}"></script>
   <script src="{% static 'plugins/jquery-ui-1.13.0/jquery-ui.min.js' %}"></script>
   <script src="{% static 'plugins/bootstrap-input-spinner/src/bootstrap-input-spinner.js' %}"></script>
+
+  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 </head>
 <body class="hold-transition sidebar-mini sidebar-collapse">
 <div class="wrapper">

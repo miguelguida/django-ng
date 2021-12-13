@@ -88,3 +88,20 @@ th, td {
 	padding-right: 0px;
 
 }
+
+.form-container{
+	font-size: .9rem;
+}
+
+.faturamento-div{
+	margin: 5px 0px;
+	border-top: 3px solid lightskyblue;
+}
+.cobranca-div{
+	margin: 5px 0px;
+	border-top: 3px solid lightsalmon;
+}
+.entrega-div{
+	margin: 5px 0px;
+	border-top: 3px solid lightseagreen;
+}

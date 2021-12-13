@@ -20,7 +20,7 @@
             </div>
             <div class="form-row">
                 <div class="form-group col-md-6">
-                    <label>Referencia</label>
+                    <label>Referência</label>
                     {{ form.referencia|add_class:'form-control' }}
                 </div>
                 <div class="form-group col-md-6">
@@ -29,7 +29,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label>Observacoes</label>
+                <label>Observações</label>
                 {{ form.observacoes|add_class:'form-control' }}
             </div>
 
@@ -49,6 +49,8 @@
         </form>
     </div>
 <script>
+    $("[id$='_representada']").select2();
+    
     var cep = document.getElementById("id_cep")
     cep.onblur = function(){
         console.log("poaspoaspoaspoaspoaspo")
