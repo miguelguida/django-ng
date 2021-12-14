@@ -95,11 +95,21 @@ class RepresentadaCreate(LoginRequiredMixin, CreateView):
     fields = '__all__'
     success_url = reverse_lazy('representadas')
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["createUpdate"] = "Criar"
+        return context
+
 
 class RepresentadaUpdate(LoginRequiredMixin,  UpdateView):
     model = Representada
     fields = '__all__'
     success_url = reverse_lazy('representadas')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["createUpdate"] = "Atualizar"
+        return context
 
 
 class RepresentadaDelete(LoginRequiredMixin,  DeleteView):
@@ -121,7 +131,7 @@ class PedidoListView(LoginRequiredMixin, generic.ListView):
     def get_queryset(self):
         filter_val = self.request.GET.get('filter', '')
         order = self.request.GET.get('orderby', 'id')
-        asc_desc = self.request.GET.get('asc_desc', '')
+        asc_desc = self.request.GET.get('asc_desc', 'desc')
 
         if order != '':
             if asc_desc == "desc" and order[0] != '-':
@@ -155,7 +165,7 @@ class PedidoListView(LoginRequiredMixin, generic.ListView):
         context['filter'] = self.request.GET.get('filter', '')
         context['orderby'] = self.request.GET.get('orderby', 'id')
         context['options'] = PEDIDO_ORDER_OPTIONS
-        context['asc_desc'] = self.request.GET.get('asc_desc', 'asc')
+        context['asc_desc'] = self.request.GET.get('asc_desc', 'desc')
         context['asc_desc_options'] = [['asc', 'Crescente'],['desc', 'Decrescente']]
         return context
 
@@ -181,7 +191,7 @@ class PedidoCreate( View):
         formset = self.inline_formset(instance=Pedido())     
         return render(request,\
             self.template_name,\
-            {'form': form, 'formset': formset})
+            {'form': form, 'formset': formset, 'createUpdate': "Criar"})
 
     def post(self, request, *args, **kwargs):
         """handle form submission"""
@@ -242,7 +252,7 @@ class PedidoUpdate(LoginRequiredMixin,  UpdateView):
         formset = self.inline_formset(instance=self.object)
         return render(request,\
             self.template_name,\
-            {'form': form, 'formset': formset})
+            {'form': form, 'formset': formset, 'createUpdate': "Atualizar"})
 
 
     def post(self, request, *args, **kwargs):
@@ -336,11 +346,21 @@ class ProdutoCreate(LoginRequiredMixin,  CreateView):
     fields = '__all__'
     success_url = reverse_lazy('produtos')
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["createUpdate"] = "Criar"
+        return context
+
 
 class ProdutoUpdate(LoginRequiredMixin,  UpdateView):
     model = Produto
     fields = '__all__'
     success_url = reverse_lazy('produtos')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["createUpdate"] = "Atualizar"
+        return context
 
 
 class ProdutoDelete(LoginRequiredMixin,  DeleteView):
@@ -422,7 +442,7 @@ class AssistenciaCreate(LoginRequiredMixin,  View):
         formset = self.inline_formset(instance=Assistencia())
         return render(request,\
             self.template_name,\
-            {'form': form, 'formset': formset})
+            {'form': form, 'formset': formset, 'createUpdate': "Criar"})
 
     def post(self, request, *args, **kwargs):
         """handle form submission"""
@@ -448,6 +468,11 @@ class AssistenciaCreate(LoginRequiredMixin,  View):
 
         return HttpResponseRedirect(self.get_success_url())
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["createUpdate"] = "Criar"
+        return context
+
 
 class AssistenciaUpdate(LoginRequiredMixin,  UpdateView):
     model = Assistencia
@@ -464,7 +489,7 @@ class AssistenciaUpdate(LoginRequiredMixin,  UpdateView):
         formset = self.inline_formset(instance=self.object)
         return render(request,\
             self.template_name,\
-            {'form': form, 'formset': formset})
+            {'form': form, 'formset': formset, 'createUpdate': "Atualizar"})
 
 
     def post(self, request, *args, **kwargs):
@@ -572,11 +597,21 @@ class ClienteCreate(LoginRequiredMixin,  CreateView):
     fields = '__all__'
     success_url = reverse_lazy('clientes')
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["createUpdate"] = "Criar"
+        return context
+
 
 class ClienteUpdate(LoginRequiredMixin,  UpdateView):
     model = Cliente
     fields = '__all__'
     success_url = reverse_lazy('clientes')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["createUpdate"] = "Atualizar"
+        return context
 
 
 class ClienteDelete(LoginRequiredMixin,  DeleteView):
@@ -646,11 +681,21 @@ class TransportadoraCreate(LoginRequiredMixin,  CreateView):
     model = Transportadora
     fields = '__all__'
     success_url = reverse_lazy('transportadoras')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["createUpdate"] = "Criar"
+        return context
     
 class TransportadoraUpdate(LoginRequiredMixin,  UpdateView):
     model = Transportadora
     fields = '__all__'
     success_url = reverse_lazy('transportadoras')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["createUpdate"] = "Atualizar"
+        return context
     
 class TransportadoraDelete(LoginRequiredMixin,  DeleteView):
     model = Transportadora
@@ -719,11 +764,21 @@ class VendedorCreate(LoginRequiredMixin,  CreateView):
     model = Vendedor
     fields = '__all__'
     success_url = reverse_lazy('vendedores')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["createUpdate"] = "Criar"
+        return context
     
 class VendedorUpdate(LoginRequiredMixin,  UpdateView):
     model = Vendedor
     fields = '__all__'
     success_url = reverse_lazy('vendedores')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["createUpdate"] = "Atualizar"
+        return context
     
 class VendedorDelete(LoginRequiredMixin,  DeleteView):
     model = Vendedor
@@ -788,11 +843,21 @@ class AcabamentoCreate(LoginRequiredMixin,  CreateView):
     model = Acabamento
     fields = '__all__'
     success_url = reverse_lazy('acabamentos')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["createUpdate"] = "Criar"
+        return context
     
 class AcabamentoUpdate(LoginRequiredMixin,  UpdateView):
     model = Acabamento
     fields = '__all__'
     success_url = reverse_lazy('acabamentos')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["createUpdate"] = "Atualizar"
+        return context
     
 class AcabamentoDelete(LoginRequiredMixin,  DeleteView):
     model = Acabamento
@@ -857,11 +922,21 @@ class TecidoCreate(LoginRequiredMixin,  CreateView):
     model = Tecido
     fields = '__all__'
     success_url = reverse_lazy('tecidos')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["createUpdate"] = "Criar"
+        return context
     
 class TecidoUpdate(LoginRequiredMixin,  UpdateView):
     model = Tecido
     fields = '__all__'
     success_url = reverse_lazy('tecidos')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["createUpdate"] = "Atualizar"
+        return context
     
 class TecidoDelete(LoginRequiredMixin,  DeleteView):
     model = Tecido
@@ -926,11 +1001,21 @@ class FormaPagamentoCreate(LoginRequiredMixin,  CreateView):
     model = FormaPagamento
     fields = '__all__'
     success_url = reverse_lazy('formasPagamento')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["createUpdate"] = "Criar"
+        return context
     
 class FormaPagamentoUpdate(LoginRequiredMixin,  UpdateView):
     model = FormaPagamento
     fields = '__all__'
     success_url = reverse_lazy('formasPagamento')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["createUpdate"] = "Atualizar"
+        return context
     
 class FormaPagamentoDelete(LoginRequiredMixin,  DeleteView):
     model = FormaPagamento
@@ -1004,9 +1089,8 @@ def assistencia_pdf_view(request, *args, **kwargs):
        return HttpResponse('We had some errors <pre>' + html + '</pre>')
     return response
 
-def get_produto_info(request, *args, **kwargs):
-    
 
+def get_produto_info(request, *args, **kwargs):
     if request.method == "GET":
         if request.is_ajax():
             
@@ -1024,8 +1108,6 @@ def get_produto_info(request, *args, **kwargs):
                 'referencia': produto.referencia,   
                 'valor': produto.valor,
             }
-
-            
 
             return JsonResponse(data)
 

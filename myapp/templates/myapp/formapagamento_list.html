@@ -34,12 +34,14 @@
       
       <table class="table obj-list-table" style="width:100%">
         <tr>
+          <th style="width: 80px;">Código</th>
           <th>Forma de Pagamento</th>
           <th>Atualizado em</th>
         </tr>
         {% for object in object_list %}
         
         <tr>
+          <td>{{ object.id }}</td>
           <td><a class="obj-link" href="{{ object.get_absolute_url }}">{{ object.formaDePagamento }}</a></td>          
           <td>{{ object.lastUpdate }}</td>
           <td>

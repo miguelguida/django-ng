@@ -132,7 +132,7 @@
                         
                         <div class="cliente-info">
                             <table class="inner-table">
-                                <tr><td class="field-td">Cliente:  </td><td class="value-td">{{ pedido.cliente.razaoSocial }}</td></tr>
+                                <tr><td class="field-td"><h2>Cliente:</h2>  </td><td class="value-td" style="font-weight:500;">{{ pedido.cliente.razaoSocial }}</td></tr>
                                 <tr><td class="field-td">Telefone: </td><td class="value-td">{{ pedido.cliente.telefone }}</td></tr>
                                 <tr><td class="field-td">Email:    </td><td class="value-td">{{ pedido.cliente.email }}</td></tr>
                             </table>
@@ -171,7 +171,7 @@
                         
                         <div class="representada-info">
                             <table class="inner-table">
-                                <tr><td class="field-td">Forma de Pag.: </td><td class="value-td"> {{ pedido.formaPagamento }}</td></tr>
+                                <tr><td class="field-td"><h2>Forma de Pag.:</h2> </td><td class="value-td" style="font-weight:500;"> {{ pedido.formaPagamento }}</td></tr>
                                 <tr><td class="field-td">Tipo da Cobrança: </td><td class="value-td"> {{ pedido.tipoCobranca }}</td></tr>
                                 <tr><td class="field-td">Tipo de Frete: </td><td class="value-td"> {{ pedido.tipoFrete }}</td></tr>
                             </table>
@@ -218,11 +218,32 @@
                         <tbody>
                         {% for item in itemsPedido %}
                         <tr>
-                            <td>{{ item.produto.referencia }}</td>
-                            <td>{{ item.quantidade }}</td>
-                            <td>{{ item.tecido }}</td>
+                            {% if item.produto.referencia %}
+                                <td>{{ item.produto.referencia }}</td>
+                            {% else %} 
+                                <td> </td>
+                            {% endif %}  
+                            
+                            {% if item.quantidade %}
+                                <td>{{ item.quantidade }}</td>
+                            {% else %} 
+                                <td> </td>
+                            {% endif %}   
+
+                            {% if item.tecido %}
+                                <td>{{ item.tecido }}</td>
+                            {% else %} 
+                                <td> </td>
+                            {% endif %}
+                            
                             <td>{{ item.produto }}</td>
-                            <td>{{ item.acabamento }}</td>
+                            
+                            {% if item.acabamento %}
+                                <td>{{ item.acabamento }}</td>
+                            {% else %} 
+                                <td> </td>
+                            {% endif %}   
+                            
                             <td>{{ item.valorUnitario }}</td>
                             <td>{{ item.valorParcial }}</td>
                         </tr>

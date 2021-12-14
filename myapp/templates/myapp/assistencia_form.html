@@ -3,7 +3,7 @@
 {% block content %}
     
     <div class="form-container">
-        <h1 class="mb-5">Criar Assistencia</h1>
+        <h1 class="mb-5">{{ createUpdate }} Assistencia</h1>
 
         <form action="" method="post">
             {% csrf_token %}
@@ -51,7 +51,7 @@
             <hr>
 
             <div id="formset-container">
-                <h3>Item Assistência</h3>
+                <h3>Itens da Assistência</h3>
                 {{ formset.management_form }}
                 {% for form in formset %}
                     <div id="formset-{{ forloop.counter0 }}" class="formset-div">
@@ -64,7 +64,7 @@
                                 {{ form.produto|add_class:'form-control' }}
                             </div>
                             <div class="form-group col-md-1">
-                                <label>Referencia</label>
+                                <label>Referência</label>
                                 {{ form.referencia|add_class:'form-control'|attr:'readonly' }}
                             </div>
                             <div class="form-group col-md-2">
@@ -80,11 +80,11 @@
                                 {{ form.quantidade|add_class:'form-control' }}
                             </div>
                             <div class="form-group col-md-2">
-                                <label>Observacoes</label>
+                                <label>Observações</label>
                                 {{ form.observacoes|add_class:'form-control' }}
                             </div>
                             <div class="form-group col-md-1">
-                                <label>Mostruario</label>
+                                <label>Mostruário</label>
                                 {{ form.mostruario|add_class:'form-control' }}
                             </div>
                         </div>
@@ -106,7 +106,7 @@
                                 {{ form.produto|add_class:'form-control' }}
                             </div>
                             <div class="form-group col-md-1">
-                                <label>Referencia</label>
+                                <label>Referência</label>
                                 {{ form.referencia|add_class:'form-control'|attr:'readonly' }}
                             </div>
                             <div class="form-group col-md-2">
@@ -122,11 +122,11 @@
                                 {{ form.quantidade|add_class:'form-control' }}
                             </div>
                             <div class="form-group col-md-2">
-                                <label>Observacoes</label>
+                                <label>Observações</label>
                                 {{ form.observacoes|add_class:'form-control' }}
                             </div>
                             <div class="form-group col-md-1">
-                                <label>Mostruario</label>
+                                <label>Mostruário</label>
                                 {{ form.mostruario|add_class:'form-control' }}
                             </div>
                         </div>
@@ -136,7 +136,7 @@
                 
             </script>
                 
-            <a href="#" id="add-item-button" class="btn btn-info add-item">Add formset</a>
+            <a href="#" id="add-item-button" class="btn btn-info add-item">Adicionar Item</a>
             
             <hr>
             

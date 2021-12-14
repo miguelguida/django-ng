@@ -3,7 +3,7 @@
 {% block content %}
     
     <div class="form-container">
-        <h1 class="mb-5">Criar Produto</h1>
+        <h1 class="mb-5">{{ createUpdate }} Produto</h1>
 
         <form action="" method="post">
             {% csrf_token %}
@@ -50,7 +50,7 @@
     </div>
 <script>
     $("[id$='_representada']").select2();
-    
+
     var cep = document.getElementById("id_cep")
     cep.onblur = function(){
         console.log("poaspoaspoaspoaspoaspo")

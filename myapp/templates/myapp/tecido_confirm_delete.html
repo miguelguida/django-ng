@@ -1,14 +1,15 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
+<div class="obj-list-container">
+  <h1>Deletar Tecido</h1>
+    
+  <p>Você tem certeza que quer deletar o cadastro de número {{ tecido.id }} ?</p>
 
-<h1>Deletar Tecido</h1>
-
-<p>Você tem certeza que quer deletar este cadastro?: {{ tecido }}?</p>
-
-<form action="" method="POST">
-  {% csrf_token %}
-  <input type="submit" action="" value="Yes, delete." />
-</form>
-
+  <form action="" method="POST">
+    {% csrf_token %}
+    <input type="submit" class="btn btn-primary" action="" value="Sim" />
+    <a href="{% url 'tecidos' %}"><input class="btn btn-secondary" type="button" value="Cancel" /></a>
+  </form>
+</div>
 {% endblock %}
