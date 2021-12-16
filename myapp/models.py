@@ -109,7 +109,7 @@ class Pedido(SoftDeletionModel):
     transportadora = models.ForeignKey('Transportadora', on_delete=models.SET_NULL, null=True)
     tipoFrete = models.ForeignKey('TipoFrete', on_delete=models.SET_NULL, null=True)
     formaPagamento = models.ForeignKey('FormaPagamento', on_delete=models.SET_NULL, null=True)
-    tipoCobranca = models.CharField(max_length=255, null=True, blank=True)
+    tipoCobranca = models.ForeignKey('TipoCobranca', on_delete=models.SET_NULL, null=True)
 
     lastUpdate = models.DateTimeField(auto_now=True)
 
