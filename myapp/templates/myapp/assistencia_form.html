@@ -42,7 +42,7 @@
             </div>
 
             <div class="form-group">
-                <label>Observacoes</label>
+                <label>Observações</label>
                 {{ form.observacoes|add_class:'form-control' }}
             </div>
 
@@ -58,34 +58,38 @@
                         <div class="form-row">
                             <div hidden>                           
                                 {{ form.id|add_class:'form-control' }}
+                                {{ form.deleted_at|add_class:'form-control' }}
                             </div>
-                            <div class="form-group col-md-2">
+                            <div class="form-group pr-2 col-sm item-w20">
                                 <label>Produto</label>
                                 {{ form.produto|add_class:'form-control' }}
                             </div>
-                            <div class="form-group col-md-1">
+                            <div class="form-group pr-2 col-sm item-w10">
                                 <label>Referência</label>
                                 {{ form.referencia|add_class:'form-control'|attr:'readonly' }}
                             </div>
-                            <div class="form-group col-md-2">
+                            <div class="form-group pr-2 col-sm item-w15">
                                 <label>Acabamento</label>
                                 {{ form.acabamento|add_class:'form-control' }}
                             </div>
-                            <div class="form-group col-md-2">
+                            <div class="form-group pr-2 col-sm item-w15">
                                 <label>Tecido</label>
                                 {{ form.tecido|add_class:'form-control' }}
                             </div>
-                            <div class="form-group col-md-2">
+                            <div class="form-group pr-2 col-sm item-w12">
                                 <label>Quantidade</label>
                                 {{ form.quantidade|add_class:'form-control' }}
                             </div>
-                            <div class="form-group col-md-2">
+                            <div class="form-group pr-2 col-sm item-w20 ">
                                 <label>Observações</label>
-                                {{ form.observacoes|add_class:'form-control' }}
+                                {{ form.observacoes|add_class:'form-control obs-assist' }}
                             </div>
-                            <div class="form-group col-md-1">
+                            <div class="form-group pr-2 col-sm item-w5">
                                 <label>Mostruário</label>
                                 {{ form.mostruario|add_class:'form-control' }}
+                            </div>
+                            <div class="form-group col-sm item-w3-assist">
+                                <input id="id_itemassistencia_set-{{ forloop.counter0 }}-remover" class="btn btn-danger delete-item" type="button" value="X" />
                             </div>
                         </div>
                     </div>                
@@ -97,37 +101,41 @@
                     {% for form in formset %}
                     {% if forloop.last %}
                     <div id="formset-__prefix__" class="formset-div">
-                        <div hidden>                           
-                            {{ form.id|add_class:'form-control' }}
-                        </div>
                         <div class="form-row">
-                            <div class="form-group col-md-2">
+                            <div hidden>                           
+                                {{ form.id|add_class:'form-control' }}
+                                {{ form.deleted_at|add_class:'form-control' }}
+                            </div>
+                            <div class="form-group pr-2 col-sm item-w20">
                                 <label>Produto</label>
                                 {{ form.produto|add_class:'form-control' }}
                             </div>
-                            <div class="form-group col-md-1">
+                            <div class="form-group pr-2 col-sm item-w10">
                                 <label>Referência</label>
                                 {{ form.referencia|add_class:'form-control'|attr:'readonly' }}
                             </div>
-                            <div class="form-group col-md-2">
+                            <div class="form-group pr-2 col-sm item-w15">
                                 <label>Acabamento</label>
                                 {{ form.acabamento|add_class:'form-control' }}
                             </div>
-                            <div class="form-group col-md-2">
+                            <div class="form-group pr-2 col-sm item-w15">
                                 <label>Tecido</label>
                                 {{ form.tecido|add_class:'form-control' }}
                             </div>
-                            <div class="form-group col-md-2">
+                            <div class="form-group pr-2 col-sm item-w12">
                                 <label>Quantidade</label>
                                 {{ form.quantidade|add_class:'form-control' }}
                             </div>
-                            <div class="form-group col-md-2">
+                            <div class="form-group pr-2 col-sm item-w20 ">
                                 <label>Observações</label>
-                                {{ form.observacoes|add_class:'form-control' }}
+                                {{ form.observacoes|add_class:'form-control obs-assist' }}
                             </div>
-                            <div class="form-group col-md-1">
+                            <div class="form-group pr-2 col-sm item-w5">
                                 <label>Mostruário</label>
                                 {{ form.mostruario|add_class:'form-control' }}
+                            </div>
+                            <div class="form-group col-sm item-w3-assist">
+                                <input id="id_itemassistencia_set-__prefix__-remover" class="btn btn-danger delete-item" type="button" value="X" />
                             </div>
                         </div>
                     </div>                
@@ -144,6 +152,20 @@
             <a href="{% url 'assistencias' %}"><input class="btn btn-secondary submit-btn" type="button" value="Cancel" /></a>
             
         </form>
+
+        <!-- Modal confirm -->
+        <div class="modal" id="confirmModal" style="display: none; z-index: 1050;">
+            <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body" id="confirmMessage">
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-danger" id="confirmOk">Sim</button>
+                    <button type="button" class="btn btn-secondary" id="confirmCancel">Cancelar</button>
+                    </div>
+            </div>
+            </div>
+        </div>
     </div>
 
 <script>
@@ -156,6 +178,43 @@
     $( function() {
         $( "#id_data" ).datepicker();
     } );
+
+    function deleteItemEvent(){
+        $('.delete-item').on('click', function(){
+            console.log(this.id);
+            var $id_split = this.id.split("-");
+
+            confirmDialog("<h3>Remover este item?</h3>", function(){
+                var today = new Date();
+                var dd = String(today.getDate()).padStart(2, '0');
+                var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+                var yyyy = today.getFullYear();
+                today = yyyy + '-' + mm + '-' + dd;
+
+                console.log("### "+$id_split[0]+'-'+$id_split[1]);
+                $('#'+$id_split[0]+'-'+$id_split[1]+'-deleted_at').val(today);
+                
+                $('#'+$id_split[0]+'-'+$id_split[1]+'-quantidade').val(0);
+                
+                $('#formset-'+$id_split[1]).hide();
+                
+                console.log("deleted!");
+            });
+                
+        });
+    }
+    deleteItemEvent();
+    function confirmDialog(message, onConfirm){
+        var fClose = function(){
+            modal.modal("hide");
+        };
+        var modal = $("#confirmModal");
+        modal.modal("show");
+        $("#confirmMessage").empty().append(message);
+        $("#confirmOk").unbind().one('click', onConfirm).one('click', fClose);
+        $("#confirmCancel").unbind().one("click", fClose);
+    }
+
     $(function() {
         $('.add-item').on('click', function(ev) {
             console.log("DJONODCN");
@@ -177,6 +236,7 @@
             $("[id$='-acabamento']").select2();
             $("[id$='-tecido']").select2();
             populateFields();
+            deleteItemEvent();
             $("[id$='-quantidade']").inputSpinner();
         });
     });

@@ -64,35 +64,41 @@
                 {{ formset.management_form }}
                 {% for form in formset %}
                     <div id="formset-{{ forloop.counter0 }}" class="formset-div">
-                        
+                        <div hidden>                           
+                            {{ form.id|add_class:'form-control' }}
+                            {{ form.deleted_at|add_class:'form-control' }}
+                        </div>
                         <div class="form-row">
-                            <div class="form-group col-md-3">
+                            <div class="form-group pr-2 col-sm item-w25">
                                 <label>Produto</label>
                                 {{ form.produto|add_class:'form-control' }}
                             </div>
-                            <div class="form-group col-md-1">
+                            <div class="form-group pr-2 col-sm item-w10">
                                 <label>Referência</label>
                                 {{ form.referencia|add_class:'form-control'|attr:'readonly' }}
                             </div>
-                            <div class="form-group col-md-2">
+                            <div class="form-group pr-2 col-sm item-w15">
                                 <label>Acabamento</label>
                                 {{ form.acabamento|add_class:'form-control' }}
                             </div>
-                            <div class="form-group col-md-2">
+                            <div class="form-group pr-2 col-sm item-w15">
                                 <label>Tecido</label>
                                 {{ form.tecido|add_class:'form-control' }}
                             </div>
-                            <div class="form-group col-md-1">
+                            <div class="form-group pr-2 col-sm item-w10">
                                 <label>Valor Unitário</label>
                                 {{ form.valorUnitario|add_class:'form-control'|attr:'readonly' }}
                             </div>
-                            <div class="form-group col-md-1">
+                            <div class="form-group pr-2 col-sm item-w10">
                                 <label>Valor Parcial</label>
                                 {{ form.valorParcial|add_class:'form-control'|attr:'readonly' }}
                             </div>
-                            <div class="form-group col-md-2">
+                            <div class="form-group pr-2 col-sm item-w12">
                                 <label>Quantidade</label>
                                 {{ form.quantidade|add_class:'form-control' }}
+                            </div>
+                            <div class="form-group col-sm item-w3">
+                                <input id="id_itempedido_set-{{ forloop.counter0 }}-remover" class="btn btn-danger delete-item" type="button" value="X" />
                             </div>
                             
                         </div>
@@ -107,35 +113,39 @@
                 <div id="formset-__prefix__" class="formset-div">
                     <div hidden>                           
                         {{ form.id|add_class:'form-control' }}
+                        {{ form.deleted_at|add_class:'form-control' }}
                     </div>
                     <div class="form-row">
-                        <div class="form-group col-md-3">
+                        <div class="form-group pr-2 col-sm item-w25">
                             <label>Produto</label>
                             {{ form.produto|add_class:'form-control' }}
                         </div>
-                        <div class="form-group col-md-1">
+                        <div class="form-group pr-2 col-sm item-w10">
                             <label>Referência</label>
                             {{ form.referencia|add_class:'form-control'|attr:'readonly' }}
                         </div>
-                        <div class="form-group col-md-2">
+                        <div class="form-group pr-2 col-sm item-w15">
                             <label>Acabamento</label>
                             {{ form.acabamento|add_class:'form-control' }}
                         </div>
-                        <div class="form-group col-md-2">
+                        <div class="form-group pr-2 col-sm item-w15">
                             <label>Tecido</label>
                             {{ form.tecido|add_class:'form-control' }}
                         </div>
-                        <div class="form-group col-md-1">
+                        <div class="form-group pr-2 col-sm item-w10">
                             <label>Valor Unitário</label>
                             {{ form.valorUnitario|add_class:'form-control'|attr:'readonly' }}
                         </div>
-                        <div class="form-group col-md-1">
+                        <div class="form-group pr-2 col-sm item-w10">
                             <label>Valor Parcial</label>
                             {{ form.valorParcial|add_class:'form-control'|attr:'readonly' }}
                         </div>
-                        <div class="form-group col-md-2">
+                        <div class="form-group pr-2 col-sm item-w12">
                             <label>Quantidade</label>
                             {{ form.quantidade|add_class:'form-control' }}
+                        </div>
+                        <div class="form-group col-sm item-w3">
+                            <input id="id_itempedido_set-__prefix__-remover" class="btn btn-danger delete-item" type="button" value="X" />
                         </div>
                         
                     </div>
@@ -212,6 +222,21 @@
             <a href="{% url 'pedidos' %}"><input class="btn btn-secondary submit-btn" type="button" value="Cancel" /></a>
             
         </form>
+
+        
+        <!-- Modal confirm -->
+        <div class="modal" id="confirmModal" style="display: none; z-index: 1050;">
+            <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body" id="confirmMessage">
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-danger" id="confirmOk">Sim</button>
+                    <button type="button" class="btn btn-secondary" id="confirmCancel">Cancelar</button>
+                    </div>
+            </div>
+            </div>
+        </div>
     </div>
 
 <script>
@@ -227,6 +252,44 @@
     } );
     function get2decimal(number){
         return parseFloat(number).toFixed(2);
+    }
+
+    function deleteItemEvent(){
+        $('.delete-item').on('click', function(){
+                console.log(this.id);
+                var $id_split = this.id.split("-");
+                
+                confirmDialog("<h3>Remover este item?</h3>", function(){
+                    var today = new Date();
+                    var dd = String(today.getDate()).padStart(2, '0');
+                    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+                    var yyyy = today.getFullYear();
+                    today = yyyy + '-' + mm + '-' + dd;
+
+                    console.log("### "+$id_split[0]+'-'+$id_split[1]);
+
+                    $('#'+$id_split[0]+'-'+$id_split[1]+'-deleted_at').val(today);
+                    
+                    $('#'+$id_split[0]+'-'+$id_split[1]+'-quantidade').val(0);
+                    updateValorParcial($id_split);
+                    updateValorBruto();
+                    updateValorTotal();
+                    $('#formset-'+$id_split[1]).hide();
+                    console.log("deleted!");
+                });
+        });
+    }
+    deleteItemEvent();
+
+    function confirmDialog(message, onConfirm){
+        var fClose = function(){
+            modal.modal("hide");
+        };
+        var modal = $("#confirmModal");
+        modal.modal("show");
+        $("#confirmMessage").empty().append(message);
+        $("#confirmOk").unbind().one('click', onConfirm).one('click', fClose);
+        $("#confirmCancel").unbind().one("click", fClose);
     }
 
     $(function() {
@@ -248,6 +311,7 @@
             }, 800);
             $("[id$='-quantidade']").inputSpinner();
             populateFields();
+            deleteItemEvent();
             $("[id$='-produto']").select2();
             $("[id$='-acabamento']").select2();
             $("[id$='-tecido']").select2();
@@ -292,12 +356,7 @@
         $("[id$='-quantidade']").on('change', function(){
             var $id_split = this.id.split("-");
 
-            qtde = $('#'+$id_split[0]+'-'+$id_split[1]+'-quantidade').val();
-            valorUnitario = $('#'+$id_split[0]+'-'+$id_split[1]+'-valorUnitario').val();
-
-            if(qtde !== undefined && qtde >= 0 && valorUnitario){
-                $('#'+$id_split[0]+'-'+$id_split[1]+'-valorParcial').val((parseFloat(qtde)*valorUnitario).toFixed(2));
-            }
+            updateValorParcial($id_split);
             updateValorBruto();
             updateValorTotal();
         });
@@ -306,6 +365,15 @@
         populateFields();
         $("[id$='-quantidade']").inputSpinner();
     });
+
+    function updateValorParcial(id_split){
+        qtde = $('#'+id_split[0]+'-'+id_split[1]+'-quantidade').val();
+        valorUnitario = $('#'+id_split[0]+'-'+id_split[1]+'-valorUnitario').val();
+
+        if(qtde !== undefined && qtde >= 0 && valorUnitario){
+            $('#'+id_split[0]+'-'+id_split[1]+'-valorParcial').val((parseFloat(qtde)*valorUnitario).toFixed(2));
+        }
+    }
 
     
     $("[id$='-produto']").each(function() {
@@ -325,7 +393,7 @@
                     $('#'+$id_split[0]+'-'+$id_split[1]+'-referencia').val(referencia);
                     $('#'+$id_split[0]+'-'+$id_split[1]+'-valorUnitario').val(valorUnitario);
                     qtde = $('#'+$id_split[0]+'-'+$id_split[1]+'-quantidade').val();
-                    $('#'+$id_split[0]+'-'+$id_split[1]+'-valorParcial').val(parseFloat((parseFloat(qtde)*valorUnitario).toFixed(2)));
+                    $('#'+$id_split[0]+'-'+$id_split[1]+'-valorParcial').val((parseFloat(qtde)*valorUnitario).toFixed(2));
                     updateValorBruto();
                     updateValorTotal();
                 },
@@ -362,18 +430,41 @@
     function getValorDescontoAplicado(){
         valorBruto = parseFloat($("[id$='_valorBruto']").val());
 
-        var $descontos= 0;
-        $("[id*='_desconto']").each(function() {
-            if($(this).val()){
-                $descontos += parseFloat($(this).val());
-                console.log("descpntp "+$(this).val());
-            }
-        });
-        valor_descontos = 0;
-        if($descontos > 0){
-            valor_descontos = valorBruto * ($descontos/100);
+        // var $descontos= 0;
+
+        desconto1 = parseFloat($("[id*='_desconto1']").val());
+        desconto2 = parseFloat($("[id*='_desconto2']").val());
+        desconto3 = parseFloat($("[id*='_desconto3']").val());
+        desconto4 = parseFloat($("[id*='_desconto4']").val());
+        desconto5 = parseFloat($("[id*='_desconto5']").val());
+
+        // $("[id*='_desconto']").each(function() {
+        //     if($(this).val()){
+        //         $descontos += parseFloat($(this).val());
+        //         console.log("descpntp "+$(this).val());
+        //     }
+        // });
+        if(desconto1 > 0){
+            valorBruto = valorBruto * (100 - desconto1)/100;
         }
-        valor_desconto_aplicado = valorBruto - valor_descontos; 
+        if(desconto2 > 0){
+            valorBruto = valorBruto * (100 - desconto2)/100;
+        }
+        if(desconto3 > 0){
+            valorBruto = valorBruto * (100 - desconto3)/100;
+        }
+        if(desconto4 > 0){
+            valorBruto = valorBruto * (100 - desconto4)/100;
+        }
+        if(desconto5 > 0){
+            valorBruto = valorBruto * (100 - desconto5)/100;
+        }
+
+        // valor_descontos = 0;
+        // if($descontos > 0){
+        //     valor_descontos = valorBruto * ($descontos/100);
+        // }
+        valor_desconto_aplicado = valorBruto; 
         console.log("VALOR valor_desconto_aplicado: "+ valor_desconto_aplicado);
         return valor_desconto_aplicado;
     }
@@ -407,10 +498,11 @@
     }
 
     function updateValorComissao(){
-        valorBruto = parseFloat($("[id$='_valorBruto']").val());
+        // valorBruto = parseFloat($("[id$='_valorBruto']").val());
+        valor_desconto_aplicado = getValorDescontoAplicado();
         porcentagemComissao = parseFloat($("[id$='_porcentagemComissao']").val());
         if(porcentagemComissao > 0){
-            valorComissao = get2decimal(valorBruto * (porcentagemComissao/100));
+            valorComissao = get2decimal(valor_desconto_aplicado * (porcentagemComissao/100));
             $("[id$='_valorComissao']").val(valorComissao);
             console.log("VALOR COMISAO: "+ valorComissao);
         }

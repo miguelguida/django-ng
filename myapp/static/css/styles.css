@@ -55,7 +55,52 @@ only screen and (min-width: 760px){
 	.obj-list-table-container, .filter-container{
 		width: 96%;
 		margin: auto;		
+	}
+	.item-w25{
+		width:25%;
+		flex-basis: auto;
+	}
+
+	.item-w20{
+		width:20%;
+		flex-basis: auto;
+	}
+	
+	.item-w15{
+		width:15%;
+		flex-basis: auto;
+	}
+	
+	.item-w12{
+		width:12%;
+		flex-basis: auto;
+	}
+	
+	.item-w10{
+		width:10%;
+		flex-basis: auto;
+	}
+
+	.item-w5{
+		width:5%;
+		flex-basis: auto;
+	}
+	
+	.item-w3{
+		width:3%;
+		flex-basis: auto;
+		margin: auto auto 1rem auto;
 	}	
+
+	.item-w3-assist{
+		width:3%;
+		flex-basis: auto;
+		margin: 1.8rem auto auto auto;
+	}
+
+	.obs-assist, textarea.form-control{
+		height: calc(5.5rem + 2px);
+	}
 }
 
 .obj-list-table{
@@ -105,3 +150,4 @@ th, td {
 	margin: 5px 0px;
 	border-top: 3px solid lightseagreen;
 }
+

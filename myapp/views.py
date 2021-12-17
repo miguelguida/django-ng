@@ -220,16 +220,16 @@ class PedidoCreate( View):
                 # print("VALID ",f.is_valid())
                 # print("CLEAN ",f.cleaned_data)
 
-            valor_descontos = valorBruto * (( entity.desconto1 + entity.desconto2 + entity.desconto3 + entity.desconto4 + entity.desconto5)/100)
-            valor_desconto_aplicado = valorBruto - valor_descontos
-            valorIpi = valor_desconto_aplicado * (entity.ipi/100)
-            valorTotal = valor_desconto_aplicado + valorIpi
-            valorComissao = valorTotal*(entity.porcentagemComissao/100)
+            # valor_descontos = valorBruto * (( entity.desconto1 + entity.desconto2 + entity.desconto3 + entity.desconto4 + entity.desconto5)/100)
+            # valor_desconto_aplicado = valorBruto - valor_descontos
+            # valorIpi = valor_desconto_aplicado * (entity.ipi/100)
+            # valorTotal = valor_desconto_aplicado + valorIpi
+            # valorComissao = valorTotal*(entity.porcentagemComissao/100)
 
-            entity.valorBruto = valorBruto
-            entity.valorIpi = valorIpi
-            entity.valorTotal = valorTotal
-            entity.valorComissao = valorComissao
+            # entity.valorBruto = valorBruto
+            # entity.valorIpi = valorIpi
+            # entity.valorTotal = valorTotal
+            # entity.valorComissao = valorComissao
             print("VALORES")
             print(entity.valorBruto,"\n",entity.valorIpi,"\n",entity.valorTotal,"\n",entity.valorComissao,"\n")
             entity.save()
@@ -456,22 +456,14 @@ class AssistenciaCreate(LoginRequiredMixin,  View):
             for f in formset:
                 if f.is_valid():
                     f.clean()
-                    print("CLEAN ",f.cleaned_data)
+                    
                     if len(f.cleaned_data) > 0:
                         item = f.save(commit=False)
                         item.assistencia = entity
-                        print("ITEM: ",item)
-                        print("ENTUTY: ",entity)
                         item.save()
-                print("VALID ",f.is_valid())
-                print("CLEAN ",f.cleaned_data)
+                
 
         return HttpResponseRedirect(self.get_success_url())
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["createUpdate"] = "Criar"
-        return context
 
 
 class AssistenciaUpdate(LoginRequiredMixin,  UpdateView):
@@ -505,13 +497,12 @@ class AssistenciaUpdate(LoginRequiredMixin,  UpdateView):
             for f in formset:
                 if f.is_valid():
                     f.clean()
-                    print("@@@   3423 CLEAN ",f.cleaned_data)
+                    
                     if len(f.cleaned_data) > 0:
                         # item = f.save(commit=False)
                         # item.instance = entity
                         f.save()
-                print("VALID ",f.is_valid())
-                print("CLEAN ",f.cleaned_data)
+                
 
         return HttpResponseRedirect(self.get_success_url())
     
@@ -1034,7 +1025,19 @@ def pedido_pdf_view(request, *args, **kwargs):
     for item in itemsPedido:
         valor_produtos += item.produto.valor * item.quantidade
     
-    valor_descontos = valor_produtos * (( pedido.desconto1 + pedido.desconto2 + pedido.desconto3 + pedido.desconto4 + pedido.desconto5)/100)
+    # valor_descontos = valor_produtos * (( pedido.desconto1 + pedido.desconto2 + pedido.desconto3 + pedido.desconto4 + pedido.desconto5)/100)
+    valor_descontos = 0
+    if pedido.desconto1 > 0:
+        valor_descontos += valor_produtos * (pedido.desconto1/100)
+    if pedido.desconto2 > 0:
+        valor_descontos += (valor_produtos - valor_descontos) * (pedido.desconto2/100)
+    if pedido.desconto3 > 0:
+        valor_descontos += (valor_produtos - valor_descontos) * (pedido.desconto3/100)
+    if pedido.desconto4 > 0:
+        valor_descontos += (valor_produtos - valor_descontos) * (pedido.desconto4/100)
+    if pedido.desconto5 > 0:
+        valor_descontos += (valor_produtos - valor_descontos) * (pedido.desconto5/100)
+
     valor_desconto_aplicado = valor_produtos - valor_descontos
     valor_ipi = valor_desconto_aplicado * (pedido.ipi/100)
     valor_total_pedido = valor_desconto_aplicado + valor_ipi
