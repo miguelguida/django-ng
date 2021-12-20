@@ -49,7 +49,7 @@
         
         <tr>
           <td>{{ object.id }}</td>
-          <td>{{ object.data }}</td>
+          <td>{{ object.data|date:'d-m-Y' }}</td>
           <td><a class="obj-link" href="{{ object.get_absolute_url }}">{{ object.numeroSolicitacao }}</a></td>
           <td>{{ object.cliente.razaoSocial }}</td>
           <td>{{ object.representada.nome }}</td>

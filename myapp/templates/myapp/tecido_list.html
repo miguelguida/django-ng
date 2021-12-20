@@ -43,7 +43,7 @@
         <tr>
           <td>{{ object.id }}</td>
           <td><a class="obj-link" href="{{ object.get_absolute_url }}">{{ object.tecido }}</a></td>
-          <td>{{ object.lastUpdate }}</td>
+          <td>{{ object.lastUpdate|date:'d-m-Y' }}</td>
           <td>
               <a class="btn btn-secondary" href="{{ object.get_edit_url }}"> Editar</a>
               <a class="btn btn-danger" href="{{ object.get_delete_url }}"> Delete</a>

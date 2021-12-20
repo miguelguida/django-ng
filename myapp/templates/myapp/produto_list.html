@@ -57,7 +57,7 @@
           <td>{{ produto.representada.nome }}</td>
           <td>{{ produto.observacoes }}</td>
           <!-- <td>{{ produto.representada }}</td> -->
-          <td>{{ produto.lastUpdate }}</td>
+          <td>{{ produto.lastUpdate|date:'d-m-Y' }}</td>
           <td>
               <a class="btn btn-secondary" href="{% url 'produto-update' produto.pk %}"> Editar</a>
               <a class="btn btn-danger" href="{% url 'produto-delete' produto.pk %}"> Delete</a>
