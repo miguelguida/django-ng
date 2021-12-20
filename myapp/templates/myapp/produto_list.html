@@ -43,7 +43,7 @@
           <th>Representada</th>
           <th>Observacão</th>
           <th>Atualizado em</th>
-          <th style="width: 140px;">Ação</th>
+          <th style="width: 155px;">Ação</th>
           <!-- <th>Representada</th> -->
         </tr>
         {% for produto in produto_list %}
@@ -60,7 +60,7 @@
           <td>{{ produto.lastUpdate|date:'d-m-Y' }}</td>
           <td>
               <a class="btn btn-secondary" href="{% url 'produto-update' produto.pk %}"> Editar</a>
-              <a class="btn btn-danger" href="{% url 'produto-delete' produto.pk %}"> Delete</a>
+              <a class="btn btn-danger" href="{% url 'produto-delete' produto.pk %}"> Remover</a>
           </td>
 
         </tr>
@@ -139,7 +139,7 @@
           <h5 class="card-title"> {{ object }} </h5>
           <p class="card-text">{{ object.get_text }} </p>
           <a class="btn btn-secondary" href="{{ object.get_edit_url }}"> Editar</a>
-          <a class="btn btn-danger" href="{{ object.get_delete_url }}"> Delete</a>
+          <a class="btn btn-danger" href="{{ object.get_delete_url }}"> Remover</a>
         </div>
         <div class="card-footer">
           <small class="text-muted">Atualizado em: {{ object.lastUpdate }}</small>

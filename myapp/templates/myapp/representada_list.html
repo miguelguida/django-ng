@@ -41,7 +41,7 @@
           <th style="width: 120px;">Telefone</th>
           <th style="width: 120px;">Celular</th>
           <th>Email</th>
-          <th style="width: 140px;">Ação</th>
+          <th style="width: 155px;">Ação</th>
         </tr>
         {% for object in object_list %}
         
@@ -55,7 +55,7 @@
           <td>{{ object.email }}</td>
           <td>
               <a class="btn btn-secondary" href="{{ object.get_edit_url }}"> Editar</a>
-              <a class="btn btn-danger" href="{{ object.get_delete_url }}"> Delete</a>
+              <a class="btn btn-danger" href="{{ object.get_delete_url }}"> Remover</a>
           </td>
         </tr>
 
@@ -138,7 +138,7 @@
           <h5 class="card-title"> {{ object }} </h5>
           <p class="card-text">{{ object.get_text }} </p>
           <a class="btn btn-secondary" href="{{ object.get_edit_url }}"> Editar</a>
-          <a class="btn btn-danger" href="{{ object.get_delete_url }}"> Delete</a>
+          <a class="btn btn-danger" href="{{ object.get_delete_url }}"> Remover</a>
         </div>
         <div class="card-footer">
           <small class="text-muted">Atualizado em: {{ object.lastUpdate }}</small>

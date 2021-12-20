@@ -45,7 +45,7 @@
           <th style="width: 80px;">IPI</th>
           <th style="width: 115px;">Total da Venda</th>
           <th style="width: 85px;">Comissão</th>
-          <th style="width: 175px;">Ação</th>
+          <th style="width: 200px;">Ação</th>
           <!-- <th>Atualizado em</th> -->
         </tr>
         {% for object in object_list %}
@@ -64,7 +64,7 @@
           <!-- <td>{{ object.lastUpdate }}</td> -->
           <td>
               <a class="btn btn-secondary" href="{{ object.get_edit_url }}"> Editar</a>
-              <a class="btn btn-danger" href="{{ object.get_delete_url }}"> Delete</a>
+              <a class="btn btn-danger" href="{{ object.get_delete_url }}"> Remover</a>
               <a class="btn btn-warning" href="{% url 'pedido-pdf' object.pk %}"> PDF</a>
           </td>
         </tr>
@@ -147,7 +147,7 @@
           <h5 class="card-title"> {{ object }} </h5>
           <p class="card-text">{{ object.get_text }} </p>
           <a class="btn btn-secondary" href="{{ object.get_edit_url }}"> Editar</a>
-          <a class="btn btn-danger" href="{{ object.get_delete_url }}"> Delete</a>
+          <a class="btn btn-danger" href="{{ object.get_delete_url }}"> Remover</a>
           <a class="btn btn-warning" href="{% url 'pedido-pdf' object.pk %}"> PDF</a>
         </div>
         <div class="card-footer">

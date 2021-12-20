@@ -142,12 +142,14 @@ class PedidoListView(LoginRequiredMixin, generic.ListView):
         if filter_val != '' and order != '':
             new_context = Pedido.objects.filter(
                 Q(ordemCompra__icontains=filter_val) | Q(cliente__razaoSocial__icontains=filter_val)
+              | Q(id=filter_val)
             ).order_by(order)
         elif order != '':
             new_context = Pedido.objects.all().order_by(order)
         elif filter_val != '':
             new_context = Pedido.objects.filter(
                 Q(ordemCompra__icontains=filter_val) | Q(cliente__razaoSocial__icontains=filter_val)
+              | Q(id=filter_val)
             )
         else:
             new_context = Pedido.objects.all()
@@ -382,7 +384,7 @@ class AssistenciaListView(LoginRequiredMixin, generic.ListView):
     def get_queryset(self):
         filter_val = self.request.GET.get('filter', '')
         order = self.request.GET.get('orderby', 'id')
-        asc_desc = self.request.GET.get('asc_desc', '')
+        asc_desc = self.request.GET.get('asc_desc', 'desc')
 
         if order != '':
             if asc_desc == "desc" and order[0] != '-':
@@ -416,7 +418,7 @@ class AssistenciaListView(LoginRequiredMixin, generic.ListView):
         context['filter'] = self.request.GET.get('filter', '')
         context['orderby'] = self.request.GET.get('orderby', 'id')
         context['options'] = ASSISTENCIA_ORDER_OPTIONS
-        context['asc_desc'] = self.request.GET.get('asc_desc', 'asc')
+        context['asc_desc'] = self.request.GET.get('asc_desc', 'desc')
         context['asc_desc_options'] = [['asc', 'Crescente'],['desc', 'Decrescente']]
         return context
    
