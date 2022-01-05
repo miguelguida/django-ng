@@ -7,6 +7,7 @@ urlpatterns =[
 
 urlpatterns += [
     path('api/get_produto_info', views.get_produto_info, name='get_produto_info'),
+    path('api/get_representada_info', views.get_representada_info, name='get_representada_info'),
 ]
 
 urlpatterns += [
@@ -97,4 +98,7 @@ urlpatterns += [
     path('relatorio/clientes/', views.relatorio_clientes_view, name='relatorio-clientes'),
     path('relatorio/representadas/', views.relatorio_representadas_view, name='relatorio-representadas'),
     path('relatorio/produtos-por-repr/', views.relatorio_produtos_por_repr_view, name='relatorio-produtos-por-repr'),
+    path('relatorio/produtos-por-repr/<int:pk>', views.relatorio_produtos_por_repr_view, name='relatorio-produtos-por-repr-pk'),
+    path('relatorio/clientes-por-prod/', views.relatorio_produtos_por_cliente, name='relatorio-clientes-por-prod'),
+    path('relatorio/clientes-por-prod/<int:pk>', views.relatorio_produtos_por_cliente, name='relatorio-clientes-por-prod-pk'),
 ]

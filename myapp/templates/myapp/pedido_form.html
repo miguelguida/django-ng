@@ -65,8 +65,8 @@
                 {% for form in formset %}
                     <div id="formset-{{ forloop.counter0 }}" class="formset-div">
                         <div hidden>                           
-                            {{ form.id|add_class:'form-control' }}
-                            {{ form.deleted_at|add_class:'form-control' }}
+                            {{ form.id }}
+                            {{ form.deleted_at }}
                         </div>
                         <div class="form-row">
                             <div class="form-group pr-2 col-sm item-w25">
@@ -112,8 +112,8 @@
                 {% if forloop.last %}
                 <div id="formset-__prefix__" class="formset-div">
                     <div hidden>                           
-                        {{ form.id|add_class:'form-control' }}
-                        {{ form.deleted_at|add_class:'form-control' }}
+                        {{ form.id }}
+                        {{ form.deleted_at }}
                     </div>
                     <div class="form-row">
                         <div class="form-group pr-2 col-sm item-w25">
@@ -291,6 +291,40 @@
         $("#confirmOk").unbind().one('click', onConfirm).one('click', fClose);
         $("#confirmCancel").unbind().one("click", fClose);
     }
+
+    function onSelectRepresentada(){
+        $("[id$='_representada']").on('change', function(){
+            console.log(this.id);
+            var $id_split = this.id.split("-");
+            var $id_representada = $('#id_representada').find(':selected').val();
+
+            $.ajax({
+                method: "GET",
+                url: "{% url 'get_representada_info' %}",
+                dataType: 'json',
+                data: { representada: $id_representada },
+                success: function(data, status) {
+                    console.log("SUCCESS:");
+                    console.log(data);
+                    console.log(data['ipi']);
+                    console.log(data['nome']);
+                    
+                    nome = data['nome'];
+                    ipi = data['ipi'];
+
+                    console.log('@@@@@@@@@@@@');
+                    
+                    $("[id$='_ipi']").val(parseFloat(ipi).toFixed(2));
+                    
+                    updateValorBruto();
+                    updateValorTotal();
+                },
+                error: function(response) {
+                }
+            });
+        });
+    }
+    onSelectRepresentada();
 
     $(function() {
         $('.add-item').on('click', function(ev) {

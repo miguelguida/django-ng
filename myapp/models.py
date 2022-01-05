@@ -33,10 +33,14 @@ class Representada(SoftDeletionModel):
         return reverse('representada-detail', args=[str(self.id)])
 
     def __str__(self):
-        return '{0}, {1}'.format(self.nome, self.contato)
+        return self.nome
 
     def get_text(self):
-        return 'Contato: {0}, CNPJ: {1}, Cidade: {2} '.format(self.contato, self.cnpj, self.cidade)
+        fields_dict = [ ('Nome: ', self.nome),
+                        ('Contato: ',self.contato),
+                        ('CNPJ: ', self.cnpj),
+                        ('Cidade: ', self.cidade)]
+        return fields_dict
 
     def get_edit_url(self):
         return reverse('representada-update', args=[str(self.id)])
@@ -51,7 +55,6 @@ class Produto(SoftDeletionModel):
                             help_text="Nome do produto")
     valor = models.DecimalField(max_digits=10, decimal_places=2)
     referencia = models.CharField(max_length=255, null=True, blank=True)
-    # codRepresentada = models.CharField(max_length=255, null=True, blank=True) #TODO
     representada = models.ForeignKey('Representada', on_delete=models.SET_NULL, null=True)
     observacoes = models.TextField(max_length=600, blank=True, null=True)
     lastUpdate = models.DateTimeField(auto_now=True)
@@ -66,7 +69,12 @@ class Produto(SoftDeletionModel):
         return self.nome
 
     def get_text(self):
-        return 'Valor: {0} \n Referencia: {1} \n Representada: {2} '.format(self.valor, self.referencia, self.representada)
+        fields_dict = [ ('Código: ', self.id),
+                        ('Nome: ', self.nome),
+                        ('Referência: ',self.referencia),
+                        ('Valor: ', self.valor),
+                        ('Representada: ', self.representada)]
+        return fields_dict
 
     def get_edit_url(self):
         return reverse('produto-update', args=[str(self.id)])
@@ -134,11 +142,16 @@ class Pedido(SoftDeletionModel):
     def get_absolute_url(self):
         return reverse('pedido-detail', args=[str(self.id)])
 
-    def __str__(self):
+    def __str__(self):        
+        if self.id:
+            return str(self.id)
         return self.ordemCompra
 
     def get_text(self):
-        return 'Ordem Compra: {0} \n  '.format(self.ordemCompra)
+        fields_dict = [ ('N° Pedido: ',self.id),
+                        ('Cliente: ', self.cliente),
+                        ('Representada: ', self.representada)]
+        return fields_dict
 
     def get_edit_url(self):
         return reverse('pedido-update', args=[str(self.id)])
@@ -161,7 +174,9 @@ class ItemPedido(SoftDeletionModel):
         return self.produto.valor * self.quantidade
 
     def __str__(self):
-        return self.produto.nome +" "+ self.pedido.ordemCompra +" "+self.produto.referencia
+        if self.produto and self.pedido:
+            return self.produto.nome +" "+ self.pedido.ordemCompra +" "+self.produto.referencia
+        return self.referencia
 
 # Create your models here.
 class Cliente(SoftDeletionModel):
@@ -216,7 +231,10 @@ class Cliente(SoftDeletionModel):
         return self.razaoSocial
 
     def get_text(self):
-        return 'Nome Fantasia: {0} \n  '.format(self.nomeFantasia)
+        fields_dict = [ ('Nome: ', self.razaoSocial),
+                        ('Telefone: ',self.telefone),
+                        ('Email: ', self.email)]
+        return fields_dict
 
     def get_edit_url(self):
         return reverse('cliente-update', args=[str(self.id)])
@@ -251,7 +269,11 @@ class Transportadora(SoftDeletionModel):
         return '{0}, {1}'.format(self.nome, self.contato)
 
     def get_text(self):
-        return 'Contato: {0}, CNPJ: {1}, Cidade: {2} '.format(self.contato, self.cnpj, self.cidade)
+        fields_dict = [ ('Nome: ', self.nome),
+                        ('Contato: ',self.contato),
+                        ('CNPJ: ', self.cnpj),
+                        ('Cidade: ', self.cidade)]
+        return fields_dict
 
     def get_edit_url(self):
         return reverse('transportadora-update', args=[str(self.id)])
@@ -284,7 +306,9 @@ class Vendedor(SoftDeletionModel):
         return '{0}, {1}'.format(self.nome, self.email)
 
     def get_text(self):
-        return 'CPF: {0}, Telefone: {1}, Celular: {2} '.format(self.cpf, self.telefone, self.celular)
+        fields_dict = [ ('Nome: ', self.nome),
+                        ('CPF: ',self.cpf)]
+        return fields_dict
 
     def get_edit_url(self):
         return reverse('vendedor-update', args=[str(self.id)])
@@ -316,7 +340,14 @@ class Assistencia(SoftDeletionModel):
         return self.numeroSolicitacao
 
     def get_text(self):
-        return 'Num. Solicitacao: {0} \n  '.format(self.numeroSolicitacao)
+        fields_dict = [ ('N° Assist.: ',self.id),
+                        ('Data: ', self.data),
+                        ('Status: ', self.status),
+                        ('N° Solicit.: ',self.numeroSolicitacao),
+                        ('Cliente: ', self.cliente),
+                        ('Representada: ', self.representada)
+                        ]
+        return fields_dict
 
     def get_edit_url(self):
         return reverse('assistencia-update', args=[str(self.id)])
@@ -363,7 +394,8 @@ class Acabamento(SoftDeletionModel):
         return self.acabamento
 
     def get_text(self):
-        return ''
+        fields_dict = [ ('', self.acabamento)]
+        return fields_dict
 
     def get_edit_url(self):
         return reverse('acabamento-update', args=[str(self.id)])
@@ -386,7 +418,8 @@ class Tecido(SoftDeletionModel):
         return self.tecido
 
     def get_text(self):
-        return ''
+        fields_dict = [ ('', self.tecido)]
+        return fields_dict
 
     def get_edit_url(self):
         return reverse('tecido-update', args=[str(self.id)])
@@ -409,7 +442,8 @@ class FormaPagamento(SoftDeletionModel):
         return self.formaDePagamento
 
     def get_text(self):
-        return ''
+        fields_dict = [ ('', self.formaDePagamento)]
+        return fields_dict
 
     def get_edit_url(self):
         return reverse('formaPagamento-update', args=[str(self.id)])

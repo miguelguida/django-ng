@@ -190,7 +190,8 @@ class PedidoCreate( View):
     def get(self, request, *args, **kwargs):
         """handle form display"""
         form = self.form_class()
-        formset = self.inline_formset(instance=Pedido())     
+        formset = self.inline_formset(instance=Pedido())
+             
         return render(request,\
             self.template_name,\
             {'form': form, 'formset': formset, 'createUpdate': "Criar"})
@@ -1109,9 +1110,23 @@ def get_produto_info(request, *args, **kwargs):
             # print("PRODUTO:   ",produto_json)
 
             data = {
-                'view_amount': "test",
                 'referencia': produto.referencia,   
                 'valor': produto.valor,
+            }
+
+            return JsonResponse(data)
+
+def get_representada_info(request, *args, **kwargs):
+    if request.method == "GET":
+        if request.is_ajax():
+            
+            print(request.GET.get('representada'))
+            representada_id =request.GET.get('representada')
+            representada = get_object_or_404(Representada, pk=representada_id)
+
+            data = {
+                'nome': representada.nome,   
+                'ipi': representada.ipi,
             }
 
             return JsonResponse(data)
@@ -1119,6 +1134,22 @@ def get_produto_info(request, *args, **kwargs):
 
 class Relatorios(LoginRequiredMixin, TemplateView):
     template_name = 'myapp/relatorios.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user_agent = self.request.META['HTTP_USER_AGENT']
+        keywords = ['Mobile','Opera Mini','Android']
+        if any(word in user_agent for word in keywords):
+            context['is_mobile'] = True
+        else:
+            context['is_mobile'] = False
+
+        context['produtos'] = Produto.objects.all()
+        context['clientes'] = Cliente.objects.all()
+        context['representadas'] = Representada.objects.all()
+        
+        return context
+
     
 
 @login_required
@@ -1170,11 +1201,44 @@ def relatorio_representadas_view(request, *args, **kwargs):
        return HttpResponse('We had some errors <pre>' + html + '</pre>')
     return response
 
+# @login_required
+# def relatorio_produtos_por_repr_view(request, *args, **kwargs):
+#     template_path = 'myapp/relatorio_produtos_por_repr_pdf.html'
+    
+#     representadas = Representada.objects.all()
+#     produtos = {}
+#     for r in representadas:
+#         produtos[r] = Produto.objects.filter(representada=r)
+            
+    
+#     context = {'representadas': representadas, 
+#                'produtos': produtos, 
+#                }
+
+#     # Create a Django response object, and specify content_type as pdf
+#     response = HttpResponse(content_type='application/pdf')
+#     response['Content-Disposition'] = 'attachment; filename="lista_de_prod_por_repr.pdf"'
+#     # find the template and render it.
+#     template = get_template(template_path)
+#     html = template.render(context)
+
+#     # create a pdf
+#     pisa_status = pisa.CreatePDF(
+#        html, dest=response)
+#     # if error then show some funy view
+#     if pisa_status.err:
+#        return HttpResponse('We had some errors <pre>' + html + '</pre>')
+#     return response
+
 @login_required
 def relatorio_produtos_por_repr_view(request, *args, **kwargs):
     template_path = 'myapp/relatorio_produtos_por_repr_pdf.html'
-    
-    representadas = Representada.objects.all()
+    if 'pk' in kwargs:
+        representada_id = kwargs['pk']
+        representadas = Representada.objects.filter(id=representada_id)
+    else:
+        representadas = Representada.objects.all()
+
     produtos = {}
     for r in representadas:
         produtos[r] = Produto.objects.filter(representada=r)
@@ -1187,6 +1251,50 @@ def relatorio_produtos_por_repr_view(request, *args, **kwargs):
     # Create a Django response object, and specify content_type as pdf
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = 'attachment; filename="lista_de_prod_por_repr.pdf"'
+    # find the template and render it.
+    template = get_template(template_path)
+    html = template.render(context)
+
+    # create a pdf
+    pisa_status = pisa.CreatePDF(
+       html, dest=response)
+    # if error then show some funy view
+    if pisa_status.err:
+       return HttpResponse('We had some errors <pre>' + html + '</pre>')
+    return response
+
+
+@login_required
+def relatorio_produtos_por_cliente(request, *args, **kwargs):
+    template_path = 'myapp/relatorio_produtos_por_cliente_pdf.html'
+    if 'pk' in kwargs:
+        produto_id = kwargs['pk']
+        produtos = Produto.objects.filter(id=produto_id)
+    else:
+        return HttpResponseRedirect(reverse_lazy('relatorios'))
+        # return render(request, Relatorios.as_view)
+        
+    clientes = {}
+    for p in produtos:
+        itemsPedido = ItemPedido.objects.filter(produto=p)
+        pedidos = [it.pedido for it in itemsPedido ]
+        
+        # list to not repeat clients
+        clientes_list = []
+        for p in pedidos:
+            if not p.cliente in clientes_list:
+                clientes_list.append(p.cliente)
+
+        clientes[p] = clientes_list
+            
+    
+    context = {'clientes': clientes, 
+               'produtos': produtos, 
+               }
+
+    # Create a Django response object, and specify content_type as pdf
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="produtos_por_cliente.pdf"'
     # find the template and render it.
     template = get_template(template_path)
     html = template.render(context)

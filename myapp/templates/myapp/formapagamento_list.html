@@ -125,8 +125,9 @@
       {% for object in object_list %}
       <div class="card">
         <div class="card-body">
-          <h5 class="card-title"> {{ object }} </h5>
-          <p class="card-text">{{ object.get_text }} </p>
+          {% for label,value in object.get_text %}
+            <p class="card-text"><b>{{label}}</b> {{ value }} </p>
+          {% endfor %}
           <a class="btn btn-secondary" href="{{ object.get_edit_url }}"> Editar</a>
           <a class="btn btn-danger" href="{{ object.get_delete_url }}"> Remover</a>
         </div>

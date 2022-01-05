@@ -12,29 +12,83 @@
 
             
             
-            <tr>
-                <th>Tipo de relatório</th>
-                
+          <tr>
+              <th>Tipo de relatório</th>
+              
 
-            </tr>
-            <tr>
-                <td>Lista de Clientes</td>
-                <td><a class="btn btn-warning"href="{% url 'relatorio-clientes' %}"> Gerar PDF</a></td>
-            </tr>
-            <tr>
-                <td>Lista de Representadas</td>
-                <td><a class="btn btn-warning"href="{% url 'relatorio-representadas' %}"> Gerar PDF</a></td>
-            </tr>
-            <tr>
-              <td>Lista de Produtos por Representadas</td>
-              <td><a class="btn btn-warning"href="{% url 'relatorio-produtos-por-repr' %}"> Gerar PDF</a></td>
           </tr>
-        
+          <tr>
+              <td>Lista de Clientes</td>
+              <td></td>
+              <td><a class="btn btn-warning"href="{% url 'relatorio-clientes' %}"> Gerar PDF</a></td>
+          </tr>
+          <tr>
+              <td>Lista de Representadas</td>
+              <td></td>
+              <td><a class="btn btn-warning"href="{% url 'relatorio-representadas' %}"> Gerar PDF</a></td>
+          </tr>
+          <tr>
+            <td>Lista de Produtos por Representadas</td>
+            <td>
+              <select id="representada-select" class="form-control">
+                <option  value="" selected="selected">------</option>
+                {% for r in representadas %}
+                 <option value="{{r.id}}">{{r}}</option>
+                {% endfor %}
+              </select>
+            </td>
+            <td><a id="gerar_representada" class="btn btn-warning" href="{% url 'relatorio-produtos-por-repr'  %}"> Gerar PDF</a></td>
+          </tr>
+          
+          <tr>
+            <td>Lista de Clientes por Produto</td>
+            <td>
+              <select id="produto-select" class="form-control">
+                <option  value="" selected="selected">------</option>
+                {% for r in produtos %}
+                 <option value="{{r.id}}">{{r}}</option>
+                {% endfor %}
+              </select>
+            </td>
+            <td><a id="gerar_cliente_prod" class="btn btn-warning" href="{% url 'relatorio-clientes-por-prod'  %}"> Gerar PDF</a></td>
+          </tr>
 
       </table>
-
-     
     </div>
-  </div>       
+  </div>
+  
+  <script>
+    $('#representada-select').on('change', function(){
+        split = $('#gerar_representada').attr('href').split('/');
+        url = ""
+        for(i = 0; i < split.length -1; i++){
+          url += split[i]+'/'
+        }
+        url += $('#representada-select').val();
+        $('#gerar_representada').attr('href',url);
+    });
+
+    $('#produto-select').on('change', function(){
+        split = $('#gerar_cliente_prod').attr('href').split('/');
+        url = ""
+        for(i = 0; i < split.length -1; i++){
+          url += split[i]+'/'
+        }
+        url += $('#produto-select').val();
+        $('#gerar_cliente_prod').attr('href',url);
+    });
+
+    $('#gerar_cliente_prod').on('click', function(){
+        if($('#produto-select').val() == ""){
+            alert("Selecione um produto.");
+        }
+    });
+
+    $('#representada-select').select2();
+    $('#produto-select').select2();
+
+    
+
+  </script>
 {% endblock %}
 

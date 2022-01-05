@@ -2,6 +2,9 @@ body {
     background: #eee;
 }
 
+/* .select2{
+    width: 100% !important;
+} */
 .form-control {
     border-radius: 0;
     box-shadow: none;
@@ -58,7 +61,7 @@ body {
     margin: 0;
     vertical-align: middle;
     justify-content: flex-start;
-    width: 100% !important;
+    /* width: 100% !important; */
 }
 
 .select2-container .selection{

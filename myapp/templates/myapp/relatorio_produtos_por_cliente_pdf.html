@@ -3,7 +3,7 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <title>Lista de Produtos por Representadas</title>
+        <title>Lista de Clientes por Produto</title>
         <style type="text/css">
             @page {
                 size: A4;
@@ -119,38 +119,24 @@
                         
                     </td>
                 </table> -->
-                <h1>Lista de Produtos por Representadas</h1>
+                <h1>Lista de Clientes por Produto</h1>
 
                 <hr/>
 
-                {% for r, p_list in produtos.items %}
-                <h3>Representada: {{ r }}</h3>
+                {% for r, p_list in clientes.items %}
+                <h3>Produto: {{ r }}</h3>
                 <table class="items-table">
                     <thead>
                         <tr>
-                            <th style="width: 80px;">Código</th>
-                            <th>Nome</th>
-                            <th style="width: 80px;">Valor</th>
-                            <th style="width: 140px;">Referência</th>
-                            <th>Representada</th>
-                            <th>Observacão</th>
+                            <th>Razão Social</th>
+                            <th>Cidade</th>
                         </tr>
                         </thead>
                         <tbody>
-                        {% for produto in p_list %}
+                        {% for c in p_list %}
                         <tr>
-                            <td>{{ produto.id }}</td>
-                            <td>{{ produto.nome }}</td>
-                            <td>{{ produto.valor }}</td>
-                            <td>{{ produto.referencia }}</td>
-                            <td>{{ produto.representada.nome }}</td>
-                            {% if produto.observacoes %}
-                                <td>{{ produto.observacoes }}</td>
-                            {% else %} 
-                                <td> </td>
-                            {% endif %}   
-                            
-                            
+                            <td>{{ c.razaoSocial }}</td>
+                            <td>{{ c.fat_cidade }} - {{ c.fat_estado }}</td>
                         </tr>
                         {% endfor %}
                         </tbody>

@@ -51,6 +51,24 @@ input[type=number] {
 }
 
 @media 
+only screen and (max-width: 760px){
+
+	.dadosFaturamentoButton{
+		display: flex;
+		/* justify-content: space-between; */
+		flex-direction: column;
+	}
+	
+	.btn-repetir-dados{
+		margin: 10px;
+	}
+
+	.card-text{
+		margin: 8px 0px;
+	}
+}
+
+@media 
 only screen and (min-width: 760px){
 	.obj-list-table-container, .filter-container{
 		width: 96%;
@@ -101,6 +119,15 @@ only screen and (min-width: 760px){
 	.obs-assist, textarea.form-control{
 		height: calc(5.5rem + 2px);
 	}
+
+	.dadosFaturamentoButton{
+		display: flex;
+		justify-content: space-between;
+	}
+	
+	.btn-repetir-dados{
+		margin: 10px 10px 0px 0px;
+	}
 }
 
 .obj-list-table{
@@ -150,4 +177,6 @@ th, td {
 	margin: 5px 0px;
 	border-top: 3px solid lightseagreen;
 }
+
+
 

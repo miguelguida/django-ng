@@ -54,8 +54,11 @@
                     {{ form.observacoes|add_class:'form-control' }}
                 </div>
             </div>
-            <div class="faturamento-div">
-                <h3>Dados de Faturamento</h3>
+            <div id="fat-div" class="faturamento-div">
+                <div class="dadosFaturamentoButton">
+                    <h3>Dados de Faturamento</h3>
+                    <a id="repeat-data" class="btn btn-info btn-repetir-dados" href="#fat-div" >Repetir Dados</a>
+                </div>
                 <div class="form-row">
                     <div class="form-group col-md-3">
                         <label>Inscrição Estadual</label>
@@ -260,6 +263,39 @@
             // Error :(
         });
     };
+
+    function repeatData(){
+        $('#repeat-data').on('click', function(ev) {
+            inscEstadual = $("#id_fat_inscEstadual").val();
+            $("#id_cob_inscEstadual").val(inscEstadual)
+            $("#id_entr_inscEstadual").val(inscEstadual)
+
+            cep = $("#id_fat_cep").val();
+            $("#id_cob_cep").val(cep)
+            $("#id_entr_cep").val(cep)
+            
+            cidade = $("#id_fat_cidade").val();
+            $("#id_cob_cidade").val(cidade)
+            $("#id_entr_cidade").val(cidade)
+
+            estado = $("#id_fat_estado").val();
+            $("#id_cob_estado").val(estado)
+            $("#id_entr_estado").val(estado)
+
+            endereco = $("#id_fat_endereco").val();
+            $("#id_cob_endereco").val(endereco)
+            $("#id_entr_endereco").val(endereco)
+
+            bairro = $("#id_fat_bairro").val();
+            $("#id_cob_bairro").val(bairro)
+            $("#id_entr_bairro").val(bairro)
+
+            cnpj = $("#id_fat_cnpj").val();
+            $("#id_cob_cnpj").val(cnpj)
+            $("#id_entr_cnpj").val(cnpj)
+        });
+    }
+    repeatData();
 
 
 </script>
