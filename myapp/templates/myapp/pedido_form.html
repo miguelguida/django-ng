@@ -239,6 +239,13 @@
         </div>
     </div>
 
+{% if form_invalid %}
+<script>
+    alert("Preencha todos campos do formulário corretamente.");
+</script>
+
+{% endif %}
+
 <script>
     $("[id$='_cliente']").select2();
     $("[id$='_representada']").select2();

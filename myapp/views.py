@@ -8,6 +8,7 @@ from django.template.loader import get_template
 from django.urls import reverse
 from django.urls import reverse_lazy
 from django.contrib import messages
+from django.core.exceptions import ValidationError
 import os
 from xhtml2pdf import pisa
 
@@ -168,7 +169,13 @@ class PedidoListView(LoginRequiredMixin, generic.ListView):
         context['orderby'] = self.request.GET.get('orderby', 'id')
         context['options'] = PEDIDO_ORDER_OPTIONS
         context['asc_desc'] = self.request.GET.get('asc_desc', 'desc')
-        context['asc_desc_options'] = [['asc', 'Crescente'],['desc', 'Decrescente']]
+        context['asc_desc_options'] = [['asc', 'Crescente'],['desc', 'Decrescente']]        
+
+        if 'pdf_pk' in self.request.session and 'generate_pdf' in self.request.session:
+            pdf_pk = self.request.session['pdf_pk']
+            context['generate_pdf'] = self.request.session['generate_pdf']
+            context['pdf_pk'] = pdf_pk
+
         return context
 
 
@@ -200,12 +207,13 @@ class PedidoCreate( View):
         """handle form submission"""
         form = self.form_class(request.POST)
         formset = self.inline_formset(request.POST, instance=Pedido())
-        
-        valorBruto = 0
-        valorIpi = 0
-        valorTotal =0
-        valorComissao =0
-        if form.is_valid():
+
+        formset_valid = True
+        for f in formset:
+            if not f.is_valid():
+                formset_valid = False
+
+        if form.is_valid() and formset_valid:
             # Save the parent
             entity = form.save(commit=True)
             # Save the formset
@@ -216,28 +224,21 @@ class PedidoCreate( View):
                     if len(f.cleaned_data) > 0:
                         item = f.save(commit=False)
                         item.pedido = entity
-                        valorBruto += item.produto.valor * item.quantidade
-                        # print("ITEM: ",item)
-                        # print("ENTUTY: ",entity)
                         item.save()
-                # print("VALID ",f.is_valid())
-                # print("CLEAN ",f.cleaned_data)
+                else:
+                    return self.form_invalid(request, form, formset)
 
-            # valor_descontos = valorBruto * (( entity.desconto1 + entity.desconto2 + entity.desconto3 + entity.desconto4 + entity.desconto5)/100)
-            # valor_desconto_aplicado = valorBruto - valor_descontos
-            # valorIpi = valor_desconto_aplicado * (entity.ipi/100)
-            # valorTotal = valor_desconto_aplicado + valorIpi
-            # valorComissao = valorTotal*(entity.porcentagemComissao/100)
+        else:
+            return self.form_invalid(request, form, formset)
 
-            # entity.valorBruto = valorBruto
-            # entity.valorIpi = valorIpi
-            # entity.valorTotal = valorTotal
-            # entity.valorComissao = valorComissao
-            print("VALORES")
-            print(entity.valorBruto,"\n",entity.valorIpi,"\n",entity.valorTotal,"\n",entity.valorComissao,"\n")
-            entity.save()
-
+        request.session['generate_pdf'] = True
+        request.session['pdf_pk'] = entity.id
         return HttpResponseRedirect(self.get_success_url())
+
+    def form_invalid(self, request, form, formset):
+        return render(request,\
+            self.template_name,\
+            {'form': form, 'formset': formset, 'createUpdate': "Criar", 'form_invalid':True})
 
 
 class PedidoUpdate(LoginRequiredMixin,  UpdateView):
@@ -247,7 +248,7 @@ class PedidoUpdate(LoginRequiredMixin,  UpdateView):
     template_name = 'myapp/pedido_form.html'
 
     def get_success_url(self):
-        return reverse_lazy('pedidos') # kwargs={'pk': self.object.pk}
+        return reverse('pedidos') # kwargs={'pk': self.object.pk}
 
     def get(self, request, *args, **kwargs):
         self.object = get_object_or_404(Pedido, pk=self.kwargs['pk'])
@@ -264,7 +265,12 @@ class PedidoUpdate(LoginRequiredMixin,  UpdateView):
         form = self.form_class(request.POST,instance=self.object)
         formset = self.inline_formset(request.POST, instance=self.object)
                         
-        if form.is_valid():
+        formset_valid = True
+        for f in formset:
+            if not f.is_valid():
+                formset_valid = False
+
+        if form.is_valid() and formset_valid:
             # Save the parent
             entity = form.save()
             # Save the formset
@@ -274,9 +280,20 @@ class PedidoUpdate(LoginRequiredMixin,  UpdateView):
                     
                     if len(f.cleaned_data) > 0:
                         f.save()
-                
+                else:
+                    return self.form_invalid(request, form, formset)                      
+        else:
+            return self.form_invalid(request, form, formset)    
 
+        
+        request.session['generate_pdf'] = True
+        request.session['pdf_pk'] = entity.id
         return HttpResponseRedirect(self.get_success_url())
+
+    def form_invalid(self, request, form, formset):
+        return render(request,\
+            self.template_name,\
+            {'form': form, 'formset': formset, 'createUpdate': "Atualizar", 'form_invalid':True})
 
 
 class PedidoDelete(LoginRequiredMixin,  DeleteView):
@@ -421,6 +438,12 @@ class AssistenciaListView(LoginRequiredMixin, generic.ListView):
         context['options'] = ASSISTENCIA_ORDER_OPTIONS
         context['asc_desc'] = self.request.GET.get('asc_desc', 'desc')
         context['asc_desc_options'] = [['asc', 'Crescente'],['desc', 'Decrescente']]
+
+        if 'pdf_pk' in self.request.session and 'generate_pdf' in self.request.session:
+            pdf_pk = self.request.session['pdf_pk']
+            context['generate_pdf'] = self.request.session['generate_pdf']
+            context['pdf_pk'] = pdf_pk
+
         return context
    
 
@@ -452,11 +475,17 @@ class AssistenciaCreate(LoginRequiredMixin,  View):
         form = self.form_class(request.POST)
         formset = self.inline_formset(request.POST, instance=Assistencia())
         
-        if form.is_valid():
+        formset_valid = True
+        for f in formset:
+            if not f.is_valid():
+                formset_valid = False
+
+        if form.is_valid() and formset_valid:
             # Save the parent
             entity = form.save(commit=True)
             # Save the formset
             for f in formset:
+                
                 if f.is_valid():
                     f.clean()
                     
@@ -464,9 +493,20 @@ class AssistenciaCreate(LoginRequiredMixin,  View):
                         item = f.save(commit=False)
                         item.assistencia = entity
                         item.save()
-                
+                else:
+                    return self.form_invalid(request, form, formset)
 
+        else:
+            return self.form_invalid(request, form, formset)
+
+        request.session['generate_pdf'] = True
+        request.session['pdf_pk'] = entity.id
         return HttpResponseRedirect(self.get_success_url())
+
+    def form_invalid(self, request, form, formset):
+        return render(request,\
+            self.template_name,\
+            {'form': form, 'formset': formset, 'createUpdate': "Criar", 'form_invalid':True})
 
 
 class AssistenciaUpdate(LoginRequiredMixin,  UpdateView):
@@ -493,7 +533,12 @@ class AssistenciaUpdate(LoginRequiredMixin,  UpdateView):
         form = self.form_class(request.POST,instance=self.object)
         formset = self.inline_formset(request.POST, instance=self.object)
                         
-        if form.is_valid():
+        formset_valid = True
+        for f in formset:
+            if not f.is_valid():
+                formset_valid = False
+
+        if form.is_valid() and formset_valid:
             # Save the parent
             entity = form.save()
             # Save the formset
@@ -502,12 +547,20 @@ class AssistenciaUpdate(LoginRequiredMixin,  UpdateView):
                     f.clean()
                     
                     if len(f.cleaned_data) > 0:
-                        # item = f.save(commit=False)
-                        # item.instance = entity
                         f.save()
-                
+                else:
+                    return self.form_invalid(request, form, formset)
+        else:
+            return self.form_invalid(request, form, formset)
 
+        request.session['generate_pdf'] = True
+        request.session['pdf_pk'] = entity.id
         return HttpResponseRedirect(self.get_success_url())
+    
+    def form_invalid(self, request, form, formset):
+        return render(request,\
+            self.template_name,\
+            {'form': form, 'formset': formset, 'createUpdate': "Criar", 'form_invalid':True})
     
     # def form_valid(self, form):
     #     print(form.cleaned_data)
@@ -1024,6 +1077,8 @@ def pedido_pdf_view(request, *args, **kwargs):
     pedido = get_object_or_404(Pedido, pk=pk)
     itemsPedido = ItemPedido.objects.filter(pedido=pedido)
 
+    request.session['generate_pdf'] = False
+
     valor_produtos = 0
     for item in itemsPedido:
         valor_produtos += item.produto.valor * item.quantidade
@@ -1075,7 +1130,7 @@ def assistencia_pdf_view(request, *args, **kwargs):
     assistencia = get_object_or_404(Assistencia, pk=pk)
     itemsAssistencia = ItemAssistencia.objects.filter(assistencia=assistencia)
 
-    
+    request.session['generate_pdf'] = False
 
     context = {'assistencia': assistencia, 
                'itemsAssistencia': itemsAssistencia,
@@ -1100,10 +1155,10 @@ def get_produto_info(request, *args, **kwargs):
     if request.method == "GET":
         if request.is_ajax():
             
-            print("ajax test")
+            # print("ajax test")
 
-            #print(request.GET.get)
-            print(request.GET.get('produto'))
+            # #print(request.GET.get)
+            # print(request.GET.get('produto'))
             produto_id =request.GET.get('produto')
             produto = get_object_or_404(Produto, pk=produto_id)
             # produto_json = serializers.serialize('json',[produto])
@@ -1120,7 +1175,7 @@ def get_representada_info(request, *args, **kwargs):
     if request.method == "GET":
         if request.is_ajax():
             
-            print(request.GET.get('representada'))
+            # print(request.GET.get('representada'))
             representada_id =request.GET.get('representada')
             representada = get_object_or_404(Representada, pk=representada_id)
 
@@ -1275,8 +1330,8 @@ def relatorio_produtos_por_cliente(request, *args, **kwargs):
         # return render(request, Relatorios.as_view)
         
     clientes = {}
-    for p in produtos:
-        itemsPedido = ItemPedido.objects.filter(produto=p)
+    for prod in produtos:
+        itemsPedido = ItemPedido.objects.filter(produto=prod)
         pedidos = [it.pedido for it in itemsPedido ]
         
         # list to not repeat clients
@@ -1285,7 +1340,7 @@ def relatorio_produtos_por_cliente(request, *args, **kwargs):
             if not p.cliente in clientes_list:
                 clientes_list.append(p.cliente)
 
-        clientes[p] = clientes_list
+        clientes[prod] = clientes_list
             
     
     context = {'clientes': clientes, 

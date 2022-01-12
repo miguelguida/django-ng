@@ -176,6 +176,14 @@
     </ul>
 
     {% endif %}
+
+    {% if generate_pdf %}
+    <a id="href_aux" class="" href="{% url 'pedido-pdf' pdf_pk %}"></a>
+    <script>
+      console.log("ENTROUSSS:");
+      $('#href_aux')[0].click();
+    </script>
+    {% endif %}
     <!-- <div class="card-deck">
       <div class="card">
       <img class="card-img-top" src="..." alt="Card image cap">

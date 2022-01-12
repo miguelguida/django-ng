@@ -61,7 +61,7 @@ body {
     margin: 0;
     vertical-align: middle;
     justify-content: flex-start;
-    /* width: 100% !important; */
+    width: auto !important;
 }
 
 .select2-container .selection{

@@ -4,27 +4,34 @@ import uuid  # Required for unique book instances
 from datetime import date
 import datetime
 from .soft_delete import *
+from django.contrib.auth.models import User
 
-# Create your models here.
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.SET_NULL, null=True)
+    avatar = models.ImageField() # or whatever
+
+    def __str__(self):
+        return self.user.email
+
 class Representada(SoftDeletionModel):
-    nome = models.CharField(max_length=255, null=True, blank=True,
+    nome = models.CharField(max_length=255,
                             help_text="Nome da representada")
-    contato = models.CharField(max_length=255, null=True, blank=True)    
-    cnpj = models.CharField(max_length=255, null=True, blank=True)
-    inscEstadual = models.CharField(max_length=255, null=True, blank=True)
-    inscMunicipal = models.CharField(max_length=255, null=True, blank=True)
-    estado = models.CharField(max_length=255, null=True, blank=True)
-    cidade = models.CharField(max_length=255, null=True, blank=True)
-    cep = models.CharField(max_length=255, null=True, blank=True)
-    endereco = models.CharField(max_length=255, null=True, blank=True)
-    bairro = models.CharField(max_length=255, null=True, blank=True)
-    telefone = models.CharField(max_length=255, null=True, blank=True)
-    celular = models.CharField(max_length=255, null=True, blank=True)
-    email = models.EmailField(max_length=255, null=True, blank=True)
-    linha = models.CharField(max_length=255, null=True, blank=True)
-    comissao = models.CharField(max_length=255, null=True, blank=True)
-    ipi = models.CharField(max_length=255, null=True, blank=True)
-    lastUpdate = models.DateTimeField(auto_now=True, null=True, blank=True)
+    contato = models.CharField(max_length=255, blank=True)    
+    cnpj = models.CharField(max_length=255)
+    inscEstadual = models.CharField(max_length=255)
+    inscMunicipal = models.CharField(max_length=255, blank=True)
+    estado = models.CharField(max_length=255)
+    cidade = models.CharField(max_length=255)
+    cep = models.CharField(max_length=255)
+    endereco = models.CharField(max_length=255)
+    bairro = models.CharField(max_length=255)
+    telefone = models.CharField(max_length=255)
+    celular = models.CharField(max_length=255, blank=True)
+    email = models.EmailField(max_length=255)
+    linha = models.CharField(max_length=255, blank=True)
+    comissao = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    ipi = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    lastUpdate = models.DateTimeField(auto_now=True)
 
     class Meta:
         ordering = ['nome']
@@ -49,12 +56,12 @@ class Representada(SoftDeletionModel):
         return reverse('representada-delete', args=[str(self.id)])
 
 
-# Create your models here.
+
 class Produto(SoftDeletionModel):
-    nome = models.CharField(max_length=255, null=True, blank=True,
+    nome = models.CharField(max_length=255,
                             help_text="Nome do produto")
     valor = models.DecimalField(max_digits=10, decimal_places=2)
-    referencia = models.CharField(max_length=255, null=True, blank=True)
+    referencia = models.CharField(max_length=255)
     representada = models.ForeignKey('Representada', on_delete=models.SET_NULL, null=True)
     observacoes = models.TextField(max_length=600, blank=True, null=True)
     lastUpdate = models.DateTimeField(auto_now=True)
@@ -84,36 +91,32 @@ class Produto(SoftDeletionModel):
 
 
 class Status(SoftDeletionModel):
-    status = models.CharField(max_length=255, null=True, blank=True)
+    status = models.CharField(max_length=255)
 
     def __str__(self):
         return self.status
 
 
 class TipoFrete(SoftDeletionModel):
-    tipoFrete = models.CharField(max_length=255, null=True, blank=True)
+    tipoFrete = models.CharField(max_length=255)
 
     def __str__(self):
         return self.tipoFrete
 
 class TipoCobranca(SoftDeletionModel):
-    tipoCobranca = models.CharField(max_length=255, null=True, blank=True)
+    tipoCobranca = models.CharField(max_length=255)
 
     def __str__(self):
         return self.tipoCobranca
 
-# Create your models here.
+
 class Pedido(SoftDeletionModel):
     data = models.DateField()
-    ordemCompra = models.CharField(max_length=255, null=True, blank=True)
-    status = models.ForeignKey('Status', on_delete=models.SET_NULL, null=True)
-    # codCliente = models.CharField(max_length=255, null=True, blank=True)
+    ordemCompra = models.CharField(max_length=255)
+    status = models.ForeignKey('Status', on_delete=models.SET_NULL, null=True, default=1)
     cliente = models.ForeignKey('Cliente', on_delete=models.SET_NULL, null=True)
-    # codRepresentada = models.CharField(max_length=255, null=True, blank=True)
     representada = models.ForeignKey('Representada', on_delete=models.SET_NULL, null=True)
-    # codVendedor = models.CharField(max_length=255, null=True, blank=True)
     vendedor = models.ForeignKey('Vendedor', on_delete=models.SET_NULL, null=True)
-    # codTransportadora = models.CharField(max_length=255, null=True, blank=True)
     transportadora = models.ForeignKey('Transportadora', on_delete=models.SET_NULL, null=True)
     tipoFrete = models.ForeignKey('TipoFrete', on_delete=models.SET_NULL, null=True)
     formaPagamento = models.ForeignKey('FormaPagamento', on_delete=models.SET_NULL, null=True)
@@ -162,12 +165,12 @@ class Pedido(SoftDeletionModel):
 class ItemPedido(SoftDeletionModel):
     pedido = models.ForeignKey('Pedido', on_delete=models.SET_NULL, null=True)
     produto = models.ForeignKey('Produto', on_delete=models.SET_NULL, null=True)
-    referencia = models.CharField(max_length=200, null=True, blank=True)
-    acabamento = models.ForeignKey('Acabamento', on_delete=models.SET_NULL, null=True, blank=True)
-    tecido = models.ForeignKey('Tecido', on_delete=models.SET_NULL, null=True, blank=True)
-    quantidade = models.IntegerField(default=1)
-    valorUnitario = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
-    valorParcial = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    referencia = models.CharField(max_length=200)
+    acabamento = models.ForeignKey('Acabamento', on_delete=models.SET_NULL, null=True)
+    tecido = models.ForeignKey('Tecido', on_delete=models.SET_NULL, null=True)
+    quantidade = models.IntegerField(default=0)
+    valorUnitario = models.DecimalField(max_digits=10, decimal_places=2)
+    valorParcial = models.DecimalField(max_digits=10, decimal_places=2)
     lastUpdate = models.DateTimeField(auto_now=True)
 
     def get_valorParcial(self):
@@ -178,48 +181,48 @@ class ItemPedido(SoftDeletionModel):
             return self.produto.nome +" "+ self.pedido.ordemCompra +" "+self.produto.referencia
         return self.referencia
 
-# Create your models here.
+
 class Cliente(SoftDeletionModel):
-    razaoSocial = models.CharField(max_length=500, null=True, blank=True)
-    nomeFantasia = models.CharField(max_length=500, null=True, blank=True)
-    diretor = models.CharField(max_length=500, null=True, blank=True)
-    comprador = models.CharField(max_length=500, null=True, blank=True)
-    financeiro = models.CharField(max_length=500, null=True, blank=True)
+    razaoSocial = models.CharField(max_length=500)
+    nomeFantasia = models.CharField(max_length=500)
+    diretor = models.CharField(max_length=500)
+    comprador = models.CharField(max_length=500)
+    financeiro = models.CharField(max_length=500, blank=True)
     regApuracao = models.CharField(max_length=500, null=True, help_text="Regime de apuração", blank=True)
-    telefone = models.CharField(max_length=500, null=True, blank=True)
-    celular = models.CharField(max_length=500, null=True, blank=True)
-    email = models.EmailField(max_length=500, null=True, blank=True)
-    observacoes = models.CharField(max_length=500, null=True, blank=True)
+    telefone = models.CharField(max_length=500)
+    celular = models.CharField(max_length=500, blank=True)
+    email = models.EmailField(max_length=500)
+    observacoes = models.CharField(max_length=500, blank=True)
 
     # Dados de Faturamento
-    fat_inscEstadual = models.CharField(max_length=500, null=True, blank=True)
-    fat_estado = models.CharField(max_length=500, null=True, blank=True)
-    fat_cidade = models.CharField(max_length=500, null=True, blank=True)
-    fat_cep = models.CharField(max_length=500, null=True, blank=True)
-    fat_endereco = models.CharField(max_length=500, null=True, blank=True)
-    fat_bairro = models.CharField(max_length=500, null=True, blank=True)
-    fat_cnpj = models.CharField(max_length=500, null=True, blank=True)
+    fat_inscEstadual = models.CharField(max_length=500, blank=True)
+    fat_estado = models.CharField(max_length=500, blank=True)
+    fat_cidade = models.CharField(max_length=500, blank=True)
+    fat_cep = models.CharField(max_length=500, blank=True)
+    fat_endereco = models.CharField(max_length=500, blank=True)
+    fat_bairro = models.CharField(max_length=500, blank=True)
+    fat_cnpj = models.CharField(max_length=500, blank=True)
 
     # Dados de Cobrança
-    cob_inscEstadual = models.CharField(max_length=500, null=True, blank=True)
-    cob_estado = models.CharField(max_length=500, null=True, blank=True)
-    cob_cidade = models.CharField(max_length=500, null=True, blank=True)
-    cob_cep = models.CharField(max_length=500, null=True, blank=True)
-    cob_endereco = models.CharField(max_length=500, null=True, blank=True)
-    cob_bairro = models.CharField(max_length=500, null=True, blank=True)
-    cob_cnpj = models.CharField(max_length=500, null=True, blank=True)
+    cob_inscEstadual = models.CharField(max_length=500, blank=True)
+    cob_estado = models.CharField(max_length=500, blank=True)
+    cob_cidade = models.CharField(max_length=500, blank=True)
+    cob_cep = models.CharField(max_length=500, blank=True)
+    cob_endereco = models.CharField(max_length=500, blank=True)
+    cob_bairro = models.CharField(max_length=500, blank=True)
+    cob_cnpj = models.CharField(max_length=500, blank=True)
 
     # Dados de Entrega
-    entr_inscEstadual = models.CharField(max_length=500, null=True, blank=True)
-    entr_estado = models.CharField(max_length=500, null=True, blank=True)
-    entr_cidade = models.CharField(max_length=500, null=True, blank=True)
-    entr_cep = models.CharField(max_length=500, null=True, blank=True)
-    entr_endereco = models.CharField(max_length=500, null=True, blank=True)
-    entr_bairro = models.CharField(max_length=500, null=True, blank=True)
-    entr_cnpj = models.CharField(max_length=500, null=True, blank=True)
+    entr_inscEstadual = models.CharField(max_length=500, blank=True)
+    entr_estado = models.CharField(max_length=500, blank=True)
+    entr_cidade = models.CharField(max_length=500, blank=True)
+    entr_cep = models.CharField(max_length=500, blank=True)
+    entr_endereco = models.CharField(max_length=500, blank=True)
+    entr_bairro = models.CharField(max_length=500, blank=True)
+    entr_cnpj = models.CharField(max_length=500, blank=True)
 
 
-    lastUpdate = models.DateTimeField(auto_now=True, null=True, blank=True)
+    lastUpdate = models.DateTimeField(auto_now=True, blank=True)
 
     class Meta:
         ordering = ['razaoSocial']
@@ -242,22 +245,22 @@ class Cliente(SoftDeletionModel):
     def get_delete_url(self):
         return reverse('cliente-delete', args=[str(self.id)])
 
-# Create your models here.
+
 class Transportadora(SoftDeletionModel):
-    nome = models.CharField(max_length=255, null=True, blank=True, help_text="Nome da Transportadora")
-    contato = models.CharField(max_length=255, null=True, blank=True)    
-    cnpj = models.CharField(max_length=255, null=True, blank=True)
-    inscEstadual = models.CharField(max_length=255, null=True, blank=True)
-    estado = models.CharField(max_length=255, null=True, blank=True)
-    cidade = models.CharField(max_length=255, null=True, blank=True)
-    cep = models.CharField(max_length=255, null=True, blank=True)
-    endereco = models.CharField(max_length=255, null=True, blank=True)
-    bairro = models.CharField(max_length=255, null=True, blank=True)
-    telefone = models.CharField(max_length=255, null=True, blank=True)
-    celular = models.CharField(max_length=255, null=True, blank=True)
-    email = models.EmailField(max_length=255, null=True, blank=True)
-    observacoes = models.CharField(max_length=255, null=True, blank=True)
-    lastUpdate = models.DateTimeField(auto_now=True, null=True, blank=True)
+    nome = models.CharField(max_length=255, help_text="Nome da Transportadora")
+    contato = models.CharField(max_length=255, blank=True)    
+    cnpj = models.CharField(max_length=255)
+    inscEstadual = models.CharField(max_length=255, blank=True)
+    estado = models.CharField(max_length=255)
+    cidade = models.CharField(max_length=255)
+    cep = models.CharField(max_length=255)
+    endereco = models.CharField(max_length=255)
+    bairro = models.CharField(max_length=255)
+    telefone = models.CharField(max_length=255)
+    celular = models.CharField(max_length=255, blank=True)
+    email = models.EmailField(max_length=255)
+    observacoes = models.CharField(max_length=255, blank=True)
+    lastUpdate = models.DateTimeField(auto_now=True, blank=True)
 
     class Meta:
         ordering = ['nome']
@@ -282,18 +285,18 @@ class Transportadora(SoftDeletionModel):
         return reverse('transportadora-delete', args=[str(self.id)])
 
 
-# Create your models here.
+
 class Vendedor(SoftDeletionModel):
-    nome = models.CharField(max_length=255, null=True, blank=True, help_text="Nome do Vendedor")
-    cpf = models.CharField(max_length=255, null=True, blank=True)
-    estado = models.CharField(max_length=255, null=True, blank=True)
-    cidade = models.CharField(max_length=255, null=True, blank=True)
-    cep = models.CharField(max_length=255, null=True, blank=True)
-    endereco = models.CharField(max_length=255, null=True, blank=True)
-    bairro = models.CharField(max_length=255, null=True, blank=True)
-    telefone = models.CharField(max_length=255, null=True, blank=True)
-    celular = models.CharField(max_length=255, null=True, blank=True)
-    email = models.EmailField(max_length=255, null=True, blank=True)
+    nome = models.CharField(max_length=255, help_text="Nome do Vendedor")
+    cpf = models.CharField(max_length=255)
+    estado = models.CharField(max_length=255)
+    cidade = models.CharField(max_length=255)
+    cep = models.CharField(max_length=255)
+    endereco = models.CharField(max_length=255)
+    bairro = models.CharField(max_length=255)
+    telefone = models.CharField(max_length=255)
+    celular = models.CharField(max_length=255)
+    email = models.EmailField(max_length=255)
     lastUpdate = models.DateTimeField(auto_now=True)
 
     class Meta:
@@ -317,20 +320,15 @@ class Vendedor(SoftDeletionModel):
         return reverse('vendedor-delete', args=[str(self.id)])
 
 
-# Create your models here.
+
 class Assistencia(SoftDeletionModel):
     data = models.DateField()
-    numeroSolicitacao = models.CharField(max_length=255, null=True, blank=True)
-    # codCliente = models.CharField(max_length=255, null=True, blank=True)
+    numeroSolicitacao = models.CharField(max_length=255)
     cliente = models.ForeignKey('Cliente', on_delete=models.SET_NULL, null=True)
-    # codRepresentada = models.CharField(max_length=255, null=True, blank=True)
     representada = models.ForeignKey('Representada', on_delete=models.SET_NULL, null=True)
-    # codTransportadora = models.CharField(max_length=255, null=True, blank=True)
     transportadora = models.ForeignKey('Transportadora', on_delete=models.SET_NULL, null=True)
-    status = models.ForeignKey('Status', on_delete=models.SET_NULL, null=True)
+    status = models.ForeignKey('Status', on_delete=models.SET_NULL, null=True, default=1)
     observacoes = models.TextField(max_length=600, blank=True)
-    #Itens da Assistencia
-    # itemAssistencia = models.ManyToManyField('ItemAssistencia')
     lastUpdate = models.DateTimeField(auto_now=True)
 
     def get_absolute_url(self):
@@ -355,18 +353,14 @@ class Assistencia(SoftDeletionModel):
     def get_delete_url(self):
         return reverse('assistencia-delete', args=[str(self.id)])
 
-# Create your models here.
 class ItemAssistencia(SoftDeletionModel):
-    
-
-    #Itens da Assistencia
     assistencia = models.ForeignKey('Assistencia', on_delete=models.SET_NULL, null=True)
     produto = models.ForeignKey('Produto', on_delete=models.SET_NULL, null=True)
-    referencia = models.CharField(max_length=200, null=True, blank=True)
+    referencia = models.CharField(max_length=200)
     acabamento = models.ForeignKey('Acabamento', on_delete=models.SET_NULL, null=True)
-    tecido = models.ForeignKey('Tecido', on_delete=models.SET_NULL, null=True, blank=True)
-    quantidade = models.IntegerField()
-    observacoes = models.TextField(max_length=255, null=True, blank=True)
+    tecido = models.ForeignKey('Tecido', on_delete=models.SET_NULL, null=True)
+    quantidade = models.IntegerField(default=0)
+    observacoes = models.TextField(max_length=255, blank=True)
     mostruario = models.BooleanField()
     lastUpdate = models.DateTimeField(auto_now=True)
 
@@ -379,9 +373,9 @@ class ItemAssistencia(SoftDeletionModel):
             return self.referencia+ ' '+self.produto.nome + ' ' + self.assistencia.numeroSolicitacao
         return self.referencia
 
-# Create your models here.
+
 class Acabamento(SoftDeletionModel):
-    acabamento = models.CharField(max_length=255, null=True, blank=True, help_text="Tipo de acabamento")
+    acabamento = models.CharField(max_length=255, help_text="Tipo de acabamento")
     lastUpdate = models.DateTimeField(auto_now=True)
 
     class Meta:
@@ -403,9 +397,9 @@ class Acabamento(SoftDeletionModel):
     def get_delete_url(self):
         return reverse('acabamento-delete', args=[str(self.id)])
 
-# Create your models here.
+
 class Tecido(SoftDeletionModel):
-    tecido = models.CharField(max_length=255, null=True, blank=True, help_text="Tipo de Tecido")
+    tecido = models.CharField(max_length=255, help_text="Tipo de Tecido")
     lastUpdate = models.DateTimeField(auto_now=True)
 
     class Meta:
@@ -427,9 +421,9 @@ class Tecido(SoftDeletionModel):
     def get_delete_url(self):
         return reverse('tecido-delete', args=[str(self.id)])
 
-# Create your models here.
+
 class FormaPagamento(SoftDeletionModel):
-    formaDePagamento = models.CharField(max_length=255, null=True, blank=True, help_text="Tipo de Forma de Pagamento")
+    formaDePagamento = models.CharField(max_length=255, help_text="Tipo de Forma de Pagamento")
     lastUpdate = models.DateTimeField(auto_now=True)
 
     class Meta:

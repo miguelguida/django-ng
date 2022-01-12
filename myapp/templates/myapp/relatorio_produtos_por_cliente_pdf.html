@@ -123,8 +123,8 @@
 
                 <hr/>
 
-                {% for r, p_list in clientes.items %}
-                <h3>Produto: {{ r }}</h3>
+                {% for p, p_list in clientes.items %}
+                <h3>Produto: {{ p.nome }} - {{ p.referencia }}</h3>
                 <table class="items-table">
                     <thead>
                         <tr>
