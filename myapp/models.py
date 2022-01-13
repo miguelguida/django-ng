@@ -162,6 +162,21 @@ class Pedido(SoftDeletionModel):
     def get_delete_url(self):
         return reverse('pedido-delete', args=[str(self.id)])
 
+    def get_valor_descontos_aplicado(self):
+        valor_bruto = self.valorBruto
+        if self.desconto1 > 0:
+            valor_bruto =  valor_bruto * ((100 - self.desconto1)/100)
+        if self.desconto2 > 0:
+            valor_bruto =  valor_bruto * ((100 - self.desconto2)/100)
+        if self.desconto3 > 0:
+            valor_bruto =  valor_bruto * ((100 - self.desconto3)/100)
+        if self.desconto4 > 0:
+            valor_bruto =  valor_bruto * ((100 - self.desconto4)/100)
+        if self.desconto5 > 0:
+            valor_bruto =  valor_bruto * ((100 - self.desconto5)/100)
+
+        return round(valor_bruto, 2)
+
 class ItemPedido(SoftDeletionModel):
     pedido = models.ForeignKey('Pedido', on_delete=models.SET_NULL, null=True)
     produto = models.ForeignKey('Produto', on_delete=models.SET_NULL, null=True)

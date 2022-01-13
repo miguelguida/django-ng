@@ -318,10 +318,12 @@
                     
                     nome = data['nome'];
                     ipi = data['ipi'];
+                    comissao = data['comissao'];
 
                     console.log('@@@@@@@@@@@@');
                     
                     $("[id$='_ipi']").val(parseFloat(ipi).toFixed(2));
+                    $("[id$='_porcentagemComissao']").val(parseFloat(comissao).toFixed(2));
                     
                     updateValorBruto();
                     updateValorTotal();

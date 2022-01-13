@@ -32,7 +32,7 @@
                     {{ form.financeiro|add_class:'form-control' }}
                 </div>
                 <div class="form-group col-md-3">
-                    <label>Região de Apuração</label>
+                    <label>Regime de Apuração</label>
                     {{ form.regApuracao|add_class:'form-control' }}
                 </div>
             </div>
@@ -191,6 +191,17 @@
         </form>
     </div>
 <script>
+    $("#id_fat_cnpj").mask("99.999.999/9999-99");
+    $("#id_cob_cnpj").mask("99.999.999/9999-99");
+    $("#id_entr_cnpj").mask("99.999.999/9999-99");
+
+    $("#id_fat_cep").mask("99999-999");
+    $("#id_cob_cep").mask("99999-999");
+    $("#id_entr_cep").mask("99999-999");
+
+    $("#id_telefone").mask("(99) 9999-9999");
+    $("#id_celular").mask("(99) 99999-9999");
+
     var fat_cep = document.getElementById("id_fat_cep")
     var cob_cep = document.getElementById("id_cob_cep")
     var entr_cep = document.getElementById("id_entr_cep")

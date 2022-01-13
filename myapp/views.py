@@ -314,7 +314,7 @@ class ProdutoListView(LoginRequiredMixin, generic.ListView):
 
     def get_queryset(self):
         filter_val = self.request.GET.get('filter', '')
-        order = self.request.GET.get('orderby', 'id')
+        order = self.request.GET.get('orderby', 'nome')
         asc_desc = self.request.GET.get('asc_desc', '')
 
         if order != '':
@@ -347,7 +347,7 @@ class ProdutoListView(LoginRequiredMixin, generic.ListView):
             context['is_mobile'] = False
 
         context['filter'] = self.request.GET.get('filter', '')
-        context['orderby'] = self.request.GET.get('orderby', 'id')
+        context['orderby'] = self.request.GET.get('orderby', 'nome')
         context['options'] = PRODUTO_ORDER_OPTIONS
         context['asc_desc'] = self.request.GET.get('asc_desc', 'asc')
         context['asc_desc_options'] = [['asc', 'Crescente'],['desc', 'Decrescente']]
@@ -1155,15 +1155,9 @@ def get_produto_info(request, *args, **kwargs):
     if request.method == "GET":
         if request.is_ajax():
             
-            # print("ajax test")
-
-            # #print(request.GET.get)
-            # print(request.GET.get('produto'))
             produto_id =request.GET.get('produto')
             produto = get_object_or_404(Produto, pk=produto_id)
-            # produto_json = serializers.serialize('json',[produto])
-            # print("PRODUTO:   ",produto_json)
-
+            
             data = {
                 'referencia': produto.referencia,   
                 'valor': produto.valor,
@@ -1182,6 +1176,7 @@ def get_representada_info(request, *args, **kwargs):
             data = {
                 'nome': representada.nome,   
                 'ipi': representada.ipi,
+                'comissao': representada.comissao,
             }
 
             return JsonResponse(data)
@@ -1255,35 +1250,6 @@ def relatorio_representadas_view(request, *args, **kwargs):
     if pisa_status.err:
        return HttpResponse('We had some errors <pre>' + html + '</pre>')
     return response
-
-# @login_required
-# def relatorio_produtos_por_repr_view(request, *args, **kwargs):
-#     template_path = 'myapp/relatorio_produtos_por_repr_pdf.html'
-    
-#     representadas = Representada.objects.all()
-#     produtos = {}
-#     for r in representadas:
-#         produtos[r] = Produto.objects.filter(representada=r)
-            
-    
-#     context = {'representadas': representadas, 
-#                'produtos': produtos, 
-#                }
-
-#     # Create a Django response object, and specify content_type as pdf
-#     response = HttpResponse(content_type='application/pdf')
-#     response['Content-Disposition'] = 'attachment; filename="lista_de_prod_por_repr.pdf"'
-#     # find the template and render it.
-#     template = get_template(template_path)
-#     html = template.render(context)
-
-#     # create a pdf
-#     pisa_status = pisa.CreatePDF(
-#        html, dest=response)
-#     # if error then show some funy view
-#     if pisa_status.err:
-#        return HttpResponse('We had some errors <pre>' + html + '</pre>')
-#     return response
 
 @login_required
 def relatorio_produtos_por_repr_view(request, *args, **kwargs):
