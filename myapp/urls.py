@@ -101,4 +101,7 @@ urlpatterns += [
     path('relatorio/produtos-por-repr/<int:pk>', views.relatorio_produtos_por_repr_view, name='relatorio-produtos-por-repr-pk'),
     path('relatorio/clientes-por-prod/', views.relatorio_produtos_por_cliente, name='relatorio-clientes-por-prod'),
     path('relatorio/clientes-por-prod/<int:pk>', views.relatorio_produtos_por_cliente, name='relatorio-clientes-por-prod-pk'),
+    path('relatorio/comissao-por-repr/', views.relatorio_comissao_por_representada, name='relatorio-comissao-por-repr'),
+    path('relatorio/comissao-por-repr/<int:pk>', views.relatorio_comissao_por_representada, name='relatorio-comissao-por-repr-pk'),
+    
 ]

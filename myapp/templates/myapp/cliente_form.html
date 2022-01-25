@@ -9,13 +9,17 @@
             {% csrf_token %}
            
             <div class="form-row">
-                <div class="form-group col-md-6">
+                <div class="form-group col-md-4">
                     <label>Razão Social</label>
                     {{ form.razaoSocial|add_class:'form-control' }}
                 </div>
-                <div class="form-group col-md-6">
+                <div class="form-group col-md-4">
                     <label>Nome Fantasia</label>
                     {{ form.nomeFantasia|add_class:'form-control' }}
+                </div>
+                <div class="form-group col-md-4">
+                    <label>Região</label>
+                    {{ form.regiao|add_class:'form-control' }}
                 </div>
             </div>
             <div class="form-row">

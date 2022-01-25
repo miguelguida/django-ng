@@ -14,6 +14,7 @@ from xhtml2pdf import pisa
 
 import datetime
 
+
 from django.db.models import Q
 
 from django.views import generic
@@ -42,7 +43,7 @@ REPRESENTADA_ORDER_OPTIONS = [
     ]
 class RepresentadaListView(LoginRequiredMixin, generic.ListView):
     model = Representada
-    paginate_by = 50
+    paginate_by = 30
 
     def get_queryset(self):
         filter_val = self.request.GET.get('filter', '')
@@ -57,13 +58,13 @@ class RepresentadaListView(LoginRequiredMixin, generic.ListView):
 
         if filter_val != '' and order != '':
             new_context = Representada.objects.filter(
-                nome__icontains=filter_val,
+                Q(nome__icontains=filter_val) | Q(nome__iregex=r'^('+filter_val+') +')
             ).order_by(order)
         elif order != '':
             new_context = Representada.objects.all().order_by(order)
         elif filter_val != '':
             new_context = Representada.objects.filter(
-                nome__icontains=filter_val,
+                Q(nome__icontains=filter_val) | Q(nome__iregex=r'^('+filter_val+') +')
             )
         else:
             new_context = Representada.objects.all()
@@ -122,12 +123,15 @@ class RepresentadaDelete(LoginRequiredMixin,  DeleteView):
 # - - - - - Pedido - - - - -
 PEDIDO_ORDER_OPTIONS = [
         ['id', 'Número'],
+        ['data', 'Data'],
         ['ordemCompra', 'Ordem Compra'],
+        ['cliente', 'Cliente'],
+        ['representada', 'Representada'],
         ['lastUpdate', 'Última atualização'],
     ]
 class PedidoListView(LoginRequiredMixin, generic.ListView):
     model = Pedido
-    paginate_by = 50
+    paginate_by = 30
 
     def get_queryset(self):
         filter_val = self.request.GET.get('filter', '')
@@ -141,17 +145,35 @@ class PedidoListView(LoginRequiredMixin, generic.ListView):
                 order = order[:1]
 
         if filter_val != '' and order != '':
-            new_context = Pedido.objects.filter(
-                Q(ordemCompra__icontains=filter_val) | Q(cliente__razaoSocial__icontains=filter_val)
-              | Q(id=filter_val)
-            ).order_by(order)
+            if filter_val.isdigit():
+                new_context = Pedido.objects.filter(
+                    Q(ordemCompra__icontains=filter_val) | Q(ordemCompra__iregex=r'^('+filter_val+') +') |
+                    Q(cliente__razaoSocial__icontains=filter_val) | Q(cliente__razaoSocial__iregex=r'^('+filter_val+') +') |
+                    Q(representada__nome__icontains=filter_val) | Q(representada__nome__iregex=r'^('+filter_val+') +') |
+                    Q(id=filter_val)
+                ).order_by(order)
+            else:
+                new_context = Pedido.objects.filter(
+                    Q(ordemCompra__icontains=filter_val) | Q(ordemCompra__iregex=r'^('+filter_val+') +') |
+                    Q(cliente__razaoSocial__icontains=filter_val) | Q(cliente__razaoSocial__iregex=r'^('+filter_val+') +') |
+                    Q(representada__nome__icontains=filter_val) | Q(representada__nome__iregex=r'^('+filter_val+') +') 
+                ).order_by(order)
         elif order != '':
             new_context = Pedido.objects.all().order_by(order)
         elif filter_val != '':
-            new_context = Pedido.objects.filter(
-                Q(ordemCompra__icontains=filter_val) | Q(cliente__razaoSocial__icontains=filter_val)
-              | Q(id=filter_val)
-            )
+            if filter_val.isdigit():
+                new_context = Pedido.objects.filter(
+                    Q(ordemCompra__icontains=filter_val) | Q(ordemCompra__iregex=r'^('+filter_val+') +') |
+                    Q(cliente__razaoSocial__icontains=filter_val) | Q(cliente__razaoSocial__iregex=r'^('+filter_val+') +') |
+                    Q(representada__nome__icontains=filter_val) | Q(representada__nome__iregex=r'^('+filter_val+') +') |
+                    Q(id=filter_val)
+                )
+            else:
+                new_context = Pedido.objects.filter(
+                    Q(ordemCompra__icontains=filter_val) | Q(ordemCompra__iregex=r'^('+filter_val+') +') |
+                    Q(cliente__razaoSocial__icontains=filter_val) | Q(cliente__razaoSocial__iregex=r'^('+filter_val+') +') |
+                    Q(representada__nome__icontains=filter_val) | Q(representada__nome__iregex=r'^('+filter_val+') +') 
+                )
         else:
             new_context = Pedido.objects.all()
         return new_context
@@ -305,12 +327,13 @@ class PedidoDelete(LoginRequiredMixin,  DeleteView):
 PRODUTO_ORDER_OPTIONS = [
         ['id', 'Código'],
         ['nome', 'Nome'],
+        ['representada', 'Representada'],
         ['valor', 'Valor'],
         ['lastUpdate', 'Última atualização'],
     ]
 class ProdutoListView(LoginRequiredMixin, generic.ListView):
     model = Produto
-    paginate_by = 50
+    paginate_by = 30
 
     def get_queryset(self):
         filter_val = self.request.GET.get('filter', '')
@@ -325,13 +348,15 @@ class ProdutoListView(LoginRequiredMixin, generic.ListView):
 
         if filter_val != '' and order != '':
             new_context = Produto.objects.filter(
-                nome__icontains=filter_val,
+                Q(nome__icontains=filter_val) | Q(nome__iregex=r'^('+filter_val+') +') |
+                Q(representada__nome__icontains=filter_val) | Q(representada__nome__iregex=r'^('+filter_val+') +')
             ).order_by(order)
         elif order != '':
             new_context = Produto.objects.all().order_by(order)
         elif filter_val != '':
             new_context = Produto.objects.filter(
-                nome__icontains=filter_val,
+                Q(nome__icontains=filter_val) | Q(nome__iregex=r'^('+filter_val+') +') |
+                Q(representada__nome__icontains=filter_val) | Q(representada__nome__iregex=r'^('+filter_val+') +')
             )
         else:
             new_context = Produto.objects.all()
@@ -392,12 +417,15 @@ class ProdutoDelete(LoginRequiredMixin,  DeleteView):
 # - - - - - Assistencia - - - - -
 ASSISTENCIA_ORDER_OPTIONS = [
         ['id', 'Código'],
+        ['data', 'Data'],
         ['numeroSolicitacao', 'Numero Solicitacao'],
+        ['cliente', 'Cliente'],
+        ['representada', 'Representada'],
         ['lastUpdate', 'Última atualização'],
     ]
 class AssistenciaListView(LoginRequiredMixin, generic.ListView):
     model = Assistencia
-    paginate_by = 50
+    paginate_by = 30
 
     def get_queryset(self):
         filter_val = self.request.GET.get('filter', '')
@@ -411,15 +439,35 @@ class AssistenciaListView(LoginRequiredMixin, generic.ListView):
                 order = order[:1]
 
         if filter_val != '' and order != '':
-            new_context = Assistencia.objects.filter(
-                numeroSolicitacao__icontains=filter_val,
-            ).order_by(order)
+            if filter_val.isdigit():
+                new_context = Assistencia.objects.filter(
+                    Q(numeroSolicitacao__icontains=filter_val) | Q(numeroSolicitacao__iregex=r'^('+filter_val+') +') |
+                    Q(cliente__razaoSocial__icontains=filter_val) | Q(cliente__razaoSocial__iregex=r'^('+filter_val+') +') |
+                    Q(representada__nome__icontains=filter_val) | Q(representada__nome__iregex=r'^('+filter_val+') +') |
+                    Q(id=filter_val)
+                ).order_by(order)
+            else:
+                new_context = Assistencia.objects.filter(
+                    Q(numeroSolicitacao__icontains=filter_val) | Q(numeroSolicitacao__iregex=r'^('+filter_val+') +') |
+                    Q(cliente__razaoSocial__icontains=filter_val) | Q(cliente__razaoSocial__iregex=r'^('+filter_val+') +') |
+                    Q(representada__nome__icontains=filter_val) | Q(representada__nome__iregex=r'^('+filter_val+') +') 
+                ).order_by(order)
         elif order != '':
             new_context = Assistencia.objects.all().order_by(order)
         elif filter_val != '':
-            new_context = Assistencia.objects.filter(
-                numeroSolicitacao__icontains=filter_val,
-            )
+            if filter_val.isdigit():
+                new_context = Assistencia.objects.filter(
+                    Q(numeroSolicitacao__icontains=filter_val) | Q(numeroSolicitacao__iregex=r'^('+filter_val+') +') |
+                    Q(cliente__razaoSocial__icontains=filter_val) | Q(cliente__razaoSocial__iregex=r'^('+filter_val+') +') |
+                    Q(representada__nome__icontains=filter_val) | Q(representada__nome__iregex=r'^('+filter_val+') +') |
+                    Q(id=filter_val)
+                )
+            else:
+                new_context = Assistencia.objects.filter(
+                    Q(numeroSolicitacao__icontains=filter_val) | Q(numeroSolicitacao__iregex=r'^('+filter_val+') +') |
+                    Q(cliente__razaoSocial__icontains=filter_val) | Q(cliente__razaoSocial__iregex=r'^('+filter_val+') +') |
+                    Q(representada__nome__icontains=filter_val) | Q(representada__nome__iregex=r'^('+filter_val+') +') 
+                )
         else:
             new_context = Assistencia.objects.all()
         return new_context
@@ -590,7 +638,7 @@ CLIENTE_ORDER_OPTIONS = [
 class ClienteListView(LoginRequiredMixin, generic.ListView):
     
     model = Cliente
-    paginate_by = 50
+    paginate_by = 30
     
     def get_queryset(self):
         filter_val = self.request.GET.get('filter', '')
@@ -605,13 +653,17 @@ class ClienteListView(LoginRequiredMixin, generic.ListView):
 
         if filter_val != '' and order != '':
             new_context = Cliente.objects.filter(
-                Q(fat_cidade__icontains=filter_val) | Q(razaoSocial__icontains=filter_val)
+                Q(fat_cidade__icontains=filter_val) | Q(fat_cidade__iregex=r'^('+filter_val+') +') |
+                Q(razaoSocial__icontains=filter_val) | Q(razaoSocial__iregex=r'^('+filter_val+') +') |
+                Q(nomeFantasia__icontains=filter_val) | Q(nomeFantasia__iregex=r'^('+filter_val+') +')
             ).order_by(order)
         elif order != '':
             new_context = Cliente.objects.all().order_by(order)
         elif filter_val != '':
             new_context = Cliente.objects.filter(
-                Q(fat_cidade__icontains=filter_val) | Q(razaoSocial__icontains=filter_val)
+                Q(fat_cidade__icontains=filter_val) | Q(fat_cidade__iregex=r'^('+filter_val+') +') |
+                Q(razaoSocial__icontains=filter_val) | Q(razaoSocial__iregex=r'^('+filter_val+') +') |
+                Q(nomeFantasia__icontains=filter_val) | Q(nomeFantasia__iregex=r'^('+filter_val+') +')
             )
         else:
             new_context = Cliente.objects.all()
@@ -677,7 +729,7 @@ TRANSPORTADORA_ORDER_OPTIONS = [
 class TransportadoraListView(LoginRequiredMixin, generic.ListView):
     
     model = Transportadora
-    paginate_by = 50
+    paginate_by = 30
     
     def get_queryset(self):
         filter_val = self.request.GET.get('filter', '')
@@ -761,7 +813,7 @@ VENDEDOR_ORDER_OPTIONS = [
 class VendedorListView(LoginRequiredMixin, generic.ListView):
     
     model = Vendedor
-    paginate_by = 50
+    paginate_by = 30
     
     def get_queryset(self):
         filter_val = self.request.GET.get('filter', '')
@@ -840,7 +892,7 @@ ACABAMENTO_ORDER_OPTIONS = [
     ]
 class AcabamentoListView(LoginRequiredMixin, generic.ListView):
     model = Acabamento
-    paginate_by = 50
+    paginate_by = 30
 
     def get_queryset(self):
         filter_val = self.request.GET.get('filter', '')
@@ -855,13 +907,13 @@ class AcabamentoListView(LoginRequiredMixin, generic.ListView):
 
         if filter_val != '' and order != '':
             new_context = Acabamento.objects.filter(
-                acabamento__icontains=filter_val,
+                Q(acabamento__icontains=filter_val) | Q(acabamento__iregex=r'^('+filter_val+') +')
             ).order_by(order)
         elif order != '':
             new_context = Acabamento.objects.all().order_by(order)
         elif filter_val != '':
             new_context = Acabamento.objects.filter(
-                acabamento__icontains=filter_val,
+                Q(acabamento__icontains=filter_val) | Q(acabamento__iregex=r'^('+filter_val+') +')
             )
         else:
             new_context = Acabamento.objects.all()
@@ -919,7 +971,7 @@ TECIDO_ORDER_OPTIONS = [
     ]
 class TecidoListView(LoginRequiredMixin, generic.ListView):
     model = Tecido
-    paginate_by = 50
+    paginate_by = 30
 
     def get_queryset(self):
         filter_val = self.request.GET.get('filter', '')
@@ -934,13 +986,13 @@ class TecidoListView(LoginRequiredMixin, generic.ListView):
 
         if filter_val != '' and order != '':
             new_context = Tecido.objects.filter(
-                tecido__icontains=filter_val,
+                Q(tecido__icontains=filter_val) | Q(tecido__iregex=r'^('+filter_val+') +')
             ).order_by(order)
         elif order != '':
             new_context = Tecido.objects.all().order_by(order)
         elif filter_val != '':
             new_context = Tecido.objects.filter(
-                tecido__icontains=filter_val,
+                Q(tecido__icontains=filter_val) | Q(tecido__iregex=r'^('+filter_val+') +')
             )
         else:
             new_context = Tecido.objects.all()
@@ -998,7 +1050,7 @@ FORMAPAGAMENTO_ORDER_OPTIONS = [
     ]
 class FormaPagamentoListView(LoginRequiredMixin, generic.ListView):
     model = FormaPagamento
-    paginate_by = 50
+    paginate_by = 30
 
     def get_queryset(self):
         filter_val = self.request.GET.get('filter', '')
@@ -1013,13 +1065,13 @@ class FormaPagamentoListView(LoginRequiredMixin, generic.ListView):
 
         if filter_val != '' and order != '':
             new_context = FormaPagamento.objects.filter(
-                formaDePagamento__icontains=filter_val,
+                Q(formaDePagamento__icontains=filter_val) | Q(formaDePagamento__iregex=r'^('+filter_val+') +')
             ).order_by(order)
         elif order != '':
             new_context = FormaPagamento.objects.all().order_by(order)
         elif filter_val != '':
             new_context = FormaPagamento.objects.filter(
-                formaDePagamento__icontains=filter_val,
+                Q(formaDePagamento__icontains=filter_val) | Q(formaDePagamento__iregex=r'^('+filter_val+') +')
             )
         else:
             new_context = FormaPagamento.objects.all()
@@ -1316,6 +1368,56 @@ def relatorio_produtos_por_cliente(request, *args, **kwargs):
     # Create a Django response object, and specify content_type as pdf
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = 'attachment; filename="produtos_por_cliente.pdf"'
+    # find the template and render it.
+    template = get_template(template_path)
+    html = template.render(context)
+
+    # create a pdf
+    pisa_status = pisa.CreatePDF(
+       html, dest=response)
+    # if error then show some funy view
+    if pisa_status.err:
+       return HttpResponse('We had some errors <pre>' + html + '</pre>')
+    return response
+
+@login_required
+def relatorio_comissao_por_representada(request, *args, **kwargs):
+    template_path = 'myapp/relatorio_comissao_por_representada.html'
+    if 'pk' in kwargs:
+        representada_id = kwargs['pk']
+        representadas = Representada.objects.filter(id=representada_id)
+    else:
+        return HttpResponseRedirect(reverse_lazy('relatorios'))
+        # return render(request, Relatorios.as_view)
+
+    dateFrom = request.GET.get('dateFrom', '')
+    dateTo = request.GET.get('dateTo', '')
+    
+    if dateFrom != '':
+        dateFrom = datetime.datetime.strptime(dateFrom, '%d/%m/%Y').strftime('%Y-%m-%d')
+    if dateTo != '':
+        dateTo = datetime.datetime.strptime(dateTo, '%d/%m/%Y').strftime('%Y-%m-%d')
+
+    pedidos = {}
+    for repr in representadas:
+        if dateFrom != '' and dateTo != '':
+            pedidos[repr] = Pedido.objects.filter(representada=representada_id, data__gt=dateFrom, data__lt=dateTo)  
+        elif dateFrom != '' and dateTo == '':
+            pedidos[repr] = Pedido.objects.filter(representada=representada_id, data__gt=dateFrom)  
+        elif dateTo != '' and dateFrom == '':
+            pedidos[repr] = Pedido.objects.filter(representada=representada_id, data__lt=dateTo)  
+        else:   
+            pedidos[repr] = Pedido.objects.filter(representada=representada_id) 
+        
+            
+    
+    context = {'pedidos': pedidos, 
+               
+               }
+
+    # Create a Django response object, and specify content_type as pdf
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="comisao_por_representada.pdf"'
     # find the template and render it.
     template = get_template(template_path)
     html = template.render(context)

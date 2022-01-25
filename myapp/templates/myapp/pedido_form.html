@@ -59,11 +59,11 @@
 
             <hr/>
 
-            <div id="formset-container">
+            <div id="formset-container" >
                 <h3>Itens do Pedido</h3>
                 {{ formset.management_form }}
                 {% for form in formset %}
-                    <div id="formset-{{ forloop.counter0 }}" class="formset-div">
+                    <div id="formset-{{ forloop.counter0 }}" class="formset-div item-pedido-div">
                         <div hidden>                           
                             {{ form.id }}
                             {{ form.deleted_at }}
@@ -110,7 +110,7 @@
                 
                 {% for form in formset %}
                 {% if forloop.last %}
-                <div id="formset-__prefix__" class="formset-div">
+                <div id="formset-__prefix__" class="formset-div item-pedido-div">
                     <div hidden>                           
                         {{ form.id }}
                         {{ form.deleted_at }}

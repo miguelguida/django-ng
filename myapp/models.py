@@ -200,6 +200,7 @@ class ItemPedido(SoftDeletionModel):
 class Cliente(SoftDeletionModel):
     razaoSocial = models.CharField(max_length=500)
     nomeFantasia = models.CharField(max_length=500)
+    regiao = models.CharField(max_length=500, blank=True)
     diretor = models.CharField(max_length=500)
     comprador = models.CharField(max_length=500)
     financeiro = models.CharField(max_length=500, blank=True)
